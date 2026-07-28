@@ -1,0 +1,406 @@
+---
+description: Map project resume point - overview, architecture, conventions, work history
+alwaysApply: true
+---
+
+# Map - Project Resume Point
+
+This file is the AI agent's memory for the Map project. It is read first at session
+start and updated at the end of every substantive session. It follows the completeness
+rule (see `standards-meta.mdc`): record decisions, the reasoning behind them, what was
+deferred and why, and what the agent got wrong - not just conclusions.
+
+## Project Overview
+
+Map is a C++17 project whose deliverable is a **single static library, `Map.lib`**
+(`libMap.a` on GCC/Clang/AppleClang). It provides the map model layer built on top
+of the RMAP framework: the model objects **RMRoot / RMCObject / RMTObject / RMPObject**,
+each with SB and IO source variants and factories, plus SB and IO package plugins, and a
+`LibraryMVRP_Map` plugin that registers all the factories. The build is cross-platform
+and **CMake is the single source of truth** (no committed IDE project files - they are
+generated).
+
+Naming note: the CMake project, target, deliverable, and package are all named **`Map`**
+(`Map.sln`, `Map.vcxproj`, `Map.lib`, `find_package(Map)` -> `Map::Map`), fully symmetric
+with RMAP (repo folder name == everything). The legacy MSVC project was named `MVRP_Map`
+(`TargetName MVRP_Map`, `RootNamespace MVRPMapcpp`); that build-level name was dropped in
+favor of `Map` at DavidSr's request. The C++ SOURCE identifiers and header file names are
+still `MVRP_Map` (`include/MVRP_Map.h`, `MV_MVRP_MAP_API`, `LibraryMVRP_Map`) - those are
+source, left to the pending migration, NOT changed by the build rename.
+
+Located at `C:\Dev\OMB\Map`. Sibling projects under `C:\Dev\OMB`: `RMAP` (the converted
+framework Map depends on), plus `Artemis`, `Sneeze`, `SneezeDoc`, `SneezeSDK`,
+`SneezeSDK_C`, `SneezeSDK_CPP`, `SneezeSDK_Rust`.
+
+## Current State (as of 2026-07-27)
+
+The project was **converted from a Windows-only MSVC DLL project to a cross-platform
+CMake static library**, "the same way RMAP was done" (DavidSr's request). This was
+**build-system scaffolding only** - the same split RMAP used, where the agent does the
+CMake/build conversion and the source-level name migration is owned by DavidSr.
+
+**The project CONFIGURES but does NOT yet COMPILE**, for two carried-over reasons (both
+identical in spirit to RMAP's pending state):
+
+1. **Upstream dependencies are not all available cross-platform yet.** Map's `pch.h`
+   includes `<MVMF.h> <MVSB.h> <MVXP.h> <MVRest.h> <MVIO.h> <MVRP.h> <MVRP_Dev.h>` plus
+   its own `<MVRP_Map.h>`. Of those, RMAP now provides the former **MVMF** (core),
+   **MVSB** (Svc_SB), **MVRest** (Svc_Rest), and **MVIO** (Svc_SocketIO) - now wired as a
+   COMPILED git third-party dependency (`ExternalProject` `rmap_build`, or `find_package`
+   when `Map_USE_SYSTEM_RMAP=ON`; see the dependency KEY DECISION). But **MVRP, MVRP_Dev,
+   and MVXP have no converted sibling** under `C:\Dev\OMB` yet (no folders for them). They
+   are fed through the `Map_DEPENDENCY_INCLUDE_DIRS` cache variable until converted.
+2. **Source migration off the pre-RMAP names is still pending (DavidSr-owned).** The
+   sources still use `<MVMF.h>`, the `MV::` namespace, `SB_OBJECT`, `LIBRARY`, `PLUGIN`,
+   `MVSB::MAP`, `MVIO::IO_OBJECT`, etc. AND the include convention is the old flat
+   `<MVMF.h>` rather than RMAP's `<RMAP/RMAP.h>`, so even with RMAP installed the includes
+   will not resolve until migrated. This is the same MV::-era migration RMAP left open.
+
+Configure was VERIFIED: `cmake --preset vs2022` generates `build\Map.sln` with a `Map`
+project (filters mirror the on-disk `src` / `include\Map` folders, plus the auto
+"Precompile Header File" and "Source Files" filters) AND a `rmap_build` ExternalProject.
+NOT yet done: an actual `cmake --build` of `rmap_build` (it clones RMAP from GitHub and
+builds RMAP's whole stack - BoringSSL/curl/sioclient, needs Go + NASM, several minutes);
+the wiring is verified at configure/generate only.
+
+### File inventory
+
+```
+C:\Dev\OMB\Map\
+  CMakeLists.txt              top-level: project(Map), single STATIC target, file list,
+                              PCH, MSVC parity, source_group(TREE), RMAP compiled git dep
+                              (ExternalProject rmap_build) + RMAP's full third-party set
+                              mirrored (json/asio/websocketpp header-only fetch,
+                              boringssl/curl/socketio compiled ExternalProject) each with a
+                              Map_USE_SYSTEM_* option + Map_DEPENDENCY_INCLUDE_DIRS wiring,
+                              install/export
+  CMakePresets.json           "vs2022" configure preset + vs2022-debug/-release build presets
+                              (no service toggles - Map is a single module, unlike RMAP)
+  cmake\MapConfig.cmake.in    find_package(Map) template; UNCONDITIONAL find_dependency(RMAP)
+                              (Map always links RMAP)
+  .gitignore                  RMAP-style: build output, CMake artifacts, IDE files, x64/,
+                              bin/, /third_party/{rmap,json,asio,websocketpp,boringssl,curl,socketio}/
+  third_party\rmap\           RMAP cloned + built from git at build time (gitignored, not
+                              committed) when Map_USE_SYSTEM_RMAP=OFF
+  third_party\{json,asio,     RMAP's third-party libs, fetched/built from git at build time
+    websocketpp,boringssl,    (gitignored) when their Map_USE_SYSTEM_* is OFF; mirror RMAP's
+    curl,socketio}\           versions/tags exactly
+  README.md                   Map-specific, mirrors RMAP's README structure
+  include\Map\                public headers (installed), consumed as <Map/...>:
+                              Map.h, Map_ClassTypes.h (DavidSr renamed these from
+                              MVRP_Map.h/MVRP_Map_ClassTypes.h and moved them under Map/,
+                              matching RMAP's include/RMAP/ convention)
+  src\                        implementation + private headers + pch (all flat, no subfolders):
+                              LibraryMVRP_Map.cpp/.h
+                              Model_RMCObject.cpp Model_RMPObject.cpp Model_RMRoot.cpp
+                              Model_RMTObject.cpp
+                              Package_IO.cpp/.h Package_SB.cpp/.h
+                              RMCommon.cpp
+                              Source_IO_Object.cpp Source_IO_RMCObject.cpp
+                              Source_IO_RMPObject.cpp Source_IO_RMRoot.cpp
+                              Source_IO_RMTObject.cpp
+                              Source_SB_Object.h Source_SB_RMCObject.cpp
+                              Source_SB_RMPObject.cpp Source_SB_RMRoot.cpp
+                              Source_SB_RMTObject.cpp
+                              pch.cpp pch.h
+  .cursor\rules\project.mdc   this file
+  build\                      generated VS solution (gitignored)
+```
+
+Public header include convention is now `<Map/Map.h>` (headers live under `include/Map/`),
+matching RMAP's `include/RMAP/` + `<RMAP/RMAP.h>` convention. DavidSr renamed the two
+headers (`MVRP_Map.h`/`MVRP_Map_ClassTypes.h` -> `Map.h`/`Map_ClassTypes.h`) and moved them
+into `include/Map/` on 2026-07-27. `install(DIRECTORY include/ DESTINATION include)`
+therefore installs them as `include/Map/Map.h` etc. `pch.h` also declares many free
+`Convert_*` functions and `#define`s a large block of `SBA_*` action macros and
+`MVO_SIZE_*` size macros, then includes `"Source_SB_Object.h"`.
+
+## Architecture - the cross-platform build
+
+Single module, so the top-level `CMakeLists.txt` does everything (unlike RMAP, which
+splits a top-level file over four per-module `CMakeLists.txt`). Shape:
+
+- `add_library(Map STATIC ${Map_FILES})` + `add_library(Map::Map ALIAS Map)`. Headers are
+  listed in `Map_FILES` so they show in the VS project and get filtered by
+  `source_group(TREE ...)`.
+- `target_include_directories`: PUBLIC `$<BUILD_INTERFACE:include>` + `$<INSTALL_INTERFACE:
+  include>` (so consumers and internal code use `<Map/Map.h>`); PRIVATE `include/Map` +
+  `src` (mirrors RMAP core's PRIVATE `include/RMAP` + `src`: lets internal code include the
+  public headers without the `Map/` prefix, and resolves `#include "pch.h"` / the PCH
+  force-include from `src`). The PRIVATE `include/Map` was added when the headers moved
+  under `include/Map/`.
+- PCH via `target_precompile_headers(Map PRIVATE src/pch.h)` (mirrors RMAP core).
+- `source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${Map_FILES})` -> filters
+  `src`, `include` (disk-mirrored, same convention RMAP chose).
+- `if(MSVC)`: `target_compile_definitions(... PRIVATE UNICODE _UNICODE _LIB
+  _CRT_SECURE_NO_WARNINGS)` (dropped the old DLL defines `MVRPMAPCPP_EXPORTS` / `_USRDLL`;
+  kept `_CRT_SECURE_NO_WARNINGS` because the old x64 configs used it),
+  `target_compile_options(... /permissive- /sdl /W3)`, and
+  `INTERPROCEDURAL_OPTIMIZATION_RELEASE ON`. This mirrors RMAP core's MSVC block.
+- Install/export mirrors RMAP: `install(TARGETS Map EXPORT MapTargets ARCHIVE
+  DESTINATION lib)`, `install(DIRECTORY include/ DESTINATION include)`,
+  `install(EXPORT MapTargets NAMESPACE Map:: ...)`,
+  `configure_package_config_file` + `write_basic_package_version_file` from
+  `cmake/MapConfig.cmake.in`. Downstream: `find_package(Map CONFIG REQUIRED)` +
+  `target_link_libraries(... Map::Map)`.
+
+### KEY DECISION - static library, DLL glue dropped
+
+Old project was `ConfigurationType=DynamicLibrary` producing `MVRP_Map.dll` (+ import
+`.lib` + `.pdb`), Windows-only, with a `PostBuildEvent` copying outputs to `bin\`.
+DavidSr chose (via the conversion questions) a **cross-platform STATIC library** and to
+**drop the win32 DLL glue** - exactly what RMAP did. Consequently these files were
+**deleted**: `src/win32/dllmain.cpp`, `src/win32/MVRP_Map.rc`, `src/win32/version.h`
+(the .rc + dllmain were the only users of version.h), and the orphan `src/framework.h`
+(only pulled `<windows.h>`); the now-empty `src/win32/` folder was removed.
+
+**Export-macro (RESOLVED by DavidSr).** The old `MVRP_Map.h` defined `MV_MVRP_MAP_API` as
+`__declspec(dllexport)` when `_WIN32 && MVRPMAPCPP_EXPORTS`, else `__declspec(dllimport)`
+on `_WIN32`, else empty - wrong for a static lib. When DavidSr renamed/moved the header to
+`include/Map/Map.h` (2026-07-27) he **removed the `__declspec` export block entirely** (and
+the `MV_MVRP_MAP_API` annotations) - confirmed by grep: no `MV_MVRP_MAP_API`,
+`MVRPMAPCPP_EXPORTS`, or `__declspec` remain in `Map.h`. So the static-lib API is now clean
+with no CMake define needed (RMAP used `RMAP_CORE_API=`; Map needs no equivalent). The
+`CMakeLists.txt` MSVC comment was updated to note the source's export macro was removed.
+
+### KEY DECISION - RMAP is a COMPILED git third-party dependency (mirrors RMAP's own pattern)
+
+DavidSr asked to "add RMAP as a third party library ... the same way RMAP added third
+party libraries" (2026-07-27). RMAP's pattern for a COMPILED dep (BoringSSL/curl/sioclient)
+is: an `option(<PROJ>_USE_SYSTEM_<DEP> ... OFF)`; OFF -> `ExternalProject_Add` that
+git-clones + does a real CMake configure/build/install at BUILD time into a gitignored
+`third_party/<dep>/`, consumed by referencing the installed static lib path +
+`BUILD_BYPRODUCTS` (NOT `find_package`, because the artifact does not exist at configure
+time); ON -> `find_package(<dep> CONFIG REQUIRED)`. Plus the `if(EXISTS "${dir}/.git")`
+git-arg guard, `GIT_SHALLOW ON`, `UPDATE_DISCONNECTED ON`, and the `$<CONFIG>` genex only
+in `CMAKE_ARGS`/`BUILD_BYPRODUCTS`/`--config`/target props (never in the ExternalProject
+dir args).
+
+Applied to Map (replacing the earlier `find_package(RMAP CONFIG QUIET)` scaffolding):
+- `option(Map_USE_SYSTEM_RMAP ... OFF)`.
+- OFF branch: `ExternalProject_Add(rmap_build ...)` clones
+  `https://github.com/MetaversalCorp/RMAP.git` at `GIT_TAG main` (RMAP ships NO release
+  tags yet - verified via `git tag` on the local clone; tracking `main` mirrors how RMAP
+  tracks BoringSSL's `main`) into `third_party/rmap`, `BINARY_DIR
+  ${CMAKE_CURRENT_BINARY_DIR}/rmap/build`, installs to `Map_RMAP_PREFIX =
+  ${CMAKE_CURRENT_BINARY_DIR}/rmap/$<CONFIG>` via `--config $<CONFIG>`. Static lib path
+  `Map_RMAP_LIB = ${Map_RMAP_PREFIX}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}RMAP${CMAKE_STATIC_LIBRARY_SUFFIX}`
+  (Windows `RMAP.lib`, Unix `libRMAP.a`) as `BUILD_BYPRODUCTS`. `add_dependencies(Map
+  rmap_build)` so RMAP is installed before Map compiles. Consumption uses the
+  `$<BUILD_INTERFACE:>` discipline: build-only PUBLIC include
+  `$<BUILD_INTERFACE:${Map_RMAP_PREFIX}/include>` (so `<RMAP/...>` resolves) and PUBLIC
+  link `$<BUILD_INTERFACE:${Map_RMAP_LIB}>` - both wrapped so the absolute build-tree
+  path stays OUT of `MapTargets` (an installed Map resolves RMAP via `find_dependency`
+  in `MapConfig.cmake` instead).
+- ON branch: `find_package(RMAP CONFIG REQUIRED)` + `target_link_libraries(Map PUBLIC
+  RMAP::RMAP)`.
+- `MapConfig.cmake.in` now does an UNCONDITIONAL `find_dependency(RMAP)` (was guarded by
+  `@RMAP_FOUND@`), because Map always links RMAP in both branches. `.gitignore` gained
+  `/third_party/rmap/`.
+
+Link is PUBLIC (not PRIVATE like RMAP's internal deps) because RMAP is Map's core framework
+and appears throughout Map's headers/pch - analogous to how RMAP linked nlohmann_json
+PUBLIC. CONSEQUENCE: building RMAP from source inherits RMAP's full build (its own
+BoringSSL/curl/sioclient compiled deps) and toolchain (Go + NASM on Windows - confirmed
+present on this machine per RMAP's notes: Go 1.26.2, NASM 3.01). Because RMAP.lib is a
+static archive with its own deps linked PRIVATE, a final executable linking Map must also
+link BoringSSL/curl/sioclient + their system libs (per RMAP's README). `Map_USE_SYSTEM_RMAP=ON`
+skips the from-source build + toolchain by pointing at a prebuilt RMAP.
+
+RMAP's full third-party set is mirrored into Map's `CMakeLists.txt` the SAME way RMAP
+declares it (DavidSr: "do it the same way RMAP does, along with other libraries"). WHY: RMAP
+exposes these through its public `<RMAP/...>` headers (e.g. `RMAP.h` pulls `nlohmann/json.hpp`
+-> `ordered_json`) and Map's own SB/IO source uses them, but RMAP adds them only as
+`$<BUILD_INTERFACE:>` (NOT installed), so a consumer like Map must supply them on its own
+build path. Versions/tags/defines match RMAP exactly to avoid ABI skew across the shared API.
+Each has a `Map_USE_SYSTEM_<NAME>` option (default OFF -> git fetch/build into
+`third_party/<name>`; ON -> external copy). Two families:
+- Header-only (fetched via ExternalProject with empty configure/build/install, added PUBLIC
+  as `$<BUILD_INTERFACE:...>`): `nlohmann_json` v3.11.3 (`third_party/json/include`);
+  `asio` `asio-1-30-2` (`third_party/asio/asio/include`, `+ASIO_STANDALONE` PUBLIC);
+  `websocketpp` `0.8.2` (clone root, `+_WEBSOCKETPP_CPP11_STL_` PUBLIC).
+- Compiled (real ExternalProject configure/build/install per `$<CONFIG>`, linked PRIVATE,
+  build-only PUBLIC include): `boringssl` `main` (libssl/libcrypto; forwards a found `nasm`
+  on Windows; +ws2_32/crypt32 on Win, +pthread/dl on Linux); `curl` `curl-8_9_1` (Schannel on
+  Windows / BoringSSL elsewhere, `+CURL_STATICLIB` build-only, +Win system libs); `socketio`
+  pinned to RMAP's master commit `3b7be7e...` (built as `sioclient_tls`, TLS via BoringSSL,
+  MSVC EHsc/NOMINMAX/NOCRYPT flags, submodules). curl (off-Win) + sioclient
+  `add_dependencies(... boringssl_build)`; each `add_dependencies(Map <target>)`. The
+  compiled trio's ON branch reads `Map_SYSTEM_{BORINGSSL,CURL,SIOCLIENT}_ROOT` (PATH cache
+  vars) - mirrors RMAP's `*_SYSTEM_*_ROOT`. `MapConfig.cmake.in` adds guarded
+  `find_dependency` for json/asio/websocketpp (only fires when the corresponding
+  `Map_USE_SYSTEM_*` was ON, i.e. their imported target is in Map's link interface). Verified:
+  clean configure succeeds and generates all of asio_fetch/boringssl_build/curl_build/
+  nlohmann_json_fetch/rmap_build/sioclient_build/websocketpp_fetch; built nlohmann_json_fetch
+  to confirm `third_party/json/include/nlohmann/json.hpp` lands (fixes DavidSr's C1083). The
+  heavy compiled builds (boringssl/curl/sioclient/rmap) were NOT run in this session.
+
+For the three still-unconverted deps (MVRP, MVRP_Dev, MVXP) there is a
+`Map_DEPENDENCY_INCLUDE_DIRS` cache STRING; when set it is added PRIVATE. Honest
+scaffolding - it does not pretend those deps are resolved.
+
+## Conventions
+
+All Metaversal standards apply (see global `~/.cursor/rules/*.mdc`): 3-space indent,
+Allman braces, Hungarian notation, single return, ALL-CAPS types/constants, Capital-first
+function names, no tabs, no Python, symmetry (Rule 1). The `CMakeLists.txt`,
+`CMakePresets.json`, `cmake/MapConfig.cmake.in`, `.gitignore`, and `README.md` were
+written to mirror RMAP's equivalents as closely as the single-module shape allows
+(symmetry across the two projects). CMake files use 3-space indentation matching RMAP.
+
+Target naming: STATIC target `Map` (produces `Map.lib`), alias `Map::Map`, package `Map`,
+export set `MapTargets`, config `MapConfig.cmake` - fully symmetric with RMAP. The old
+MSVC `RootNamespace` was `MVRPMapcpp` and `TargetName` was `MVRP_Map`; the build-level
+`MVRP_Map` name was dropped in favor of `Map`. The C++ source identifiers and header file
+names remain `MVRP_Map` (source, pending migration).
+
+## Toolchain / Build & Verify
+
+Confirmed on this machine: CMake selecting Windows SDK 10.0.26100.0, MSVC 19.44.35209 /
+Visual Studio 17 2022 (auto-detected). Shell is PowerShell - `&&` is NOT a valid statement
+separator; chain with `;`. `ls -la` is invalid in PowerShell (use `Get-ChildItem`).
+
+```powershell
+# Configure/generate the VS solution
+cmake --preset vs2022            # -> build\Map.sln
+start build\Map.sln              # open in IDE, or:
+cmake --build --preset vs2022-release
+
+# Cross-platform (single-config generators)
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release ; cmake --build build
+
+# Point at an installed RMAP so RMAP::RMAP is found
+cmake --preset vs2022 -DCMAKE_PREFIX_PATH=<rmap-install-dir>
+
+# Provide headers for the not-yet-converted deps
+cmake --preset vs2022 -DMap_DEPENDENCY_INCLUDE_DIRS="<path1>;<path2>"
+```
+
+### Verification results (2026-07-27)
+- `cmake --preset vs2022` -> "Configuring done / Generating done", wrote
+  `build\Map.sln` with `Map.vcxproj` (+ CMake's ALL_BUILD, ZERO_CHECK, INSTALL).
+- `Map.vcxproj.filters` filters: `include`, `src`, `Precompile Header File`,
+  `Source Files` - i.e. disk-mirrored, as intended.
+- Compilation NOT attempted (would fail on the missing deps + pending source migration).
+- After the rename to `Map` (below), reconfigured from a clean `build\` and re-verified
+  the generated files are now `Map.sln` / `Map.vcxproj` / `Map.vcxproj.filters`.
+
+## Open Questions / Next Steps
+
+- **Source migration off the pre-RMAP names (DavidSr-owned, IN PROGRESS).** DavidSr has
+  begun: the public header is now `include/Map/Map.h` with include guard `RMAP_MAP_H`,
+  namespace `RMAP::MAP` (was `MV::MVRP::MAP`), and the `__declspec` export macro removed.
+  Still to migrate across the `src/` tree: `<MVMF.h>` -> `<RMAP/RMAP.h>` (and the other
+  includes), the `MV::` namespace, `SB_OBJECT`, `LIBRARY`, `PLUGIN`, `MVSB::MAP`,
+  `MVIO::IO_OBJECT`, etc. The `src/` files and their filenames (`LibraryMVRP_Map.*`,
+  `pch.h`'s `<MVRP_Map.h>` include) still carry the old names. This is the primary blocker
+  to compiling.
+- **MVRP / MVRP_Dev / MVXP not yet cross-platform.** They have no sibling project under
+  `C:\Dev\OMB`. Either convert them the same way (CMake package) or point
+  `Map_DEPENDENCY_INCLUDE_DIRS` (and add link libs) at existing builds. Note: MVXP's
+  headers (`MVXP.h`, `MVXP_ClassTypes.h`, `MVXP_Geo.h`, `MVXP_SMS.h`) supply types like
+  `DOUBLE3`/`DOUBLE4`/`TIME` used in `MVRP_Map.h`; MVRP/MVRP_Dev supply `MVRP`/`MVRP_Dev`.
+- **Build-verify the compiled deps.** Not yet run: the heavy from-source builds
+  (`rmap_build`, `boringssl_build`, `curl_build`, `sioclient_build`) - Go + NASM required,
+  several minutes each. `cmake --build build --target rmap_build --config Release` clones
+  RMAP@main + builds its full stack; the boringssl/curl/sioclient targets build Map's own
+  copies. Only `nlohmann_json_fetch` was built this session (confirmed json header lands).
+- **RMAP install completeness caveat - now worked around in Map.** RMAP's public `RMAP.h`
+  exposes `nlohmann::ordered_json` (and other RMAP public headers reference asio/websocketpp),
+  but RMAP adds those includes as `$<BUILD_INTERFACE:>` only (not installed), so RMAP's install
+  tree does NOT carry them - this is exactly the C1083 `nlohmann/json.hpp` error DavidSr hit.
+  Worked around by mirroring RMAP's whole third-party set into Map (see Dependencies) so Map
+  supplies json/asio/websocketpp (+the compiled trio) itself. A cleaner long-term fix still
+  belongs on the RMAP side (install those headers, or `find_dependency` them in RMAPConfig).
+- **Commit:** the new CMake files, README, rewritten `.gitignore`, and this resume point
+  are new/modified; the `.vcxproj`/`.filters` + win32 files were deleted. Not yet committed.
+- Cross-platform is designed but only verified to CONFIGURE on MSVC/Windows. Verify on
+  Linux (GCC/Clang) and macOS (AppleClang) once it compiles.
+- Standards freshness check: not run for Map (procedure lives in the Cursor standards project).
+
+## Work History
+
+- 2026-07-27 (DavidSr): Converted Map from a Windows-only MSVC DLL project to a
+  cross-platform CMake STATIC library, mirroring how RMAP was done. Read RMAP's build
+  files first for symmetry. Decisions (via approval questions): static lib + drop win32
+  DLL glue; build-system scaffolding only (leave MVRP/MVRP_Dev/MVXP wiring and the
+  MV::-era source migration to DavidSr); delete the committed `.vcxproj`/`.filters`.
+  Created `CMakeLists.txt`, `CMakePresets.json`, the package-config template,
+  `README.md`; rewrote `.gitignore` RMAP-style. Deleted `Map.vcxproj`,
+  `Map.vcxproj.filters`, `src/win32/{dllmain.cpp,MVRP_Map.rc,version.h}`,
+  `src/framework.h`, and the emptied `src/win32/` folder. Verified `cmake --preset vs2022`
+  configures/generates the VS solution with disk-mirrored filters; RMAP reported
+  not-found (expected). Followed the repo's approval-before-editing policy: proposed the
+  full plan + three decisions first, applied only after DavidSr chose. Created this resume
+  point at DavidSr's request.
+- 2026-07-27 (DavidSr, later): Renamed the build-level project from `MVRP_Map` to `Map`
+  (DavidSr: "The SLN and VCXPROJ should be named Map, not MVRP_Map"). Asked how far the
+  rename should go; DavidSr chose "rename everything to Map" (fully symmetric with RMAP,
+  drop the legacy MVRP_Map build name entirely). Changed `project(MVRP_Map)` ->
+  `project(Map)`, target/alias `MVRP_Map`/`MVRP_Map::MVRP_Map` -> `Map`/`Map::Map`, file
+  list var `MVRP_Map_FILES` -> `Map_FILES`, cache var `MVRP_Map_DEPENDENCY_INCLUDE_DIRS` ->
+  `Map_DEPENDENCY_INCLUDE_DIRS`, export set `MVRP_MapTargets` -> `MapTargets`, namespace
+  `MVRP_Map::` -> `Map::`, config install dir `cmake/MVRP_Map` -> `cmake/Map`; renamed the
+  package-config template `cmake/MVRP_MapConfig.cmake.in` -> `cmake/MapConfig.cmake.in`
+  (with `check_required_components(Map)`); updated the STATUS message, `CMakePresets.json`
+  description, and `README.md` (`Map.sln`, `Map.lib`, `find_package(Map)` -> `Map::Map`,
+  `Map_DEPENDENCY_INCLUDE_DIRS`). Left the C++ source identifiers and header file names as
+  `MVRP_Map` (source, pending migration). Deleted the stale `build\` and reconfigured;
+  VERIFIED the generator now emits `build\Map.sln`, `Map.vcxproj`, `Map.vcxproj.filters`.
+- 2026-07-27 (DavidSr, later): DavidSr renamed the two public headers
+  `MVRP_Map.h`/`MVRP_Map_ClassTypes.h` -> `Map.h`/`Map_ClassTypes.h` and moved them into a
+  new `include/Map/` subfolder (matching RMAP's `include/RMAP/`); he also began the source
+  migration inside `Map.h` (guard `RMAP_MAP_H`, namespace `RMAP::MAP`, removed the
+  `__declspec` export macro). Agent updated the CMake project to match ("update projects"):
+  the two `Map_FILES` entries now point at `include/Map/Map.h` + `include/Map/Map_ClassTypes.h`;
+  added PRIVATE include dir `${CMAKE_CURRENT_SOURCE_DIR}/include/Map` (mirroring RMAP core's
+  PRIVATE `include/RMAP`) so internal code can include the public headers without the `Map/`
+  prefix; and trimmed the now-obsolete export-macro caveat comment in the MSVC block (grep
+  confirmed no `MV_MVRP_MAP_API`/`__declspec`/`MVRPMAPCPP_EXPORTS` remain in `Map.h`).
+  Reconfigured from a clean `build\`: configure/generate succeed and the VS filters now
+  include `include\Map`. Updated `README.md` (layout now `include/Map/`, `<Map/Map.h>`) and
+  this resume point. The `src/` tree still uses the old `MVRP_Map`/`MV::` names (migration
+  ongoing, DavidSr-owned).
+- 2026-07-27 (DavidSr, later): Added RMAP as a COMPILED git third-party dependency, "the
+  same way RMAP added third party libraries" (DavidSr). Verified RMAP's git facts first
+  (`git remote`/`branch`/`tag` on the local clone: remote
+  `https://github.com/MetaversalCorp/RMAP.git`, branch `main`, NO tags) rather than
+  guessing a tag. Replaced the earlier `find_package(RMAP CONFIG QUIET)` scaffolding with
+  RMAP's compiled-dep pattern (modeled on RMAP's BoringSSL/curl blocks): `option(
+  Map_USE_SYSTEM_RMAP OFF)`; OFF -> `ExternalProject_Add(rmap_build)` clones RMAP@main into
+  `third_party/rmap` and does a real CMake configure/build/install per `$<CONFIG>`, with the
+  `if(EXISTS .git)` git-arg guard, `GIT_SHALLOW ON`, `UPDATE_DISCONNECTED ON`, and
+  `BUILD_BYPRODUCTS` = the installed `RMAP.lib`; `add_dependencies(Map rmap_build)`; PUBLIC
+  link + build-only PUBLIC include both wrapped in `$<BUILD_INTERFACE:>` to keep the
+  build-tree path out of `MapTargets`; ON -> `find_package(RMAP CONFIG REQUIRED)`. Made
+  `MapConfig.cmake.in`'s `find_dependency(RMAP)` unconditional (Map always links RMAP).
+  Added `/third_party/rmap/` to `.gitignore`. Updated `README.md` (layout `third_party/rmap`,
+  Go/NASM prerequisites inherited from building RMAP, rewritten RMAP dependency bullet,
+  `Map_USE_SYSTEM_RMAP` options row) and this resume point. VERIFIED from a clean `build\`:
+  `cmake --preset vs2022` configures/generates and the solution now contains both `Map` and
+  `rmap_build` projects. Did NOT run the heavy `rmap_build` build (clones + builds RMAP's
+  whole stack; logged as a next step). Followed the approval policy: instruction was
+  explicit ("add RMAP as a third party library ... the same way RMAP did"), so implemented
+  directly after verifying the git facts.
+- 2026-07-27 (DavidSr, later): DavidSr hit `C1083: Cannot open include file:
+  'nlohmann/json.hpp'` while the build was compiling RMAP's installed `RMAP.h` (line 20).
+  Root cause: RMAP's public headers reference json/asio/websocketpp but RMAP adds those as
+  `$<BUILD_INTERFACE:>`-only (not installed), so consuming RMAP's install tree can't see them.
+  Proposed adding nlohmann_json to Map the RMAP way; DavidSr: "do it the same way RMAP does,
+  along with other libraries" -> mirrored RMAP's ENTIRE third-party set into Map's
+  `CMakeLists.txt` (read RMAP's top-level third-party section for exact versions/flags).
+  Added, each with a `Map_USE_SYSTEM_<NAME>` option: header-only fetches nlohmann_json v3.11.3,
+  asio asio-1-30-2 (`+ASIO_STANDALONE`), websocketpp 0.8.2 (`+_WEBSOCKETPP_CPP11_STL_`) added
+  PUBLIC as `$<BUILD_INTERFACE:>`; compiled ExternalProjects boringssl@main (nasm-forwarding on
+  Win, +ws2_32/crypt32 or pthread/dl), curl curl-8_9_1 (Schannel on Win / BoringSSL elsewhere,
+  `+CURL_STATICLIB`), socketio @RMAP's master commit `3b7be7e...` (sioclient_tls, TLS via
+  BoringSSL, MSVC EHsc/NOMINMAX flags) linked PRIVATE with build-only PUBLIC includes; wired
+  `add_dependencies` (curl/sioclient -> boringssl_build; each -> Map) and `Map_SYSTEM_*_ROOT`
+  PATH vars for the compiled ON branches. Added guarded json/asio/websocketpp `find_dependency`
+  to `MapConfig.cmake.in`; extended `.gitignore` (json/asio/websocketpp/boringssl/curl/socketio);
+  updated `README.md` (layout, dependency section, six new options rows) and this resume point.
+  VERIFIED: clean `cmake --preset vs2022` configures/generates all of asio_fetch/boringssl_build/
+  curl_build/nlohmann_json_fetch/rmap_build/sioclient_build/websocketpp_fetch alongside Map;
+  built `nlohmann_json_fetch` and confirmed `third_party/json/include/nlohmann/json.hpp` lands
+  (fixes the C1083). Did NOT run the heavy boringssl/curl/sioclient/rmap builds. Instruction was
+  explicit, so implemented directly.

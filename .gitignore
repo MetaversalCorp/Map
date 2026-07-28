@@ -1,0 +1,28 @@
+# Build output
+/build/
+/out/
+
+# CMake artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CMakeUserPresets.json
+install_manifest.txt
+
+# MSVC build output
+x64/
+bin/
+
+# Third-party libraries fetched/built from git at build time (not committed)
+/third_party/rmap/
+/third_party/json/
+/third_party/asio/
+/third_party/websocketpp/
+/third_party/boringssl/
+/third_party/curl/
+/third_party/socketio/
+
+# IDE / editor
+*.user
+.vs/
+.vscode/
