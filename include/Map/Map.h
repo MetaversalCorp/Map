@@ -17,172 +17,36 @@ namespace RMAP
       **                                                 COORDINATES                                                                **
       *******************************************************************************************************************************/
 
-      class DOUBLE4
+      struct DOUBLE4
       {
-      public:
-         DOUBLE4 (double dX = 0.0, double dY = 0.0, double dZ = 0.0, double dW = 0.0);
-
-         DOUBLE4& operator=(DOUBLE4    const& rhs)&;
-         DOUBLE4& operator=(DOUBLE4&& rhs) & noexcept;
-         DOUBLE4 (DOUBLE4    const& other);
-         DOUBLE4 (DOUBLE4&& other)  noexcept;
-         virtual ~DOUBLE4 ()                          noexcept;
-
-         // Accessors
-         double dX () const&;
-         double dY () const&;
-         double dZ () const&;
-         double dW () const&;
-
-         // Modifiers
-         DOUBLE4& dX (double dX)&;
-         DOUBLE4& dY (double dY)&;
-         DOUBLE4& dZ (double dZ)&;
-         DOUBLE4& dW (double dW)&;
-
-      private:
-         double m_dX;
-         double m_dY;
-         double m_dZ;
-         double m_dW;
+         double                        dX;
+         double                        dY;
+         double                        dZ;
+         double                        dW;
       };
 
-      class DOUBLE3
+      struct DOUBLE3
       {
-      public:
-         DOUBLE3 (double dX = 0.0, double dY = 0.0, double dZ = 0.0);
-
-         DOUBLE3& operator=(DOUBLE3    const& rhs)&;
-         DOUBLE3& operator=(DOUBLE3&& rhs) & noexcept;
-         DOUBLE3 (DOUBLE3    const& other);
-         DOUBLE3 (DOUBLE3&& other)  noexcept;
-         virtual ~DOUBLE3 ()                          noexcept;
-
-         // Accessors
-         double dX () const&;
-         double dY () const&;
-         double dZ () const&;
-
-         // Modifiers
-         DOUBLE3& dX (double dX)&;
-         DOUBLE3& dY (double dY)&;
-         DOUBLE3& dZ (double dZ)&;
-
-      private:
-         double m_dX;
-         double m_dY;
-         double m_dZ;
+         double                        dX;
+         double                        dY;
+         double                        dZ;
       };
 
-      class PARENT
+      struct PARENT
       {
-      public:
-         PARENT (uint16_t wClass = 0, uint64_t twObjectIx = 0);
-
-         PARENT& operator=(PARENT    const& rhs)&;
-         PARENT& operator=(PARENT&& rhs) & noexcept;
-         PARENT (PARENT    const& other);
-         PARENT (PARENT&& other)    noexcept;
-         virtual ~PARENT ()                           noexcept;
-
-         // Accessors
-         uint16_t   wClass () const&;
-         uint64_t   twObjectIx () const&;
-
-         // Modifiers
-         PARENT& wClass (uint16_t wClass)&;
-         PARENT& twObjectIx (uint64_t twObjectIx)&;
-
-      private:
-         uint16_t   m_wClass;
-         uint64_t   m_twObjectIx;
+         uint16_t                      wClass;
+         uint64_t                      twObjectIx;
       };
 
-      class RELATIVEX
+      struct RELATIVEX
       {
-      public:
-         RELATIVEX (DOUBLE3 vPosition = {});
-
-         RELATIVEX& operator=(RELATIVEX    const&   rhs) &;
-         RELATIVEX& operator=(RELATIVEX&&           rhs) & noexcept;
-         RELATIVEX           (RELATIVEX    const& other);
-         RELATIVEX           (RELATIVEX&&          other)  noexcept;
-         virtual ~RELATIVEX ()                             noexcept;
-
-         // Accessors
-         DOUBLE3 const& vPosition () const&;
-
-         // Modifiers   
-         RELATIVEX& vPosition (DOUBLE3 _vPosition)&;
-
-      private:
-         DOUBLE3 m_vPosition;
+         DOUBLE3                       vPosition;
       };
 
-      class POSITION_UNIVERSAL
+      struct POSITION_UNIVERSAL
       {
-      public:
-         POSITION_UNIVERSAL (PARENT pParent = {}, RELATIVEX Relative = {});
-
-         POSITION_UNIVERSAL& operator=(POSITION_UNIVERSAL    const& rhs)&;
-         POSITION_UNIVERSAL& operator=(POSITION_UNIVERSAL&& rhs) & noexcept;
-         POSITION_UNIVERSAL (POSITION_UNIVERSAL    const& other);
-         POSITION_UNIVERSAL (POSITION_UNIVERSAL&& other) noexcept;
-         virtual ~POSITION_UNIVERSAL ()                      noexcept;
-
-         // Accessors
-         PARENT    const& Parent ()   const&;
-         RELATIVEX const& Relative () const&;
-
-         // Modifiers   
-         POSITION_UNIVERSAL& Parent (PARENT _Parent)&;
-         POSITION_UNIVERSAL& Relative (RELATIVEX _Relative)&;
-
-      private:
-         PARENT    m_Parent;
-         RELATIVEX m_Relative;
-      };
-
-      class RZONE_ROUTE
-      {
-      public:
-         RZONE_ROUTE (uint32_t dwIPAddress_RHub = 0, uint32_t dwIPAddress_RProximity = 0);
-
-         // Accessors
-         uint32_t dwIPAddress_RHub ()       const&;
-         uint32_t dwIPAddress_RProximity () const&;
-
-         // Modifiers
-         RZONE_ROUTE& dwIPAddress_RHub (uint32_t _dwIPAddress_RHub)&;
-         RZONE_ROUTE& dwIPAddress_RProximity (uint32_t _dwIPAddress_RProximity)&;
-
-      private:
-         uint32_t m_dwIPAddress_RHub;
-         uint32_t m_dwIPAddress_RProximity;
-      };
-
-      class RZONE_POSITION
-      {
-      public:
-         RZONE_POSITION (PARENT pParent = {}, DOUBLE3 vPosition = {});
-
-         RZONE_POSITION& operator=(RZONE_POSITION    const& rhs)&;
-         RZONE_POSITION& operator=(RZONE_POSITION&& rhs) & noexcept;
-         RZONE_POSITION (RZONE_POSITION    const& other);
-         RZONE_POSITION (RZONE_POSITION&& other) noexcept;
-         virtual ~RZONE_POSITION ()                                  noexcept;
-
-         // Accessors
-         PARENT   const& pParent ()   const&;
-         DOUBLE3  const& vPosition () const&;
-
-         // Modifiers   
-         RZONE_POSITION& pParent (PARENT _pParent)&;
-         RZONE_POSITION& vPosition (DOUBLE3 _vPosition)&;
-
-      private:
-         PARENT   m_pParent;
-         DOUBLE3  m_vPosition;
+         PARENT                        Parent;
+         RELATIVEX                     Relative;
       };
 
       namespace RMCOMMON
@@ -198,37 +62,6 @@ namespace RMAP
          struct OWNER
          {
             uint64_t                twRPersonaIx;
-         };
-
-         class RESOURCE
-         {
-         public:
-            RESOURCE (uint64_t qwResource = 0,
-                        std::string sName  = {}, 
-                        std::string sReference  = {}  );
-
-            RESOURCE& operator=(RESOURCE    const & rhs) &;
-            RESOURCE& operator=(RESOURCE         && rhs) & noexcept;
-            RESOURCE           (RESOURCE    const & other);
-            RESOURCE           (RESOURCE         && other) noexcept;
-            virtual ~RESOURCE ()                           noexcept;
-
-            // Accessors
-            std::string const & sName ()       const &;
-            std::string const & sReference ()  const &;
-            uint64_t            qwResource ()  const &;
-
-            std::string         sName ()       &&;
-            std::string         sReference ()  &&;
-
-            // Modifiers                                              
-            RESOURCE & qwResource (uint64_t     _qwResource) &;
-            RESOURCE & sName      (std::string _wsForename)  &;
-            RESOURCE & sReference (std::string _wsSurname )  &;
-
-         private:
-            class Impl;
-            Impl* m_pImpl;
          };
 
          struct TRANSFORM
@@ -251,6 +84,35 @@ namespace RMAP
             double                  dX;
             double                  dY;
             double                  dZ;
+         };
+
+         class RESOURCE
+         {
+         public:
+            RESOURCE (uint64_t qwResource = 0, std::string sName  = {}, std::string sReference  = {});
+
+            RESOURCE& operator=(RESOURCE    const & rhs) &;
+            RESOURCE& operator=(RESOURCE         && rhs) & noexcept;
+            RESOURCE           (RESOURCE    const & other);
+            RESOURCE           (RESOURCE         && other) noexcept;
+            virtual ~RESOURCE ()                           noexcept;
+
+            // Accessors
+            std::string const & sName ()       const &;
+            std::string const & sReference ()  const &;
+            uint64_t            qwResource ()  const &;
+
+            std::string         sName ()       &&;
+            std::string         sReference ()  &&;
+
+            // Modifiers                                              
+            RESOURCE & qwResource (uint64_t    _qwResource) &;
+            RESOURCE & sName      (std::string _wsForename) &;
+            RESOURCE & sReference (std::string _wsSurname ) &;
+
+         private:
+            class Impl;
+            Impl* m_pImpl;
          };
       }
 

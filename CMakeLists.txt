@@ -26,7 +26,6 @@ endif()
 set(Map_FILES
    include/Map/Map.h
    include/Map/Map_ClassTypes.h
-   src/Coordinates.cpp
    src/Library.cpp
    src/Library.h
    src/Model_RMCObject.cpp

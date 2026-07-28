@@ -306,22 +306,22 @@ void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    Owner.twRPersonaIx = jSrc["pOwner"]["twRPersonaIx"];
 
-   Transform.vPosition.dX (jSrc["pTransform"]["vPosition"]["dX"]);
-   Transform.vPosition.dY (jSrc["pTransform"]["vPosition"]["dY"]);
-   Transform.vPosition.dZ (jSrc["pTransform"]["vPosition"]["dZ"]);
+   Transform.vPosition.dX  = jSrc["pTransform"]["vPosition"]["dX"];
+   Transform.vPosition.dY  = jSrc["pTransform"]["vPosition"]["dY"];
+   Transform.vPosition.dZ  = jSrc["pTransform"]["vPosition"]["dZ"];
 
-   Transform.qRotation.dX (jSrc["pTransform"]["qRotation"]["dX"]);
-   Transform.qRotation.dY (jSrc["pTransform"]["qRotation"]["dY"]);
-   Transform.qRotation.dZ (jSrc["pTransform"]["qRotation"]["dZ"]);
-   Transform.qRotation.dW (jSrc["pTransform"]["qRotation"]["dW"]);
+   Transform.qRotation.dX  = jSrc["pTransform"]["qRotation"]["dX"];
+   Transform.qRotation.dY  = jSrc["pTransform"]["qRotation"]["dY"];
+   Transform.qRotation.dZ  = jSrc["pTransform"]["qRotation"]["dZ"];
+   Transform.qRotation.dW  = jSrc["pTransform"]["qRotation"]["dW"];
 
-   Transform.vScale.dX (jSrc["pTransform"]["vScale"]["dX"]);
-   Transform.vScale.dY (jSrc["pTransform"]["vScale"]["dY"]);
-   Transform.vScale.dZ (jSrc["pTransform"]["vScale"]["dZ"]);
+   Transform.vScale.dX     = jSrc["pTransform"]["vScale"]["dX"];
+   Transform.vScale.dY     = jSrc["pTransform"]["vScale"]["dY"];
+   Transform.vScale.dZ     = jSrc["pTransform"]["vScale"]["dZ"];
 
-   Bound.dX = jSrc["pBound"]["dX"];
-   Bound.dY = jSrc["pBound"]["dY"];
-   Bound.dZ = jSrc["pBound"]["dZ"];
+   Bound.dX                = jSrc["pBound"]["dX"];
+   Bound.dY                = jSrc["pBound"]["dY"];
+   Bound.dZ                = jSrc["pBound"]["dZ"];
 
    Properties.bAdult          = jSrc["pProperties"]["bAdult"];
    Properties.bAvatar         = jSrc["pProperties"]["bAvatar"];

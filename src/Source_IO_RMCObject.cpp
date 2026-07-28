@@ -500,23 +500,23 @@ void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    Owner.twRPersonaIx = jSrc["pOwner"]["twRPersonaIx"];
 
-   Transform.vPosition.dX (jSrc["pTransform"]["Position"][0]);
-   Transform.vPosition.dY (jSrc["pTransform"]["Position"][1]);
-   Transform.vPosition.dZ (jSrc["pTransform"]["Position"][2]);
+   Transform.vPosition.dX  = jSrc["pTransform"]["Position"][0];
+   Transform.vPosition.dY  = jSrc["pTransform"]["Position"][1];
+   Transform.vPosition.dZ  = jSrc["pTransform"]["Position"][2];
 
-   Transform.qRotation.dX (jSrc["pTransform"]["Rotation"][0]);
-   Transform.qRotation.dY (jSrc["pTransform"]["Rotation"][1]);
-   Transform.qRotation.dZ (jSrc["pTransform"]["Rotation"][2]);
-   Transform.qRotation.dW (jSrc["pTransform"]["Rotation"][3]);
+   Transform.qRotation.dX  = jSrc["pTransform"]["Rotation"][0];
+   Transform.qRotation.dY  = jSrc["pTransform"]["Rotation"][1];
+   Transform.qRotation.dZ  = jSrc["pTransform"]["Rotation"][2];
+   Transform.qRotation.dW  = jSrc["pTransform"]["Rotation"][3];
 
-   Transform.vScale.dX (jSrc["pTransform"]["Scale"][0]);
-   Transform.vScale.dY (jSrc["pTransform"]["Scale"][1]);
-   Transform.vScale.dZ (jSrc["pTransform"]["Scale"][2]);
+   Transform.vScale.dX     = jSrc["pTransform"]["Scale"][0];
+   Transform.vScale.dY     = jSrc["pTransform"]["Scale"][1];
+   Transform.vScale.dZ     = jSrc["pTransform"]["Scale"][2];
 
-   Orbit_Spin.tmPeriod  = jSrc["pOrbit_Spin"]["tmPeriod"];
-   Orbit_Spin.tmOrigin  = jSrc["pOrbit_Spin"]["tmOrigin"];
-   Orbit_Spin.dA        = jSrc["pOrbit_Spin"]["dA"];
-   Orbit_Spin.dB        = jSrc["pOrbit_Spin"]["dB"];
+   Orbit_Spin.tmPeriod     = jSrc["pOrbit_Spin"]["tmPeriod"];
+   Orbit_Spin.tmOrigin     = jSrc["pOrbit_Spin"]["tmOrigin"];
+   Orbit_Spin.dA           = jSrc["pOrbit_Spin"]["dA"];
+   Orbit_Spin.dB           = jSrc["pOrbit_Spin"]["dB"];
 
    Bound.dX = jSrc["pBound"]["Max"][0];
    Bound.dY = jSrc["pBound"]["Max"][1];
