@@ -98,22 +98,22 @@ namespace RMAP
          uint64_t   m_twObjectIx;
       };
 
-      class RELATIVE
+      class RELATIVEX
       {
       public:
-         RELATIVE (DOUBLE3 vPosition = {});
+         RELATIVEX (DOUBLE3 vPosition = {});
 
-         RELATIVE& operator=(RELATIVE    const& rhs)&;
-         RELATIVE& operator=(RELATIVE&& rhs) & noexcept;
-         RELATIVE (RELATIVE    const& other);
-         RELATIVE (RELATIVE&& other)    noexcept;
-         virtual ~RELATIVE ()                             noexcept;
+         RELATIVEX& operator=(RELATIVEX    const&   rhs) &;
+         RELATIVEX& operator=(RELATIVEX&&           rhs) & noexcept;
+         RELATIVEX           (RELATIVEX    const& other);
+         RELATIVEX           (RELATIVEX&&          other)  noexcept;
+         virtual ~RELATIVEX ()                             noexcept;
 
          // Accessors
          DOUBLE3 const& vPosition () const&;
 
          // Modifiers   
-         RELATIVE& vPosition (DOUBLE3 _vPosition)&;
+         RELATIVEX& vPosition (DOUBLE3 _vPosition)&;
 
       private:
          DOUBLE3 m_vPosition;
@@ -122,7 +122,7 @@ namespace RMAP
       class POSITION_UNIVERSAL
       {
       public:
-         POSITION_UNIVERSAL (PARENT pParent = {}, RELATIVE pRelative = {});
+         POSITION_UNIVERSAL (PARENT pParent = {}, RELATIVEX Relative = {});
 
          POSITION_UNIVERSAL& operator=(POSITION_UNIVERSAL    const& rhs)&;
          POSITION_UNIVERSAL& operator=(POSITION_UNIVERSAL&& rhs) & noexcept;
@@ -131,16 +131,16 @@ namespace RMAP
          virtual ~POSITION_UNIVERSAL ()                      noexcept;
 
          // Accessors
-         PARENT   const& Parent ()   const&;
-         RELATIVE const& Relative () const&;
+         PARENT    const& Parent ()   const&;
+         RELATIVEX const& Relative () const&;
 
          // Modifiers   
          POSITION_UNIVERSAL& Parent (PARENT _Parent)&;
-         POSITION_UNIVERSAL& Relative (RELATIVE _Relative)&;
+         POSITION_UNIVERSAL& Relative (RELATIVEX _Relative)&;
 
       private:
-         PARENT   m_Parent;
-         RELATIVE m_Relative;
+         PARENT    m_Parent;
+         RELATIVEX m_Relative;
       };
 
       class RZONE_ROUTE

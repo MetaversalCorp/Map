@@ -253,25 +253,25 @@ PARENT& PARENT::twObjectIx (uint64_t newtwObjectIx) &
 }
 
 /*******************************************************************************************************************************
-**                                                     CLASS (RELATIVE)                                                       **
+**                                                     CLASS (RELATIVEX)                                                       **
 *******************************************************************************************************************************/
 
-RELATIVE::RELATIVE (DOUBLE3 vPosition) :
+RELATIVEX::RELATIVEX (DOUBLE3 vPosition) :
    m_vPosition (vPosition)
 {
 }
 
-RELATIVE::RELATIVE (RELATIVE const& other) :          // Copy constructor
+RELATIVEX::RELATIVEX (RELATIVEX const& other) :          // Copy constructor
    m_vPosition    { other.m_vPosition }
 {
 }
 
-RELATIVE::RELATIVE (RELATIVE&& other) noexcept :      // Move constructor
+RELATIVEX::RELATIVEX (RELATIVEX&& other) noexcept :      // Move constructor
    m_vPosition    { std::move (other.m_vPosition) }
 {
 }
 
-RELATIVE& RELATIVE::operator=(RELATIVE const& rhs)&   // Copy Assignment Operator
+RELATIVEX& RELATIVEX::operator=(RELATIVEX const& rhs)&   // Copy Assignment Operator
 {
    if (this != &rhs)
    {
@@ -281,19 +281,19 @@ RELATIVE& RELATIVE::operator=(RELATIVE const& rhs)&   // Copy Assignment Operato
    return *this;
 }
 
-RELATIVE& RELATIVE::operator=(RELATIVE&& rhs) & noexcept = default;  // Move Assignment Operator
-RELATIVE::~RELATIVE ()                          noexcept = default;  // Destructor
+RELATIVEX& RELATIVEX::operator=(RELATIVEX&& rhs) & noexcept = default;  // Move Assignment Operator
+RELATIVEX::~RELATIVEX ()                          noexcept = default;  // Destructor
 
 //==================================
 
-DOUBLE3 const& RELATIVE::vPosition () const&
+DOUBLE3 const& RELATIVEX::vPosition () const&
 {
    return m_vPosition;
 }
 
 //==================================
 
-RELATIVE& RELATIVE::vPosition (DOUBLE3 newvPosition) &
+RELATIVEX& RELATIVEX::vPosition (DOUBLE3 newvPosition) &
 {
    m_vPosition = std::move (newvPosition);
 
@@ -304,7 +304,7 @@ RELATIVE& RELATIVE::vPosition (DOUBLE3 newvPosition) &
 **                                                     CLASS (POSITION_UNIVERSAL)                                             **
 *******************************************************************************************************************************/
 
-POSITION_UNIVERSAL::POSITION_UNIVERSAL (PARENT Parent, RELATIVE Relative) :
+POSITION_UNIVERSAL::POSITION_UNIVERSAL (PARENT Parent, RELATIVEX Relative) :
    m_Parent (Parent),
    m_Relative (Relative)
 {
@@ -343,7 +343,7 @@ PARENT const& POSITION_UNIVERSAL::Parent () const&
    return m_Parent;
 }
 
-RELATIVE const& POSITION_UNIVERSAL::Relative () const&
+RELATIVEX const& POSITION_UNIVERSAL::Relative () const&
 {
    return m_Relative;
 }
@@ -357,7 +357,7 @@ POSITION_UNIVERSAL& POSITION_UNIVERSAL::Parent (PARENT newParent) &
    return *this;
 }
 
-POSITION_UNIVERSAL& POSITION_UNIVERSAL::Relative (RELATIVE newRelative) &
+POSITION_UNIVERSAL& POSITION_UNIVERSAL::Relative (RELATIVEX newRelative) &
 {
    m_Relative = std::move (newRelative);
 
