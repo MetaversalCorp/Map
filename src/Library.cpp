@@ -13,7 +13,8 @@ using namespace RMAP;
 std::string LibraryMap::sModuleName = "Map";
 
 LibraryMap::LibraryMap (std::string sID, std::string sCopyright, std::string sTitle, std::string sVersion) :
-   RMAP::CORE::LIBRARY (sID, sCopyright, sTitle, sVersion)
+   RMAP::CORE::LIBRARY (sID, sCopyright, sTitle, sVersion),
+   m_pRequire (nullptr)
 {
 }
 
@@ -26,7 +27,7 @@ bool LibraryMap::Install (RMAP::CORE::PLUGIN* pPlugin)
    bool bResult = true;
    RMAP::CORE::APP* pCore = RMAP::CORE::APP::GetInstance ();
 
-   if (m_pRequire = pCore->Require ("MVRP_Dev", "", ""))
+   if (m_pRequire = pCore->Require ("Socket.IO,Statabase", "", ""))
    {
       m_apFactory_Model.push_back (RMAP::MAP::RMROOT::factory ());
       m_apFactory_Model.push_back (RMAP::MAP::RMCOBJECT::factory ());
