@@ -66,6 +66,8 @@ RMAP::CORE::PACKAGE::FACTORY* PACKAGE_MAP_IO::factory ()
    };
 
    const std::vector<std::string> aModel = {
+      "RMAP/Session_Null",
+
       "Map/RMRoot",
       "Map/RMCObject",
       "Map/RMTObject",
@@ -73,6 +75,8 @@ RMAP::CORE::PACKAGE::FACTORY* PACKAGE_MAP_IO::factory ()
    };
 
    const std::vector<std::string> aSource = {
+      "Map/Socket.IO:Session_Null",
+
       "Map/Socket.IO:RMRoot",
       "Map/Socket.IO:RMCObject",
       "Map/Socket.IO:RMTObject",
