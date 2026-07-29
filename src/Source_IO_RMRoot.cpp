@@ -375,7 +375,7 @@ void IO_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMROOT* pModelIO = dynamic_cast<RMROOT*> (pModel);
    RMROOT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMRootId"].template get<std::string> ().c_str ()));
-   RMCOMMON::OWNER Owner;
+   OWNER Owner;
 
    Owner.twRPersonaIx = jSrc["pOwner"]["twRPersonaIx"];
 

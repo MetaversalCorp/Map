@@ -141,7 +141,7 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMROOT::FACTORY
 RMROOT::RMROOT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
    m_pName (new NAME),
-   m_pOwner (new RMCOMMON::OWNER)
+   m_pOwner (new OWNER)
 {
 }
 
@@ -178,7 +178,7 @@ RMROOT::NAME const& RMROOT::pName () const&
    return *m_pName;
 }
 
-RMCOMMON::OWNER const& RMROOT::pOwner () const&
+OWNER const& RMROOT::pOwner () const&
 {
    return *m_pOwner;
 }
@@ -194,7 +194,7 @@ RMROOT& RMROOT::pName (NAME _pName) &
    return *this;
 }
 
-RMROOT& RMROOT::pOwner (RMCOMMON::OWNER _pOwner) &
+RMROOT& RMROOT::pOwner (OWNER _pOwner) &
 {
    *m_pOwner = _pOwner;
 

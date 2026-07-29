@@ -140,15 +140,15 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMCOBJECT::FACT
 
 RMCOBJECT::RMCOBJECT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   m_pName (new NAME),
-   m_pType (new RMCOMMON::TYPE),
-   m_pOwner (new RMCOMMON::OWNER),
-   m_pResource (new RMCOMMON::RESOURCE),
-   m_pTransform (new RMCOMMON::TRANSFORM),
-   m_pOrbit_Spin (new RMCOMMON::ORBIT_SPIN),
-   m_pBound (new RMCOMMON::BOUND),
-   m_pProperties (new PROPERTIES),
-   m_pPOD (new POD)
+   m_pName        (new NAME),
+   m_pType        (new TYPE),
+   m_pOwner       (new OWNER),
+   m_pResource    (new RESOURCE),
+   m_pTransform   (new TRANSFORM),
+   m_pOrbit_Spin  (new ORBIT_SPIN),
+   m_pBound       (new BOUND),
+   m_pProperties  (new PROPERTIES),
+   m_pPOD         (new POD)
 {
 }
 
@@ -185,32 +185,32 @@ RMCOBJECT::NAME const& RMCOBJECT::pName () const&
    return *m_pName;
 }
 
-RMCOMMON::TYPE const& RMCOBJECT::pType () const&
+TYPE const& RMCOBJECT::pType () const&
 {
    return *m_pType;
 }
 
-RMCOMMON::OWNER const& RMCOBJECT::pOwner () const&
+OWNER const& RMCOBJECT::pOwner () const&
 {
    return *m_pOwner;
 }
 
-RMCOMMON::RESOURCE const& RMCOBJECT::pResource () const&
+RESOURCE const& RMCOBJECT::pResource () const&
 {
    return *m_pResource;
 }
 
-RMCOMMON::TRANSFORM const& RMCOBJECT::pTransform () const&
+TRANSFORM const& RMCOBJECT::pTransform () const&
 {
    return *m_pTransform;
 }
 
-RMCOMMON::ORBIT_SPIN const& RMCOBJECT::pOrbit_Spin () const&
+ORBIT_SPIN const& RMCOBJECT::pOrbit_Spin () const&
 {
    return *m_pOrbit_Spin;
 }
 
-RMCOMMON::BOUND const& RMCOBJECT::pBound () const&
+BOUND const& RMCOBJECT::pBound () const&
 {
    return *m_pBound;
 }
@@ -236,42 +236,42 @@ RMCOBJECT& RMCOBJECT::pName (NAME _pName) &
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pType (RMCOMMON::TYPE _pType) &
+RMCOBJECT& RMCOBJECT::pType (TYPE _pType) &
 {
     *m_pType = _pType;
 
     return *this;
  }
 
-RMCOBJECT& RMCOBJECT::pOwner (RMCOMMON::OWNER _pOwner) &
+RMCOBJECT& RMCOBJECT::pOwner (OWNER _pOwner) &
 {
    *m_pOwner = _pOwner;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pResource (RMCOMMON::RESOURCE _pResource) &
+RMCOBJECT& RMCOBJECT::pResource (RESOURCE _pResource) &
 {
    *m_pResource = _pResource;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pTransform (RMCOMMON::TRANSFORM _pTransform) &
+RMCOBJECT& RMCOBJECT::pTransform (TRANSFORM _pTransform) &
 {
    *m_pTransform = _pTransform;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pOrbit_Spin (RMCOMMON::ORBIT_SPIN _pOrbit_Spin) &
+RMCOBJECT& RMCOBJECT::pOrbit_Spin (ORBIT_SPIN _pOrbit_Spin) &
 {
    *m_pOrbit_Spin = _pOrbit_Spin;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pBound (RMCOMMON::BOUND _pBound) &
+RMCOBJECT& RMCOBJECT::pBound (BOUND _pBound) &
 {
    *m_pBound = _pBound;
 

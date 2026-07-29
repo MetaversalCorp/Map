@@ -49,72 +49,69 @@ namespace RMAP
          RELATIVEX                     Relative;
       };
 
-      namespace RMCOMMON
+      struct TYPE
       {
-         struct TYPE
-         {
-            uint8_t                 bType;
-            uint8_t                 bSubtype;
-            uint8_t                 bFiction;
-            uint8_t                 bMovable;
-         };
+         uint8_t                 bType;
+         uint8_t                 bSubtype;
+         uint8_t                 bFiction;
+         uint8_t                 bMovable;
+      };
 
-         struct OWNER
-         {
-            uint64_t                twRPersonaIx;
-         };
+      struct OWNER
+      {
+         uint64_t                twRPersonaIx;
+      };
 
-         struct TRANSFORM
-         {
-            DOUBLE3                 vPosition;
-            DOUBLE4                 qRotation;
-            DOUBLE3                 vScale;
-         };
+      struct TRANSFORM
+      {
+         DOUBLE3                 vPosition;
+         DOUBLE4                 qRotation;
+         DOUBLE3                 vScale;
+      };
 
-         struct ORBIT_SPIN
-         {
-            TIME                    tmPeriod;
-            TIME                    tmOrigin;
-            double                  dA;
-            double                  dB;
-         };
+      struct ORBIT_SPIN
+      {
+         TIME                    tmPeriod;
+         TIME                    tmOrigin;
+         double                  dA;
+         double                  dB;
+      };
 
-         struct BOUND
-         {
-            double                  dX;
-            double                  dY;
-            double                  dZ;
-         };
+      struct BOUND
+      {
+         double                  dX;
+         double                  dY;
+         double                  dZ;
+      };
 
-         class RESOURCE
-         {
-         public:
-            RESOURCE (uint64_t qwResource = 0, std::string sName  = {}, std::string sReference  = {});
+      class RESOURCE
+      {
+      public:
+         RESOURCE (uint64_t qwResource = 0, std::string sName  = {}, std::string sReference  = {});
 
-            RESOURCE& operator=(RESOURCE    const & rhs) &;
-            RESOURCE& operator=(RESOURCE         && rhs) & noexcept;
-            RESOURCE           (RESOURCE    const & other);
-            RESOURCE           (RESOURCE         && other) noexcept;
-            virtual ~RESOURCE ()                           noexcept;
+         RESOURCE& operator=(RESOURCE    const & rhs) &;
+         RESOURCE& operator=(RESOURCE         && rhs) & noexcept;
+         RESOURCE           (RESOURCE    const & other);
+         RESOURCE           (RESOURCE         && other) noexcept;
+         virtual ~RESOURCE ()                           noexcept;
 
-            // Accessors
-            std::string const & sName ()       const &;
-            std::string const & sReference ()  const &;
-            uint64_t            qwResource ()  const &;
+         // Accessors
+         std::string const & sName ()       const &;
+         std::string const & sReference ()  const &;
+         uint64_t            qwResource ()  const &;
 
-            std::string         sName ()       &&;
-            std::string         sReference ()  &&;
+         std::string         sName ()       &&;
+         std::string         sReference ()  &&;
 
-            // Modifiers                                              
-            RESOURCE & qwResource (uint64_t    _qwResource) &;
-            RESOURCE & sName      (std::string _wsForename) &;
-            RESOURCE & sReference (std::string _wsSurname ) &;
+         // Modifiers                                              
+         RESOURCE & qwResource (uint64_t    _qwResource) &;
+         RESOURCE & sName      (std::string _wsForename) &;
+         RESOURCE & sReference (std::string _wsSurname ) &;
 
-         private:
-            class Impl;
-            Impl* m_pImpl;
-         };
-      }
+      private:
+         class Impl;
+         Impl* m_pImpl;
+      };
 
       /*******************************************************************************************************************************
       **                                                 Object: SOURCE_IO_OBJECT                                                   **
@@ -291,34 +288,34 @@ namespace RMAP
 
       // Accessors 
          NAME                 const & pName ()                         const &;
-         RMCOMMON::TYPE       const & pType ()                         const &;
-         RMCOMMON::OWNER      const & pOwner ()                        const &;
-         RMCOMMON::RESOURCE   const & pResource ()                     const &;
-         RMCOMMON::TRANSFORM  const & pTransform ()                    const &;
-         RMCOMMON::ORBIT_SPIN const & pOrbit_Spin ()                   const &;
-         RMCOMMON::BOUND      const & pBound ()                        const &;
+         TYPE                 const & pType ()                         const &;
+         OWNER                const & pOwner ()                        const &;
+         RESOURCE             const & pResource ()                     const &;
+         TRANSFORM            const & pTransform ()                    const &;
+         ORBIT_SPIN           const & pOrbit_Spin ()                   const &;
+         BOUND                const & pBound ()                        const &;
          PROPERTIES           const & pProperties ()                   const &;
          POD                  const & pPOD ()                          const &;
 
          // Modifiers                                              
-         RMCOBJECT& pName        (NAME _pName)                          &;
-         RMCOBJECT& pType        (RMCOMMON::TYPE       _pType)          &;
-         RMCOBJECT& pOwner       (RMCOMMON::OWNER      _pOwner)         &;
-         RMCOBJECT& pResource    (RMCOMMON::RESOURCE   _pResource)      &;
-         RMCOBJECT& pTransform   (RMCOMMON::TRANSFORM  _pTransform)     &;
-         RMCOBJECT& pOrbit_Spin  (RMCOMMON::ORBIT_SPIN _pOrbit_Spin)    &;
-         RMCOBJECT& pBound       (RMCOMMON::BOUND      _pBound)         &;
-         RMCOBJECT& pProperties  (PROPERTIES           _pProperties)    &;
-         RMCOBJECT& pPOD         (POD                  _pPOD)           &;
+         RMCOBJECT& pName        (NAME       _pName)          &;
+         RMCOBJECT& pType        (TYPE       _pType)          &;
+         RMCOBJECT& pOwner       (OWNER      _pOwner)         &;
+         RMCOBJECT& pResource    (RESOURCE   _pResource)      &;
+         RMCOBJECT& pTransform   (TRANSFORM  _pTransform)     &;
+         RMCOBJECT& pOrbit_Spin  (ORBIT_SPIN _pOrbit_Spin)    &;
+         RMCOBJECT& pBound       (BOUND      _pBound)         &;
+         RMCOBJECT& pProperties  (PROPERTIES _pProperties)    &;
+         RMCOBJECT& pPOD         (POD        _pPOD)           &;
 
       private:
          NAME*                   m_pName;
-         RMCOMMON::TYPE*         m_pType;
-         RMCOMMON::OWNER*        m_pOwner;
-         RMCOMMON::RESOURCE*     m_pResource;
-         RMCOMMON::TRANSFORM*    m_pTransform;
-         RMCOMMON::ORBIT_SPIN*   m_pOrbit_Spin;
-         RMCOMMON::BOUND*        m_pBound;
+         TYPE*                   m_pType;
+         OWNER*                  m_pOwner;
+         RESOURCE*               m_pResource;
+         TRANSFORM*              m_pTransform;
+         ORBIT_SPIN*             m_pOrbit_Spin;
+         BOUND*                  m_pBound;
          PROPERTIES*             m_pProperties;
          POD*                    m_pPOD;
       };
@@ -449,31 +446,31 @@ namespace RMAP
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
          // Accessors 
-         NAME                 const & pName ()                         const &;
-         RMCOMMON::TYPE       const & pType ()                         const &;
-         RMCOMMON::OWNER      const & pOwner ()                        const &;
-         RMCOMMON::RESOURCE   const & pResource ()                     const &;
-         RMCOMMON::TRANSFORM  const & pTransform ()                    const &;
-         RMCOMMON::BOUND      const & pBound ()                        const &;
+         NAME       const & pName ()                         const &;
+         TYPE       const & pType ()                         const &;
+         OWNER      const & pOwner ()                        const &;
+         RESOURCE   const & pResource ()                     const &;
+         TRANSFORM  const & pTransform ()                    const &;
+         BOUND      const & pBound ()                        const &;
          POD                  const & pPOD ()                          const &;
 
          // Modifiers                                              
-         RMPOBJECT& pName        (NAME _pName)&;
-         RMPOBJECT& pType        (RMCOMMON::TYPE       _pType)       &;
-         RMPOBJECT& pOwner       (RMCOMMON::OWNER      _pOwner)      &;
-         RMPOBJECT& pResource    (RMCOMMON::RESOURCE   _pResource)   &;
-         RMPOBJECT& pTransform   (RMCOMMON::TRANSFORM  _pTransform)  &;
-         RMPOBJECT& pBound       (RMCOMMON::BOUND      _pBound)      &;
-         RMPOBJECT& pPOD         (POD                  _pPOD)        &;
+         RMPOBJECT& pName        (NAME _pName)              &;
+         RMPOBJECT& pType        (TYPE       _pType)        &;
+         RMPOBJECT& pOwner       (OWNER      _pOwner)       &;
+         RMPOBJECT& pResource    (RESOURCE   _pResource)    &;
+         RMPOBJECT& pTransform   (TRANSFORM  _pTransform)   &;
+         RMPOBJECT& pBound       (BOUND      _pBound)       &;
+         RMPOBJECT& pPOD         (POD        _pPOD)         &;
 
       private:
-         NAME*                m_pName;
-         RMCOMMON::TYPE*      m_pType;
-         RMCOMMON::OWNER*     m_pOwner;
-         RMCOMMON::RESOURCE*  m_pResource;
-         RMCOMMON::TRANSFORM* m_pTransform;
-         RMCOMMON::BOUND*     m_pBound;
-         POD*                 m_pPOD;
+         NAME*      m_pName;
+         TYPE*      m_pType;
+         OWNER*     m_pOwner;
+         RESOURCE*  m_pResource;
+         TRANSFORM* m_pTransform;
+         BOUND*     m_pBound;
+         POD*       m_pPOD;
       };
 
       /*******************************************************************************************************************************
@@ -597,16 +594,16 @@ namespace RMAP
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
       // Accessors 
-         NAME                 const & pName ()                         const &;
-         RMCOMMON::OWNER      const & pOwner ()                        const &;
+         NAME                 const & pName ()                          const &;
+         OWNER                const & pOwner ()                         const &;
 
          // Modifiers                                              
-         RMROOT& pName        (NAME _pName)                          &;
-         RMROOT& pOwner       (RMCOMMON::OWNER      _pOwner)         &;
+         RMROOT& pName        (NAME _pName)                                   &;
+         RMROOT& pOwner       (OWNER _pOwner)                                 &;
 
       private:
-         NAME*                   m_pName;
-         RMCOMMON::OWNER*        m_pOwner;
+         NAME*         m_pName;
+         OWNER*        m_pOwner;
       };
 
       /*******************************************************************************************************************************
@@ -760,34 +757,34 @@ namespace RMAP
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
       // Accessors 
-         NAME                 const & pName ()                         const &;
-         RMCOMMON::TYPE       const & pType ()                         const &;
-         RMCOMMON::OWNER      const & pOwner ()                        const &;
-         RMCOMMON::RESOURCE   const & pResource ()                     const &;
-         RMCOMMON::TRANSFORM  const & pTransform ()                    const &;
-         RMCOMMON::BOUND      const & pBound ()                        const &;
-         PROPERTIES           const & pProperties ()                   const &;
-         POD                  const & pPOD ()                          const &;
+         NAME           const & pName ()                         const &;
+         TYPE           const & pType ()                         const &;
+         OWNER          const & pOwner ()                        const &;
+         RESOURCE       const & pResource ()                     const &;
+         TRANSFORM      const & pTransform ()                    const &;
+         BOUND          const & pBound ()                        const &;
+         PROPERTIES     const & pProperties ()                   const &;
+         POD            const & pPOD ()                          const &;
 
          // Modifiers                                              
-         RMTOBJECT& pName        (NAME _pName)                          &;
-         RMTOBJECT& pType        (RMCOMMON::TYPE       _pType)          &;
-         RMTOBJECT& pOwner       (RMCOMMON::OWNER      _pOwner)         &;
-         RMTOBJECT& pResource    (RMCOMMON::RESOURCE   _pResource)      &;
-         RMTOBJECT& pTransform   (RMCOMMON::TRANSFORM  _pTransform)     &;
-         RMTOBJECT& pBound       (RMCOMMON::BOUND      _pBound)         &;
-         RMTOBJECT& pProperties  (PROPERTIES           _pProperties)    &;
-         RMTOBJECT& pPOD         (POD                  _pPOD)           &;
+         RMTOBJECT& pName        (NAME       _pName)          &;
+         RMTOBJECT& pType        (TYPE       _pType)          &;
+         RMTOBJECT& pOwner       (OWNER      _pOwner)         &;
+         RMTOBJECT& pResource    (RESOURCE   _pResource)      &;
+         RMTOBJECT& pTransform   (TRANSFORM  _pTransform)     &;
+         RMTOBJECT& pBound       (BOUND      _pBound)         &;
+         RMTOBJECT& pProperties  (PROPERTIES _pProperties)    &;
+         RMTOBJECT& pPOD         (POD        _pPOD)           &;
 
       private:
-         NAME*                   m_pName;
-         RMCOMMON::TYPE*         m_pType;
-         RMCOMMON::OWNER*        m_pOwner;
-         RMCOMMON::RESOURCE*     m_pResource;
-         RMCOMMON::TRANSFORM*    m_pTransform;
-         RMCOMMON::BOUND*        m_pBound;
-         PROPERTIES*             m_pProperties;
-         POD*                    m_pPOD;
+         NAME*          m_pName;
+         TYPE*          m_pType;
+         OWNER*         m_pOwner;
+         RESOURCE*      m_pResource;
+         TRANSFORM*     m_pTransform;
+         BOUND*         m_pBound;
+         PROPERTIES*    m_pProperties;
+         POD*           m_pPOD;
       };
 
       void Install ();

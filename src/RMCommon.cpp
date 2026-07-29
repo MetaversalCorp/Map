@@ -11,10 +11,10 @@
 using namespace RMAP::MAP;
 
 /*******************************************************************************************************************************
-**                                             CLASS (RMCOMMON::RESOURCE::Impl)                                               **
+**                                             CLASS (RESOURCE::Impl)                                               **
 ****************************************************************\**************************************************************/
 
-class RMCOMMON::RESOURCE::Impl
+class RESOURCE::Impl
 {
 public:
    Impl (uint64_t qwResource, std::string sName, std::string sReference) :
@@ -35,28 +35,28 @@ public:
 };
 
 /*******************************************************************************************************************************
-**                                             CLASS (RMCOMMON::RESOURCE)                                                     **
+**                                             CLASS (RESOURCE)                                                     **
 ****************************************************************\**************************************************************/
 
-RMCOMMON::RESOURCE::RESOURCE (uint64_t qwResource, std::string sName, std::string sReference) :
-   m_pImpl (new RMCOMMON::RESOURCE::Impl (qwResource, std::move (sName), std::move (sReference)))
+RESOURCE::RESOURCE (uint64_t qwResource, std::string sName, std::string sReference) :
+   m_pImpl (new RESOURCE::Impl (qwResource, std::move (sName), std::move (sReference)))
 {
 }
 
 // Copy Constructor
-RMCOMMON::RESOURCE::RESOURCE (RESOURCE const& other) :
-   m_pImpl (new RMCOMMON::RESOURCE::Impl (other.m_pImpl->qwResource, other.m_pImpl->sName, other.m_pImpl->sReference))
+RESOURCE::RESOURCE (RESOURCE const& other) :
+   m_pImpl (new RESOURCE::Impl (other.m_pImpl->qwResource, other.m_pImpl->sName, other.m_pImpl->sReference))
 {
 }
 
 // Move Constructor
-RMCOMMON::RESOURCE::RESOURCE (RESOURCE&& other) noexcept :
-   m_pImpl (new RMCOMMON::RESOURCE::Impl (std::move (other.m_pImpl->qwResource), std::move (other.m_pImpl->sName), other.m_pImpl->sReference))
+RESOURCE::RESOURCE (RESOURCE&& other) noexcept :
+   m_pImpl (new RESOURCE::Impl (std::move (other.m_pImpl->qwResource), std::move (other.m_pImpl->sName), other.m_pImpl->sReference))
 {
 }
 
 // Copy Assignment Operator
-RMCOMMON::RESOURCE& RMCOMMON::RESOURCE::operator=(RESOURCE const& rhs)&
+RESOURCE& RESOURCE::operator=(RESOURCE const& rhs)&
 {
    if (this != &rhs)
    {
@@ -68,10 +68,10 @@ RMCOMMON::RESOURCE& RMCOMMON::RESOURCE::operator=(RESOURCE const& rhs)&
 }
 
 // Move Assignment Operator
-RMCOMMON::RESOURCE& RMCOMMON::RESOURCE::operator=(RESOURCE&& rhs) & noexcept = default;
+RESOURCE& RESOURCE::operator=(RESOURCE&& rhs) & noexcept = default;
 
 // Destructor
-RMCOMMON::RESOURCE::~RESOURCE () noexcept
+RESOURCE::~RESOURCE () noexcept
 {
    delete m_pImpl;
 }
@@ -80,27 +80,27 @@ RMCOMMON::RESOURCE::~RESOURCE () noexcept
 **  Accessors
 *******************************************************************************/
 
-uint64_t RMCOMMON::RESOURCE::qwResource () const&
+uint64_t RESOURCE::qwResource () const&
 {
    return m_pImpl->qwResource;
 }
 
-std::string const& RMCOMMON::RESOURCE::sName () const&
+std::string const& RESOURCE::sName () const&
 {
    return m_pImpl->sName;
 }
 
-std::string const& RMCOMMON::RESOURCE::sReference () const&
+std::string const& RESOURCE::sReference () const&
 {
    return m_pImpl->sReference;
 }
 
-std::string RMCOMMON::RESOURCE::sName () &&
+std::string RESOURCE::sName () &&
 {
    return std::move (m_pImpl->sName);
 }
 
-std::string RMCOMMON::RESOURCE::sReference () &&
+std::string RESOURCE::sReference () &&
 {
    return std::move (m_pImpl->sReference);
 }
@@ -109,21 +109,21 @@ std::string RMCOMMON::RESOURCE::sReference () &&
 **  Modifiers
 *******************************************************************************/
 
-RMCOMMON::RESOURCE& RMCOMMON::RESOURCE::qwResource (uint64_t _qwResource)&
+RESOURCE& RESOURCE::qwResource (uint64_t _qwResource)&
 {
    m_pImpl->qwResource = _qwResource;
 
    return *this;
 }
 
-RMCOMMON::RESOURCE& RMCOMMON::RESOURCE::sName (std::string _sName) &
+RESOURCE& RESOURCE::sName (std::string _sName) &
 {
    m_pImpl->sName = std::move (_sName);
 
    return *this;
 }
 
-RMCOMMON::RESOURCE& RMCOMMON::RESOURCE::sReference (std::string _sReference) &
+RESOURCE& RESOURCE::sReference (std::string _sReference) &
 {
    m_pImpl->sReference = std::move (_sReference);
 

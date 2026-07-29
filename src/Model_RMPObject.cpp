@@ -141,11 +141,11 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMPOBJECT::FACT
 RMPOBJECT::RMPOBJECT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
    m_pName (new NAME),
-   m_pType (new RMCOMMON::TYPE),
-   m_pOwner (new RMCOMMON::OWNER),
-   m_pResource (new RMCOMMON::RESOURCE),
-   m_pTransform (new RMCOMMON::TRANSFORM),
-   m_pBound (new RMCOMMON::BOUND),
+   m_pType (new TYPE),
+   m_pOwner (new OWNER),
+   m_pResource (new RESOURCE),
+   m_pTransform (new TRANSFORM),
+   m_pBound (new BOUND),
    m_pPOD (new POD)
 {
 }
@@ -183,27 +183,27 @@ RMPOBJECT::NAME const& RMPOBJECT::pName () const&
    return *m_pName;
 }
 
-RMCOMMON::TYPE const& RMPOBJECT::pType () const&
+TYPE const& RMPOBJECT::pType () const&
 {
    return *m_pType;
 }
 
-RMCOMMON::OWNER const& RMPOBJECT::pOwner () const&
+OWNER const& RMPOBJECT::pOwner () const&
 {
    return *m_pOwner;
 }
 
-RMCOMMON::RESOURCE const& RMPOBJECT::pResource () const&
+RESOURCE const& RMPOBJECT::pResource () const&
 {
    return *m_pResource;
 }
 
-RMCOMMON::TRANSFORM const& RMPOBJECT::pTransform () const&
+TRANSFORM const& RMPOBJECT::pTransform () const&
 {
    return *m_pTransform;
 }
 
-RMCOMMON::BOUND const& RMPOBJECT::pBound () const&
+BOUND const& RMPOBJECT::pBound () const&
 {
    return *m_pBound;
 }
@@ -224,35 +224,35 @@ RMPOBJECT& RMPOBJECT::pName (NAME _pName) &
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pType (RMCOMMON::TYPE _pType) &
+RMPOBJECT& RMPOBJECT::pType (TYPE _pType) &
 {
     *m_pType = _pType;
 
     return *this;
  }
 
-RMPOBJECT& RMPOBJECT::pOwner (RMCOMMON::OWNER _pOwner) &
+RMPOBJECT& RMPOBJECT::pOwner (OWNER _pOwner) &
 {
    *m_pOwner = _pOwner;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pResource (RMCOMMON::RESOURCE _pResource) &
+RMPOBJECT& RMPOBJECT::pResource (RESOURCE _pResource) &
 {
    *m_pResource = _pResource;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pTransform (RMCOMMON::TRANSFORM _pTransform) &
+RMPOBJECT& RMPOBJECT::pTransform (TRANSFORM _pTransform) &
 {
    *m_pTransform = _pTransform;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pBound (RMCOMMON::BOUND _pBound) &
+RMPOBJECT& RMPOBJECT::pBound (BOUND _pBound) &
 {
    *m_pBound = _pBound;
 

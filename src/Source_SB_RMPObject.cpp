@@ -238,11 +238,11 @@ void SB_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMPOBJECT* pModelSB = dynamic_cast<RMPOBJECT*> (pModel);
    RMPOBJECT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMCObjectId"].get<std::string> ().c_str ()));
-   RMCOMMON::TYPE Type;
-   RMCOMMON::OWNER Owner;
-   RMCOMMON::RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
-   RMCOMMON::TRANSFORM Transform;
-   RMCOMMON::BOUND Bound;
+   TYPE Type;
+   OWNER Owner;
+   RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
+   TRANSFORM Transform;
+   BOUND Bound;
 //   RMPOBJECT::POD Pod;
 
    Type.bType     = jSrc["pType"]["bType"];

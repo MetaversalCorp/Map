@@ -448,11 +448,11 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMTOBJECT* pModelIO = dynamic_cast<RMTOBJECT*> (pModel);
    RMTOBJECT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMTObjectId"].template get<std::string> ().c_str ()));
-   RMCOMMON::TYPE Type;
-   RMCOMMON::OWNER Owner;
-   RMCOMMON::RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
-   RMCOMMON::TRANSFORM Transform;
-   RMCOMMON::BOUND Bound;
+   TYPE Type;
+   OWNER Owner;
+   RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
+   TRANSFORM Transform;
+   BOUND Bound;
    RMTOBJECT::PROPERTIES Properties;
    RMTOBJECT::POD Pod;
 
