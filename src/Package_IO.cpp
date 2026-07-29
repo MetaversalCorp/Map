@@ -62,24 +62,24 @@ PACKAGE_MAP_IO::~PACKAGE_MAP_IO ()
 RMAP::CORE::PACKAGE::FACTORY* PACKAGE_MAP_IO::factory ()
 {
    const std::vector<std::string> aService = {
-      "MVIO/MVIO",
+      "Socket.IO/Socket.IO",
    };
 
    const std::vector<std::string> aModel = {
-      "MVRP_Map/RMRoot",
-      "MVRP_Map/RMCObject",
-      "MVRP_Map/RMTObject",
-      "MVRP_Map/RMPObject",
+      "Map/RMRoot",
+      "Map/RMCObject",
+      "Map/RMTObject",
+      "Map/RMPObject",
    };
 
    const std::vector<std::string> aSource = {
-      "MVRP_Map/MVIO:RMRoot",
-      "MVRP_Map/MVIO:RMCObject",
-      "MVRP_Map/MVIO:RMTObject",
-      "MVRP_Map/MVIO:RMPObject",
+      "Map/Socket.IO:RMRoot",
+      "Map/Socket.IO:RMCObject",
+      "Map/Socket.IO:RMTObject",
+      "Map/Socket.IO:RMPObject",
    };
 
-   return new FACTORY ("MVIO", "Map", aService, aModel, aSource);
+   return new FACTORY ("Socket.IO", "Map", aService, aModel, aSource);
 }
 
 /******************************************************************************************************************************/

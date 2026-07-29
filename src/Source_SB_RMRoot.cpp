@@ -150,7 +150,7 @@ SB_RMROOT::FACTORY* SB_RMROOT::factory ()
       "}"
    );
 
-   return new FACTORY ("MVSB", "RMRoot", SBO_CLASS_RMROOT, aAction, true, pMap);
+   return new FACTORY ("Statabase", "RMRoot", SBO_CLASS_RMROOT, aAction, true, pMap);
 }
 
 void SB_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)

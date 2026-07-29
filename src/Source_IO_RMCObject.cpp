@@ -477,7 +477,7 @@ void IO_RMCOBJECT::init ()
 
 IO_RMCOBJECT::FACTORY* IO_RMCOBJECT::factory ()
 {
-   return new FACTORY ("MVIO", "RMCObject", SBO_CLASS_RMCOBJECT, aAction, true);
+   return new FACTORY ("Socket.IO", "RMCObject", SBO_CLASS_RMCOBJECT, aAction, true);
 }
 
 void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)

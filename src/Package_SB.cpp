@@ -62,24 +62,24 @@ PACKAGE_MAP_SB::~PACKAGE_MAP_SB ()
 RMAP::CORE::PACKAGE::FACTORY* PACKAGE_MAP_SB::factory ()
 {
    const std::vector<std::string> aService = {
-      "MVSB/MVSB",
+      "Statabase/Statabase",
    };
 
    const std::vector<std::string> aModel = {
-      "MVRP_Map/RMRoot",
-      "MVRP_Map/RMCObject",
-      "MVRP_Map/RMTObject",
-      "MVRP_Map/RMPObject",
+      "Map/RMRoot",
+      "Map/RMCObject",
+      "Map/RMTObject",
+      "Map/RMPObject",
    };
 
    const std::vector<std::string> aSource = {
-      "MVRP_Map/MVSB:RMRoot",
-      "MVRP_Map/MVSB:RMCObject",
-      "MVRP_Map/MVSB:RMTObject",
-      "MVRP_Map/MVSB:RMPObject",
+      "Map/Statabase:RMRoot",
+      "Map/Statabase:RMCObject",
+      "Map/Statabase:RMTObject",
+      "Map/Statabase:RMPObject",
    };
 
-   return new FACTORY ("MVSB", "Map", aService, aModel, aSource);
+   return new FACTORY ("Statabase", "Map", aService, aModel, aSource);
 }
 
 /******************************************************************************************************************************/

@@ -368,7 +368,7 @@ void IO_RMROOT::init ()
 
 IO_RMROOT::FACTORY* IO_RMROOT::factory ()
 {
-   return new FACTORY ("MVIO", "RMRoot", SBO_CLASS_RMROOT, aAction, true);
+   return new FACTORY ("Socket.IO", "RMRoot", SBO_CLASS_RMROOT, aAction, true);
 }
 
 void IO_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)

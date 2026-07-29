@@ -284,7 +284,7 @@ SB_RMTOBJECT::FACTORY* SB_RMTOBJECT::factory ()
       "}"
    );
 
-   return new FACTORY ("MVSB", "RMTObject", SBO_CLASS_RMTOBJECT, aAction, true, pMap);
+   return new FACTORY ("Statabase", "RMTObject", SBO_CLASS_RMTOBJECT, aAction, true, pMap);
 }
 
 void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
