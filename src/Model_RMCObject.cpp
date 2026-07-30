@@ -30,7 +30,6 @@ public:
    std::wstring _wsRMCObjectId;
 };
 
-
 /*******************************************************************************************************************************
 **                                             CLASS (RMCOBJECT::NAME)                                                         **
 ****************************************************************\**************************************************************/
@@ -135,25 +134,46 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMCOBJECT::FACT
 }
 
 /*******************************************************************************************************************************
+**                                             CLASS (RMCOBJECT::Impl)                                                        **
+****************************************************************\**************************************************************/
+
+class RMCOBJECT::Impl
+{
+public:
+   Impl () :
+      m_nChildren (0)
+   {
+   }
+
+   ~Impl ()
+   {
+   }
+
+public:
+   NAME                    m_Name;
+   TYPE                    m_Type;
+   OWNER                   m_Owner;
+   RESOURCE                m_Resource;
+   TRANSFORM               m_Transform;
+   ORBIT_SPIN              m_Orbit_Spin;
+   BOUND                   m_Bound;
+   PROPERTIES              m_Properties;
+   uint32_t                m_nChildren;
+};
+
+/*******************************************************************************************************************************
 **                                                     CLASS (RMCOBJECT)                                                      **
 *******************************************************************************************************************************/
 
 RMCOBJECT::RMCOBJECT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   m_pName        (new NAME),
-   m_pType        (new TYPE),
-   m_pOwner       (new OWNER),
-   m_pResource    (new RESOURCE),
-   m_pTransform   (new TRANSFORM),
-   m_pOrbit_Spin  (new ORBIT_SPIN),
-   m_pBound       (new BOUND),
-   m_pProperties  (new PROPERTIES),
-   m_pPOD         (new POD)
+   m_pImpl (new Impl ())
 {
 }
 
 RMCOBJECT::~RMCOBJECT ()
 {
+   delete m_pImpl;
 }
 
 RMAP::CORE::MODEL::FACTORY* RMCOBJECT::factory ()
@@ -180,114 +200,114 @@ RMAP::CORE::CLIENT::IACTION* RMCOBJECT::Request (std::string sAction)
 **  Accessors
 *******************************************************************************/
 
-RMCOBJECT::NAME const& RMCOBJECT::pName () const&
+RMCOBJECT::NAME const& RMCOBJECT::Name () const&
 {
-   return *m_pName;
+   return m_pImpl->m_Name;
 }
 
-TYPE const& RMCOBJECT::pType () const&
+TYPE const& RMCOBJECT::Type () const&
 {
-   return *m_pType;
+   return m_pImpl->m_Type;
 }
 
-OWNER const& RMCOBJECT::pOwner () const&
+OWNER const& RMCOBJECT::Owner () const&
 {
-   return *m_pOwner;
+   return m_pImpl->m_Owner;
 }
 
-RESOURCE const& RMCOBJECT::pResource () const&
+RESOURCE const& RMCOBJECT::Resource () const&
 {
-   return *m_pResource;
+   return m_pImpl->m_Resource;
 }
 
-TRANSFORM const& RMCOBJECT::pTransform () const&
+TRANSFORM const& RMCOBJECT::Transform () const&
 {
-   return *m_pTransform;
+   return m_pImpl->m_Transform;
 }
 
-ORBIT_SPIN const& RMCOBJECT::pOrbit_Spin () const&
+ORBIT_SPIN const& RMCOBJECT::Orbit_Spin () const&
 {
-   return *m_pOrbit_Spin;
+   return m_pImpl->m_Orbit_Spin;
 }
 
-BOUND const& RMCOBJECT::pBound () const&
+BOUND const& RMCOBJECT::Bound () const&
 {
-   return *m_pBound;
+   return m_pImpl->m_Bound;
 }
 
-RMCOBJECT::PROPERTIES const& RMCOBJECT::pProperties () const&
+RMCOBJECT::PROPERTIES const& RMCOBJECT::Properties () const&
 {
-   return *m_pProperties;
+   return m_pImpl->m_Properties;
 }
 
-RMCOBJECT::POD const& RMCOBJECT::pPOD () const &
+uint32_t const RMCOBJECT::Children () const &
 {
-   return *m_pPOD;
+   return m_pImpl->m_nChildren;
 }
 
 /*******************************************************************************
 **  Modifiers
 *******************************************************************************/
 
-RMCOBJECT& RMCOBJECT::pName (NAME _pName) &
+RMCOBJECT& RMCOBJECT::Name (const NAME& _Name) &
 {
-   *m_pName = _pName;
+   m_pImpl->m_Name = _Name;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pType (TYPE _pType) &
+RMCOBJECT& RMCOBJECT::Type (const TYPE& _Type) &
 {
-    *m_pType = _pType;
+   m_pImpl->m_Type = _Type;
 
     return *this;
  }
 
-RMCOBJECT& RMCOBJECT::pOwner (OWNER _pOwner) &
+RMCOBJECT& RMCOBJECT::Owner (const OWNER& _Owner) &
 {
-   *m_pOwner = _pOwner;
+   m_pImpl->m_Owner = _Owner;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pResource (RESOURCE _pResource) &
+RMCOBJECT& RMCOBJECT::Resource (const RESOURCE& _Resource) &
 {
-   *m_pResource = _pResource;
+   m_pImpl->m_Resource = _Resource;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pTransform (TRANSFORM _pTransform) &
+RMCOBJECT& RMCOBJECT::Transform (const TRANSFORM& _Transform) &
 {
-   *m_pTransform = _pTransform;
+   m_pImpl->m_Transform = _Transform;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pOrbit_Spin (ORBIT_SPIN _pOrbit_Spin) &
+RMCOBJECT& RMCOBJECT::Orbit_Spin (const ORBIT_SPIN& _Orbit_Spin) &
 {
-   *m_pOrbit_Spin = _pOrbit_Spin;
+   m_pImpl->m_Orbit_Spin = _Orbit_Spin;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pBound (BOUND _pBound) &
+RMCOBJECT& RMCOBJECT::Bound (const BOUND& _Bound) &
 {
-   *m_pBound = _pBound;
+   m_pImpl->m_Bound = _Bound;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pProperties (PROPERTIES _pProperties) &
+RMCOBJECT& RMCOBJECT::Properties (const PROPERTIES& _Properties) &
 {
-   *m_pProperties = _pProperties;
+   m_pImpl->m_Properties = _Properties;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::pPOD (POD _pPOD) &
+RMCOBJECT& RMCOBJECT::Children (uint32_t nChildren) &
 {
-   *m_pPOD = _pPOD;
+   m_pImpl->m_nChildren = nChildren;
 
    return *this;
 }

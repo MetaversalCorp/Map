@@ -271,12 +271,12 @@ void SB_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
 //   Pod.nChildren = jSrc["nChildren"];
 
-   pModelSB->pName (Name);
-   pModelSB->pType (Type);
-   pModelSB->pOwner (Owner);
-   pModelSB->pResource (Resource);
-   pModelSB->pTransform (Transform);
-   pModelSB->pBound (Bound);
+   pModelSB->Name (Name);
+   pModelSB->Type (Type);
+   pModelSB->Owner (Owner);
+   pModelSB->Resource (Resource);
+   pModelSB->Transform (Transform);
+   pModelSB->Bound (Bound);
 //   pModelSB->pPOD (Pod);
 }
 

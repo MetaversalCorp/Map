@@ -491,7 +491,7 @@ void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    ORBIT_SPIN Orbit_Spin;
    BOUND Bound;
    RMCOBJECT::PROPERTIES Properties;
-   RMCOBJECT::POD Pod;
+   uint32_t nChildren;
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
@@ -528,17 +528,17 @@ void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    Properties.fBrightness   = jSrc["pProperties"]["fBrightness"];
    Properties.fReflectivity = jSrc["pProperties"]["fReflectivity"];
 
-   Pod.nChildren = jSrc["nChildren"];
+   nChildren = jSrc["nChildren"];
 
-   pModelIO->pName (Name);
-   pModelIO->pType (Type);
-   pModelIO->pOwner (Owner);
-   pModelIO->pResource (Resource);
-   pModelIO->pTransform (Transform);
-   pModelIO->pOrbit_Spin (Orbit_Spin);
-   pModelIO->pBound (Bound);
-   pModelIO->pProperties (Properties);
-   pModelIO->pPOD (Pod);
+   pModelIO->Name (Name);
+   pModelIO->Type (Type);
+   pModelIO->Owner (Owner);
+   pModelIO->Resource (Resource);
+   pModelIO->Transform (Transform);
+   pModelIO->Orbit_Spin (Orbit_Spin);
+   pModelIO->Bound (Bound);
+   pModelIO->Properties (Properties);
+   pModelIO->Children (nChildren);
 }
 
 bool IO_RMCOBJECT::Attach ()

@@ -135,19 +135,39 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMTOBJECT::FACT
 }
 
 /*******************************************************************************************************************************
+**                                             CLASS (RMPOBJECT::Impl)                                                        **
+****************************************************************\**************************************************************/
+
+class RMTOBJECT::Impl
+{
+public:
+   Impl () :
+      m_nChildren (0)
+   {
+   }
+
+   ~Impl ()
+   {
+   }
+
+public:
+   NAME                    m_Name;
+   TYPE                    m_Type;
+   OWNER                   m_Owner;
+   RESOURCE                m_Resource;
+   TRANSFORM               m_Transform;
+   BOUND                   m_Bound;
+   PROPERTIES              m_Properties;
+   uint32_t                m_nChildren;
+};
+
+/*******************************************************************************************************************************
 **                                                     CLASS (RMTOBJECT)                                                      **
 *******************************************************************************************************************************/
 
 RMTOBJECT::RMTOBJECT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   m_pName (new NAME),
-   m_pType (new TYPE),
-   m_pOwner (new OWNER),
-   m_pResource (new RESOURCE),
-   m_pTransform (new TRANSFORM),
-   m_pBound (new BOUND),
-   m_pProperties (new PROPERTIES),
-   m_pPOD (new POD)
+   m_pImpl (new Impl ())
 {
 }
 
@@ -179,102 +199,102 @@ RMAP::CORE::CLIENT::IACTION* RMTOBJECT::Request (std::string sAction)
 **  Accessors
 *******************************************************************************/
 
-RMTOBJECT::NAME const& RMTOBJECT::pName () const&
+RMTOBJECT::NAME const& RMTOBJECT::Name () const&
 {
-   return *m_pName;
+   return m_pImpl->m_Name;
 }
 
-TYPE const& RMTOBJECT::pType () const&
+TYPE const& RMTOBJECT::Type () const&
 {
-   return *m_pType;
+   return m_pImpl->m_Type;
 }
 
-OWNER const& RMTOBJECT::pOwner () const&
+OWNER const& RMTOBJECT::Owner () const&
 {
-   return *m_pOwner;
+   return m_pImpl->m_Owner;
 }
 
-RESOURCE const& RMTOBJECT::pResource () const&
+RESOURCE const& RMTOBJECT::Resource () const&
 {
-   return *m_pResource;
+   return m_pImpl->m_Resource;
 }
 
-TRANSFORM const& RMTOBJECT::pTransform () const&
+TRANSFORM const& RMTOBJECT::Transform () const&
 {
-   return *m_pTransform;
+   return m_pImpl->m_Transform;
 }
 
-BOUND const& RMTOBJECT::pBound () const&
+BOUND const& RMTOBJECT::Bound () const&
 {
-   return *m_pBound;
+   return m_pImpl->m_Bound;
 }
 
-RMTOBJECT::PROPERTIES const& RMTOBJECT::pProperties () const&
+RMTOBJECT::PROPERTIES const& RMTOBJECT::Properties () const&
 {
-   return *m_pProperties;
+   return m_pImpl->m_Properties;
 }
 
-RMTOBJECT::POD const& RMTOBJECT::pPOD () const &
+uint32_t const RMTOBJECT::Children () const &
 {
-   return *m_pPOD;
+   return m_pImpl->m_nChildren;
 }
 
 /*******************************************************************************
 **  Modifiers
 *******************************************************************************/
 
-RMTOBJECT& RMTOBJECT::pName (NAME _pName) &
+RMTOBJECT& RMTOBJECT::Name (const NAME& _Name) &
 {
-   *m_pName = _pName;
+   m_pImpl->m_Name = _Name;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::pType (TYPE _pType) &
+RMTOBJECT& RMTOBJECT::Type (const TYPE& _Type) &
 {
-    *m_pType = _pType;
+   m_pImpl->m_Type = _Type;
 
     return *this;
  }
 
-RMTOBJECT& RMTOBJECT::pOwner (OWNER _pOwner) &
+RMTOBJECT& RMTOBJECT::Owner (const OWNER& _Owner) &
 {
-   *m_pOwner = _pOwner;
+   m_pImpl->m_Owner = _Owner;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::pResource (RESOURCE _pResource) &
+RMTOBJECT& RMTOBJECT::Resource (const RESOURCE& _Resource) &
 {
-   *m_pResource = _pResource;
+   m_pImpl->m_Resource = _Resource;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::pTransform (TRANSFORM _pTransform) &
+RMTOBJECT& RMTOBJECT::Transform (const TRANSFORM& _Transform) &
 {
-   *m_pTransform = _pTransform;
+   m_pImpl->m_Transform = _Transform;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::pBound (BOUND _pBound) &
+RMTOBJECT& RMTOBJECT::Bound (const BOUND& _Bound) &
 {
-   *m_pBound = _pBound;
+   m_pImpl->m_Bound = _Bound;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::pProperties (PROPERTIES _pProperties) &
+RMTOBJECT& RMTOBJECT::Properties (const PROPERTIES& _Properties) &
 {
-   *m_pProperties = _pProperties;
+   m_pImpl->m_Properties = _Properties;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::pPOD (POD _pPOD) &
+RMTOBJECT& RMTOBJECT::Children (uint32_t _nChildren) &
 {
-   *m_pPOD = _pPOD;
+   m_pImpl->m_nChildren = _nChildren;
 
    return *this;
 }

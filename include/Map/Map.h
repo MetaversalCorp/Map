@@ -1,6 +1,6 @@
 /*******************************************************************************************************************************
 **                                                                                                                            **
-**                                                      MVRP_Map_cpp : MVRP_Map.h                                             **
+**                                                         MAP : Map.h                                                        **
 **                                                                                                                            **
 ********************************************************************************************************************************
 **                              Copyright 2014-2024 Metaversal Corporation. All rights reserved.                              **
@@ -249,11 +249,6 @@ namespace RMAP
             double                  fReflectivity;
          };
 
-         struct POD
-         {
-            uint32_t                nChildren;
-         };
-
       public:
          class FACTORY : public RMAP::CORE::MODEL_OBJECT::FACTORY
          {
@@ -287,37 +282,30 @@ namespace RMAP
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
       // Accessors 
-         NAME                 const & pName ()                         const &;
-         TYPE                 const & pType ()                         const &;
-         OWNER                const & pOwner ()                        const &;
-         RESOURCE             const & pResource ()                     const &;
-         TRANSFORM            const & pTransform ()                    const &;
-         ORBIT_SPIN           const & pOrbit_Spin ()                   const &;
-         BOUND                const & pBound ()                        const &;
-         PROPERTIES           const & pProperties ()                   const &;
-         POD                  const & pPOD ()                          const &;
+         NAME                 const & Name ()                          const &;
+         TYPE                 const & Type ()                          const &;
+         OWNER                const & Owner ()                         const &;
+         RESOURCE             const & Resource ()                      const &;
+         TRANSFORM            const & Transform ()                     const &;
+         ORBIT_SPIN           const & Orbit_Spin ()                    const &;
+         BOUND                const & Bound ()                         const &;
+         PROPERTIES           const & Properties ()                    const &;
+         uint32_t             const   Children ()                      const &;
 
          // Modifiers                                              
-         RMCOBJECT& pName        (NAME       _pName)          &;
-         RMCOBJECT& pType        (TYPE       _pType)          &;
-         RMCOBJECT& pOwner       (OWNER      _pOwner)         &;
-         RMCOBJECT& pResource    (RESOURCE   _pResource)      &;
-         RMCOBJECT& pTransform   (TRANSFORM  _pTransform)     &;
-         RMCOBJECT& pOrbit_Spin  (ORBIT_SPIN _pOrbit_Spin)    &;
-         RMCOBJECT& pBound       (BOUND      _pBound)         &;
-         RMCOBJECT& pProperties  (PROPERTIES _pProperties)    &;
-         RMCOBJECT& pPOD         (POD        _pPOD)           &;
+         RMCOBJECT& Name        (const NAME& _Name)                          &;
+         RMCOBJECT& Type        (const TYPE& _Type)                          &;
+         RMCOBJECT& Owner       (const OWNER& _Owner)                        &;
+         RMCOBJECT& Resource    (const RESOURCE& _Resource)                  &;
+         RMCOBJECT& Transform   (const TRANSFORM& _Transform)                &;
+         RMCOBJECT& Orbit_Spin  (const ORBIT_SPIN& _Orbit_Spin)              &;
+         RMCOBJECT& Bound       (const BOUND& _Bound)                        &;
+         RMCOBJECT& Properties  (const PROPERTIES& _Properties)              &;
+         RMCOBJECT& Children    (uint32_t _nChildren)                        &;
 
       private:
-         NAME*                   m_pName;
-         TYPE*                   m_pType;
-         OWNER*                  m_pOwner;
-         RESOURCE*               m_pResource;
-         TRANSFORM*              m_pTransform;
-         ORBIT_SPIN*             m_pOrbit_Spin;
-         BOUND*                  m_pBound;
-         PROPERTIES*             m_pProperties;
-         POD*                    m_pPOD;
+         class Impl;
+         Impl* m_pImpl;
       };
 
       /*******************************************************************************************************************************
@@ -408,11 +396,6 @@ namespace RMAP
             Impl* m_pImpl;
          };
 
-         struct POD
-         {
-            uint32_t                nChildren;
-         };
-
       public:
          class FACTORY : public RMAP::CORE::MODEL_OBJECT::FACTORY
          {
@@ -446,31 +429,26 @@ namespace RMAP
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
          // Accessors 
-         NAME       const & pName ()                         const &;
-         TYPE       const & pType ()                         const &;
-         OWNER      const & pOwner ()                        const &;
-         RESOURCE   const & pResource ()                     const &;
-         TRANSFORM  const & pTransform ()                    const &;
-         BOUND      const & pBound ()                        const &;
-         POD                  const & pPOD ()                          const &;
+         NAME       const & Name ()                         const &;
+         TYPE       const & Type ()                         const &;
+         OWNER      const & Owner ()                        const &;
+         RESOURCE   const & Resource ()                     const &;
+         TRANSFORM  const & Transform ()                    const &;
+         BOUND      const & Bound ()                        const &;
+         uint32_t   const   Children ()                     const &;
 
          // Modifiers                                              
-         RMPOBJECT& pName        (NAME _pName)              &;
-         RMPOBJECT& pType        (TYPE       _pType)        &;
-         RMPOBJECT& pOwner       (OWNER      _pOwner)       &;
-         RMPOBJECT& pResource    (RESOURCE   _pResource)    &;
-         RMPOBJECT& pTransform   (TRANSFORM  _pTransform)   &;
-         RMPOBJECT& pBound       (BOUND      _pBound)       &;
-         RMPOBJECT& pPOD         (POD        _pPOD)         &;
+         RMPOBJECT& Name        (const NAME& _Name)               &;
+         RMPOBJECT& Type        (const TYPE& _Type)               &;
+         RMPOBJECT& Owner       (const OWNER& _Owner)             &;
+         RMPOBJECT& Resource    (const RESOURCE& _Resource)       &;
+         RMPOBJECT& Transform   (const TRANSFORM& _Transform)     &;
+         RMPOBJECT& Bound       (const BOUND& _Bound)             &;
+         RMPOBJECT& Children    (uint32_t _nChildren)             &;
 
       private:
-         NAME*      m_pName;
-         TYPE*      m_pType;
-         OWNER*     m_pOwner;
-         RESOURCE*  m_pResource;
-         TRANSFORM* m_pTransform;
-         BOUND*     m_pBound;
-         POD*       m_pPOD;
+         class Impl;
+         Impl* m_pImpl;
       };
 
       /*******************************************************************************************************************************
@@ -594,16 +572,16 @@ namespace RMAP
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
       // Accessors 
-         NAME                 const & pName ()                          const &;
-         OWNER                const & pOwner ()                         const &;
+         NAME                 const & Name ()                          const &;
+         OWNER                const & Owner ()                         const &;
 
          // Modifiers                                              
-         RMROOT& pName        (NAME _pName)                                   &;
-         RMROOT& pOwner       (OWNER _pOwner)                                 &;
+         RMROOT& Name        (const NAME& _Name)                             &;
+         RMROOT& Owner       (const OWNER& _Owner)                           &;
 
       private:
-         NAME*         m_pName;
-         OWNER*        m_pOwner;
+         class Impl;
+         Impl* m_pImpl;
       };
 
       /*******************************************************************************************************************************
@@ -719,11 +697,6 @@ namespace RMAP
             uint8_t                 bAvatar;
          };
 
-         struct POD
-         {
-            uint32_t                nChildren;
-         };
-
       public:
          class FACTORY : public RMAP::CORE::MODEL_OBJECT::FACTORY
          {
@@ -757,34 +730,28 @@ namespace RMAP
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
       // Accessors 
-         NAME           const & pName ()                         const &;
-         TYPE           const & pType ()                         const &;
-         OWNER          const & pOwner ()                        const &;
-         RESOURCE       const & pResource ()                     const &;
-         TRANSFORM      const & pTransform ()                    const &;
-         BOUND          const & pBound ()                        const &;
-         PROPERTIES     const & pProperties ()                   const &;
-         POD            const & pPOD ()                          const &;
+         NAME           const & Name ()                         const &;
+         TYPE           const & Type ()                         const &;
+         OWNER          const & Owner ()                        const &;
+         RESOURCE       const & Resource ()                     const &;
+         TRANSFORM      const & Transform ()                    const &;
+         BOUND          const & Bound ()                        const &;
+         PROPERTIES     const & Properties ()                   const &;
+         uint32_t       const   Children ()                     const &;
 
          // Modifiers                                              
-         RMTOBJECT& pName        (NAME       _pName)          &;
-         RMTOBJECT& pType        (TYPE       _pType)          &;
-         RMTOBJECT& pOwner       (OWNER      _pOwner)         &;
-         RMTOBJECT& pResource    (RESOURCE   _pResource)      &;
-         RMTOBJECT& pTransform   (TRANSFORM  _pTransform)     &;
-         RMTOBJECT& pBound       (BOUND      _pBound)         &;
-         RMTOBJECT& pProperties  (PROPERTIES _pProperties)    &;
-         RMTOBJECT& pPOD         (POD        _pPOD)           &;
+         RMTOBJECT& Name        (const NAME& _Name)                    &;
+         RMTOBJECT& Type        (const TYPE& _Type)                    &;
+         RMTOBJECT& Owner       (const OWNER& _Owner)                  &;
+         RMTOBJECT& Resource    (const RESOURCE& _Resource)            &;
+         RMTOBJECT& Transform   (const TRANSFORM& _Transform)          &;
+         RMTOBJECT& Bound       (const BOUND& _Bound)                  &;
+         RMTOBJECT& Properties  (const PROPERTIES& _Properties)        &;
+         RMTOBJECT& Children    (uint32_t _nChildren)                  &;
 
       private:
-         NAME*          m_pName;
-         TYPE*          m_pType;
-         OWNER*         m_pOwner;
-         RESOURCE*      m_pResource;
-         TRANSFORM*     m_pTransform;
-         BOUND*         m_pBound;
-         PROPERTIES*    m_pProperties;
-         POD*           m_pPOD;
+         class Impl;
+         Impl* m_pImpl;
       };
 
       void Install ();

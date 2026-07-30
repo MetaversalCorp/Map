@@ -135,18 +135,38 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMPOBJECT::FACT
 }
 
 /*******************************************************************************************************************************
+**                                             CLASS (RMPOBJECT::Impl)                                                        **
+****************************************************************\**************************************************************/
+
+class RMPOBJECT::Impl
+{
+public:
+   Impl () :
+      m_nChildren (0)
+   {
+   }
+
+   ~Impl ()
+   {
+   }
+
+public:
+   NAME                    m_Name;
+   TYPE                    m_Type;
+   OWNER                   m_Owner;
+   RESOURCE                m_Resource;
+   TRANSFORM               m_Transform;
+   BOUND                   m_Bound;
+   uint32_t                m_nChildren;
+};
+
+/*******************************************************************************************************************************
 **                                                     CLASS (RMPOBJECT)                                                      **
 *******************************************************************************************************************************/
 
 RMPOBJECT::RMPOBJECT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   m_pName (new NAME),
-   m_pType (new TYPE),
-   m_pOwner (new OWNER),
-   m_pResource (new RESOURCE),
-   m_pTransform (new TRANSFORM),
-   m_pBound (new BOUND),
-   m_pPOD (new POD)
+   m_pImpl (new Impl ())
 {
 }
 
@@ -178,90 +198,90 @@ RMAP::CORE::CLIENT::IACTION* RMPOBJECT::Request (std::string sAction)
 **  Accessors
 *******************************************************************************/
 
-RMPOBJECT::NAME const& RMPOBJECT::pName () const&
+RMPOBJECT::NAME const& RMPOBJECT::Name () const&
 {
-   return *m_pName;
+   return m_pImpl->m_Name;
 }
 
-TYPE const& RMPOBJECT::pType () const&
+TYPE const& RMPOBJECT::Type () const&
 {
-   return *m_pType;
+   return m_pImpl->m_Type;
 }
 
-OWNER const& RMPOBJECT::pOwner () const&
+OWNER const& RMPOBJECT::Owner () const&
 {
-   return *m_pOwner;
+   return m_pImpl->m_Owner;
 }
 
-RESOURCE const& RMPOBJECT::pResource () const&
+RESOURCE const& RMPOBJECT::Resource () const&
 {
-   return *m_pResource;
+   return m_pImpl->m_Resource;
 }
 
-TRANSFORM const& RMPOBJECT::pTransform () const&
+TRANSFORM const& RMPOBJECT::Transform () const&
 {
-   return *m_pTransform;
+   return m_pImpl->m_Transform;
 }
 
-BOUND const& RMPOBJECT::pBound () const&
+BOUND const& RMPOBJECT::Bound () const&
 {
-   return *m_pBound;
+   return m_pImpl->m_Bound;
 }
 
-RMPOBJECT::POD const& RMPOBJECT::pPOD () const&
+uint32_t const RMPOBJECT::Children () const &
 {
-   return *m_pPOD;
+   return m_pImpl->m_nChildren;
 }
 
 /*******************************************************************************
 **  Modifiers
 *******************************************************************************/
 
-RMPOBJECT& RMPOBJECT::pName (NAME _pName) &
+RMPOBJECT& RMPOBJECT::Name (const NAME& _Name) &
 {
-   *m_pName = _pName;
+   m_pImpl->m_Name = _Name;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pType (TYPE _pType) &
+RMPOBJECT& RMPOBJECT::Type (const TYPE& _Type) &
 {
-    *m_pType = _pType;
+   m_pImpl->m_Type = _Type;
 
     return *this;
  }
 
-RMPOBJECT& RMPOBJECT::pOwner (OWNER _pOwner) &
+RMPOBJECT& RMPOBJECT::Owner (const OWNER& _Owner) &
 {
-   *m_pOwner = _pOwner;
+   m_pImpl->m_Owner = _Owner;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pResource (RESOURCE _pResource) &
+RMPOBJECT& RMPOBJECT::Resource (const RESOURCE& _Resource) &
 {
-   *m_pResource = _pResource;
+   m_pImpl->m_Resource = _Resource;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pTransform (TRANSFORM _pTransform) &
+RMPOBJECT& RMPOBJECT::Transform (const TRANSFORM& _Transform) &
 {
-   *m_pTransform = _pTransform;
+   m_pImpl->m_Transform = _Transform;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pBound (BOUND _pBound) &
+RMPOBJECT& RMPOBJECT::Bound (const BOUND& _Bound) &
 {
-   *m_pBound = _pBound;
+   m_pImpl->m_Bound = _Bound;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::pPOD (POD _pPOD) &
+RMPOBJECT& RMPOBJECT::Children (uint32_t _nChildren) &
 {
-   *m_pPOD = _pPOD;
+   m_pImpl->m_nChildren = _nChildren;
 
    return *this;
 }

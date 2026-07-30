@@ -379,8 +379,8 @@ void IO_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    Owner.twRPersonaIx = jSrc["pOwner"]["twRPersonaIx"];
 
-   pModelIO->pName (Name);
-   pModelIO->pOwner (Owner);
+   pModelIO->Name (Name);
+   pModelIO->Owner (Owner);
 }
 
 bool IO_RMROOT::Attach ()

@@ -135,13 +135,32 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMROOT::FACTORY
 }
 
 /*******************************************************************************************************************************
+**                                             CLASS (RMROOT::Impl)                                                           **
+****************************************************************\**************************************************************/
+
+class RMROOT::Impl
+{
+public:
+   Impl ()
+   {
+   }
+
+   ~Impl ()
+   {
+   }
+
+public:
+   NAME                    m_Name;
+   OWNER                   m_Owner;
+};
+
+/*******************************************************************************************************************************
 **                                                     CLASS (RMROOT)                                                      **
 *******************************************************************************************************************************/
 
 RMROOT::RMROOT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   m_pName (new NAME),
-   m_pOwner (new OWNER)
+   m_pImpl (new Impl ())
 {
 }
 
@@ -173,30 +192,30 @@ RMAP::CORE::CLIENT::IACTION* RMROOT::Request (std::string sAction)
 **  Accessors
 *******************************************************************************/
 
-RMROOT::NAME const& RMROOT::pName () const&
+RMROOT::NAME const& RMROOT::Name () const&
 {
-   return *m_pName;
+   return m_pImpl->m_Name;
 }
 
-OWNER const& RMROOT::pOwner () const&
+OWNER const& RMROOT::Owner () const&
 {
-   return *m_pOwner;
+   return m_pImpl->m_Owner;
 }
 
 /*******************************************************************************
 **  Modifiers
 *******************************************************************************/
 
-RMROOT& RMROOT::pName (NAME _pName) &
+RMROOT& RMROOT::Name (const NAME& _Name) &
 {
-   *m_pName = _pName;
+   m_pImpl->m_Name = _Name;
 
    return *this;
 }
 
-RMROOT& RMROOT::pOwner (OWNER _pOwner) &
+RMROOT& RMROOT::Owner (const OWNER& _Owner) &
 {
-   *m_pOwner = _pOwner;
+   m_pImpl->m_Owner = _Owner;
 
    return *this;
 }

@@ -454,7 +454,7 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    TRANSFORM Transform;
    BOUND Bound;
    RMTOBJECT::PROPERTIES Properties;
-   RMTOBJECT::POD Pod;
+   uint32_t nChildren;
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
@@ -485,16 +485,16 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    Properties.bAdult          = jSrc["pProperties"]["bAdult"];
    Properties.bAvatar         = jSrc["pProperties"]["bAvatar"];
 
-   Pod.nChildren = jSrc["nChildren"];
+   nChildren = jSrc["nChildren"];
 
-   pModelIO->pName (Name);
-   pModelIO->pType (Type);
-   pModelIO->pOwner (Owner);
-   pModelIO->pResource (Resource);
-   pModelIO->pTransform (Transform);
-   pModelIO->pBound (Bound);
-   pModelIO->pProperties (Properties);
-   pModelIO->pPOD (Pod);
+   pModelIO->Name (Name);
+   pModelIO->Type (Type);
+   pModelIO->Owner (Owner);
+   pModelIO->Resource (Resource);
+   pModelIO->Transform (Transform);
+   pModelIO->Bound (Bound);
+   pModelIO->Properties (Properties);
+   pModelIO->Children (nChildren);
 }
 
 bool IO_RMTOBJECT::Attach ()

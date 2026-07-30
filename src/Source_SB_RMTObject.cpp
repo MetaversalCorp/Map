@@ -297,7 +297,7 @@ void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    TRANSFORM Transform;
    BOUND Bound;
    RMTOBJECT::PROPERTIES Properties;
-//   RMTOBJECT::POD Pod;
+//   uint32_t nChildren;
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
@@ -330,14 +330,14 @@ void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
 //   Pod.nChildren = jSrc["nChildren"];
 
-   pModelSB->pName (Name);
-   pModelSB->pType (Type);
-   pModelSB->pOwner (Owner);
-   pModelSB->pResource (Resource);
-   pModelSB->pTransform (Transform);
-   pModelSB->pBound (Bound);
-   pModelSB->pProperties (Properties);
-//   pModelSB->pPOD (Pod);
+   pModelSB->Name (Name);
+   pModelSB->Type (Type);
+   pModelSB->Owner (Owner);
+   pModelSB->Resource (Resource);
+   pModelSB->Transform (Transform);
+   pModelSB->Bound (Bound);
+   pModelSB->Properties (Properties);
+//   pModelSB->Children (nChildren);
 }
 
 /******************************************************************************************************************************/
