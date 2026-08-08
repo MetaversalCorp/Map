@@ -317,18 +317,16 @@ void IO_RMPOBJECT::init ()
 
 IO_RMPOBJECT::FACTORY* IO_RMPOBJECT::factory ()
 {
-   return new FACTORY ("Socket.IO", "RMPObject", MAP_DATA::MAP_OBJECT_CLASS_PHYSICAL, aAction, true);
+   return new FACTORY ("Socket.IO", "RMPObject", MAP_OBJECT_CLASS_PHYSICAL, aAction, true);
 }
 
 void IO_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMPOBJECT* pModelIO = dynamic_cast<RMPOBJECT*> (pModel);
-   RMPOBJECT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMPObjectId"].template get<std::string> ().c_str ()));
-   MAP_DATA::MAP_OBJECT_TYPE Type;
-   MAP_DATA::MAP_OBJECT_OWNER Owner;
-   RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
-   MAP_DATA::MAP_OBJECT_TRANSFORM Transform;
-   MAP_DATA::MAP_OBJECT_BOUND Bound;
+   MAP_OBJECT_TYPE Type;
+   MAP_OBJECT_OWNER Owner;
+   MAP_OBJECT_TRANSFORM Transform;
+   MAP_OBJECT_BOUND Bound;
    uint32_t nChildren;
 
    Type.bType     = jSrc["pType"]["bType"];
@@ -356,10 +354,10 @@ void IO_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    nChildren = jSrc["nChildren"];
 
-   pModelIO->Name (Name);
+   pModelIO->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMPObjectId"].template get<std::string> ().c_str ()));
    pModelIO->Type (Type);
    pModelIO->Owner (Owner);
-   pModelIO->Resource (Resource);
+   pModelIO->Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
    pModelIO->Transform (Transform);
    pModelIO->Bound (Bound);
    pModelIO->Children (nChildren);

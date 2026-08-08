@@ -477,20 +477,18 @@ void IO_RMCOBJECT::init ()
 
 IO_RMCOBJECT::FACTORY* IO_RMCOBJECT::factory ()
 {
-   return new FACTORY ("Socket.IO", "RMCObject", MAP_DATA::MAP_OBJECT_CLASS_CELESTIAL, aAction, true);
+   return new FACTORY ("Socket.IO", "RMCObject", MAP_OBJECT_CLASS_CELESTIAL, aAction, true);
 }
 
 void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMCOBJECT* pModelIO = dynamic_cast<RMCOBJECT*> (pModel);
-   RMCOBJECT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMCObjectId"].get<std::string> ().c_str ()));
-   MAP_DATA::MAP_OBJECT_TYPE Type;
-   MAP_DATA::MAP_OBJECT_OWNER Owner;
-   RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
-   MAP_DATA::MAP_OBJECT_TRANSFORM Transform;
-   MAP_DATA::MAP_OBJECT_ORBIT_CELESTIAL Orbit_Spin;
-   MAP_DATA::MAP_OBJECT_BOUND Bound;
-   MAP_DATA::MAP_OBJECT_PROPERTIES_CELESTIAL Properties;
+   MAP_OBJECT_TYPE Type;
+   MAP_OBJECT_OWNER Owner;
+   MAP_OBJECT_TRANSFORM Transform;
+   MAP_OBJECT_ORBIT_CELESTIAL Orbit_Spin;
+   MAP_OBJECT_BOUND Bound;
+   MAP_OBJECT_PROPERTIES_CELESTIAL Properties;
    uint32_t nChildren;
 
    Type.bType     = jSrc["pType"]["bType"];
@@ -529,10 +527,10 @@ void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    nChildren = jSrc["nChildren"];
 
-   pModelIO->Name (Name);
+   pModelIO->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMCObjectId"].get<std::string> ().c_str ()));
    pModelIO->Type (Type);
    pModelIO->Owner (Owner);
-   pModelIO->Resource (Resource);
+   pModelIO->Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
    pModelIO->Transform (Transform);
    pModelIO->Orbit_Spin (Orbit_Spin);
    pModelIO->Bound (Bound);

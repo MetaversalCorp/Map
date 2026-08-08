@@ -25,9 +25,10 @@ endif()
 
 set(Map_FILES
    include/Map/Map.h
+   include/Map/Map_Object.h
    src/Library.cpp
    src/Library.h
-   src/Map_Data.cpp
+   src/Map_Object.cpp
    src/Model_RMCObject.cpp
    src/Model_RMPObject.cpp
    src/Model_RMRoot.cpp
@@ -36,7 +37,6 @@ set(Map_FILES
    src/Package_IO.h
    src/Package_SB.cpp
    src/Package_SB.h
-   src/RMCommon.cpp
    src/Source_IO_Object.cpp
    src/Source_IO_RMCObject.cpp
    src/Source_IO_RMPObject.cpp

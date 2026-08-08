@@ -284,19 +284,17 @@ SB_RMTOBJECT::FACTORY* SB_RMTOBJECT::factory ()
       "}"
    );
 
-   return new FACTORY ("Statabase", "RMTObject", MAP_DATA::MAP_OBJECT_CLASS_TERRESTRIAL, aAction, true, pMap);
+   return new FACTORY ("Statabase", "RMTObject", MAP_OBJECT_CLASS_TERRESTRIAL, aAction, true, pMap);
 }
 
 void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMTOBJECT* pModelSB = dynamic_cast<RMTOBJECT*> (pModel);
-   RMTOBJECT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMTObjectId"].get<std::string> ().c_str ()));
-   MAP_DATA::MAP_OBJECT_TYPE Type;
-   MAP_DATA::MAP_OBJECT_OWNER Owner;
-   RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
-   MAP_DATA::MAP_OBJECT_TRANSFORM Transform;
-   MAP_DATA::MAP_OBJECT_BOUND Bound;
-   MAP_DATA::MAP_OBJECT_PROPERTIES_TERRESTIAL Properties;
+   MAP_OBJECT_TYPE Type;
+   MAP_OBJECT_OWNER Owner;
+   MAP_OBJECT_TRANSFORM Transform;
+   MAP_OBJECT_BOUND Bound;
+   MAP_OBJECT_PROPERTIES_TERRESTIAL Properties;
    //   uint32_t nChildren;
 
    Type.bType     = jSrc["pType"]["bType"];
@@ -329,10 +327,10 @@ void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
 //   Pod.nChildren = jSrc["nChildren"];
 
-   pModelSB->Name (Name);
+   pModelSB->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMTObjectId"].get<std::string> ().c_str ()));
    pModelSB->Type (Type);
    pModelSB->Owner (Owner);
-   pModelSB->Resource (Resource);
+   pModelSB->Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
    pModelSB->Transform (Transform);
    pModelSB->Bound (Bound);
    pModelSB->Properties (Properties);

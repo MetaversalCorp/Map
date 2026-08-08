@@ -368,18 +368,17 @@ void IO_RMROOT::init ()
 
 IO_RMROOT::FACTORY* IO_RMROOT::factory ()
 {
-   return new FACTORY ("Socket.IO", "RMRoot", MAP_DATA::MAP_OBJECT_CLASS_ROOT, aAction, true);
+   return new FACTORY ("Socket.IO", "RMRoot", MAP_OBJECT_CLASS_ROOT, aAction, true);
 }
 
 void IO_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMROOT* pModelIO = dynamic_cast<RMROOT*> (pModel);
-   RMROOT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMRootId"].template get<std::string> ().c_str ()));
-   MAP_DATA::MAP_OBJECT_OWNER Owner;
+   MAP_OBJECT_OWNER Owner;
 
    Owner.twOwner = jSrc["pOwner"]["twRPersonaIx"];
 
-   pModelIO->Name (Name);
+   pModelIO->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMRootId"].template get<std::string> ().c_str ()));
    pModelIO->Owner (Owner);
 }
 

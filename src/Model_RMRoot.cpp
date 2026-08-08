@@ -11,92 +11,6 @@
 using namespace RMAP::MAP;
 
 /*******************************************************************************************************************************
-**                                             CLASS (RMROOT::NAME::Impl)                                                   **
-****************************************************************\**************************************************************/
-
-class RMROOT::NAME::Impl
-{
-public:
-   Impl (std::wstring wsRMRootId) :
-      _wsRMRootId{ std::move (wsRMRootId) }
-   {
-   }
-
-   ~Impl ()
-   {
-   }
-
-public:
-   std::wstring _wsRMRootId;
-};
-
-
-/*******************************************************************************************************************************
-**                                             CLASS (RMROOT::NAME)                                                         **
-****************************************************************\**************************************************************/
-
-RMROOT::NAME::NAME (std::wstring wsRMRootId) :
-   m_pImpl (new RMROOT::NAME::Impl (std::move (wsRMRootId)))
-{
-}
-
-// Copy Constructor
-RMROOT::NAME::NAME (NAME const& other) :
-   m_pImpl (new RMROOT::NAME::Impl (other.m_pImpl->_wsRMRootId))
-{
-}
-
-// Move Constructor
-RMROOT::NAME::NAME (NAME&& other) noexcept :
-   m_pImpl (new RMROOT::NAME::Impl (std::move (other.m_pImpl->_wsRMRootId)))
-{
-}
-
-// Copy Assignment Operator
-RMROOT::NAME& RMROOT::NAME::operator=(NAME const& rhs)&
-{
-   if (this != &rhs)
-   {
-      m_pImpl->_wsRMRootId = rhs.m_pImpl->_wsRMRootId;
-   }
-   return *this;
-}
-
-// Move Assignment Operator
-RMROOT::NAME& RMROOT::NAME::operator=(NAME&& rhs) & noexcept = default;
-
-// Destructor
-RMROOT::NAME::~NAME () noexcept
-{
-   delete m_pImpl;
-}
-
-/*******************************************************************************
-**  Accessors
-*******************************************************************************/
-
-std::wstring const& RMROOT::NAME::wsRMRootId () const&
-{
-   return m_pImpl->_wsRMRootId;
-}
-
-std::wstring RMROOT::NAME::wsRMRootId () &&
-{
-   return std::move (m_pImpl->_wsRMRootId);
-}
-
-/*******************************************************************************
-**  Modifiers
-*******************************************************************************/
-
-RMROOT::NAME& RMROOT::NAME::wsRMRootId (std::wstring _wsRMRootId) &
-{
-   m_pImpl->_wsRMRootId = std::move (_wsRMRootId);
-
-   return *this;
-}
-
-/*******************************************************************************************************************************
 **                                             CLASS (RMROOT::IREFERENCE)                                                  **
 ****************************************************************\**************************************************************/
 
@@ -135,32 +49,12 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMROOT::FACTORY
 }
 
 /*******************************************************************************************************************************
-**                                             CLASS (RMROOT::Impl)                                                           **
-****************************************************************\**************************************************************/
-
-class RMROOT::Impl
-{
-public:
-   Impl ()
-   {
-   }
-
-   ~Impl ()
-   {
-   }
-
-public:
-   NAME                          m_Name;
-   MAP_DATA::MAP_OBJECT_OWNER    m_Owner;
-};
-
-/*******************************************************************************************************************************
 **                                                     CLASS (RMROOT)                                                      **
 *******************************************************************************************************************************/
 
 RMROOT::RMROOT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   m_pImpl (new Impl ())
+   MAP_OBJECT (wClass_Parent (), twParentIx (), wClass_Object (), twObjectIx ())
 {
 }
 
@@ -171,17 +65,6 @@ RMROOT::~RMROOT ()
 RMAP::CORE::MODEL::FACTORY* RMROOT::factory ()
 {
    return new FACTORY ("RMRoot");
-}
-
-void RMROOT::GetData (MAP_DATA& Map_Data)
-{
-   Map_Data.Head.Parent.qwComposed  = OBJECTIX_COMPOSE (wClass_Parent (), twParentIx ());
-   Map_Data.Head.Self.qwComposed    = OBJECTIX_COMPOSE (wClass_Object (), twObjectIx ());
-   Map_Data.Head.qwEvent            = 0;
-
-   RMAP::CORE::UTILS::WString_to_Uint16 (m_pImpl->m_Name.wsRMRootId (), Map_Data.Name.wsName, sizeof (Map_Data.Name.wsName) / sizeof (uint16_t));
-
-   Map_Data.Owner = m_pImpl->m_Owner;
 }
 
 RMAP::CORE::CLIENT::IACTION* RMROOT::Request (std::string sAction)
@@ -197,38 +80,6 @@ RMAP::CORE::CLIENT::IACTION* RMROOT::Request (std::string sAction)
    }
 
    return pIAction;
-}
-
-/*******************************************************************************
-**  Accessors
-*******************************************************************************/
-
-RMROOT::NAME const& RMROOT::Name () const&
-{
-   return m_pImpl->m_Name;
-}
-
-MAP_DATA::MAP_OBJECT_OWNER const& RMROOT::Owner () const&
-{
-   return m_pImpl->m_Owner;
-}
-
-/*******************************************************************************
-**  Modifiers
-*******************************************************************************/
-
-RMROOT& RMROOT::Name (const NAME& _Name) &
-{
-   m_pImpl->m_Name = _Name;
-
-   return *this;
-}
-
-RMROOT& RMROOT::Owner (const MAP_DATA::MAP_OBJECT_OWNER& _Owner) &
-{
-   m_pImpl->m_Owner = _Owner;
-
-   return *this;
 }
 
 /******************************************************************************************************************************/

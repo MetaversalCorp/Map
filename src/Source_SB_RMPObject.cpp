@@ -231,18 +231,16 @@ SB_RMPOBJECT::FACTORY* SB_RMPOBJECT::factory ()
       "}"
    );
 
-   return new FACTORY ("Statabase", "RMPObject", MAP_DATA::MAP_OBJECT_CLASS_PHYSICAL, aAction, true, pMap);
+   return new FACTORY ("Statabase", "RMPObject", MAP_OBJECT_CLASS_PHYSICAL, aAction, true, pMap);
 }
 
 void SB_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMPOBJECT* pModelSB = dynamic_cast<RMPOBJECT*> (pModel);
-   RMPOBJECT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMCObjectId"].get<std::string> ().c_str ()));
-   MAP_DATA::MAP_OBJECT_TYPE Type;
-   MAP_DATA::MAP_OBJECT_OWNER Owner;
-   RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
-   MAP_DATA::MAP_OBJECT_TRANSFORM Transform;
-   MAP_DATA::MAP_OBJECT_BOUND Bound;
+   MAP_OBJECT_TYPE Type;
+   MAP_OBJECT_OWNER Owner;
+   MAP_OBJECT_TRANSFORM Transform;
+   MAP_OBJECT_BOUND Bound;
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
@@ -269,10 +267,10 @@ void SB_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
 //   Pod.nChildren = jSrc["nChildren"];
 
-   pModelSB->Name (Name);
+   pModelSB->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMCObjectId"].get<std::string> ().c_str ()));
    pModelSB->Type (Type);
    pModelSB->Owner (Owner);
-   pModelSB->Resource (Resource);
+   pModelSB->Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
    pModelSB->Transform (Transform);
    pModelSB->Bound (Bound);
 //   pModelSB->pPOD (Pod);
