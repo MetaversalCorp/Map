@@ -477,50 +477,49 @@ void IO_RMCOBJECT::init ()
 
 IO_RMCOBJECT::FACTORY* IO_RMCOBJECT::factory ()
 {
-   return new FACTORY ("Socket.IO", "RMCObject", SBO_CLASS_RMCOBJECT, aAction, true);
+   return new FACTORY ("Socket.IO", "RMCObject", MAP_DATA::MAP_OBJECT_CLASS_CELESTIAL, aAction, true);
 }
 
 void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMCOBJECT* pModelIO = dynamic_cast<RMCOBJECT*> (pModel);
    RMCOBJECT::NAME Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMCObjectId"].get<std::string> ().c_str ()));
-   TYPE Type;
-   OWNER Owner;
+   MAP_DATA::MAP_OBJECT_TYPE Type;
+   MAP_DATA::MAP_OBJECT_OWNER Owner;
    RESOURCE Resource (jSrc["pResource"]["qwResource"], jSrc["pResource"]["sName"], jSrc["pResource"]["sReference"]);
-   TRANSFORM Transform;
-   ORBIT_SPIN Orbit_Spin;
-   BOUND Bound;
-   RMCOBJECT::PROPERTIES Properties;
+   MAP_DATA::MAP_OBJECT_TRANSFORM Transform;
+   MAP_DATA::MAP_OBJECT_ORBIT_CELESTIAL Orbit_Spin;
+   MAP_DATA::MAP_OBJECT_BOUND Bound;
+   MAP_DATA::MAP_OBJECT_PROPERTIES_CELESTIAL Properties;
    uint32_t nChildren;
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
    Type.bFiction  = jSrc["pType"]["bFiction"];
-   Type.bMovable  = 0;
 
-   Owner.twRPersonaIx = jSrc["pOwner"]["twRPersonaIx"];
+   Owner.twOwner  = jSrc["pOwner"]["twRPersonaIx"];
 
-   Transform.vPosition.dX  = jSrc["pTransform"]["Position"][0];
-   Transform.vPosition.dY  = jSrc["pTransform"]["Position"][1];
-   Transform.vPosition.dZ  = jSrc["pTransform"]["Position"][2];
+   Transform.d3Position[0] = jSrc["pTransform"]["Position"][0];
+   Transform.d3Position[1] = jSrc["pTransform"]["Position"][1];
+   Transform.d3Position[2] = jSrc["pTransform"]["Position"][2];
 
-   Transform.qRotation.dX  = jSrc["pTransform"]["Rotation"][0];
-   Transform.qRotation.dY  = jSrc["pTransform"]["Rotation"][1];
-   Transform.qRotation.dZ  = jSrc["pTransform"]["Rotation"][2];
-   Transform.qRotation.dW  = jSrc["pTransform"]["Rotation"][3];
+   Transform.d4Rotation[0] = jSrc["pTransform"]["Rotation"][0];
+   Transform.d4Rotation[1] = jSrc["pTransform"]["Rotation"][1];
+   Transform.d4Rotation[2] = jSrc["pTransform"]["Rotation"][2];
+   Transform.d4Rotation[3] = jSrc["pTransform"]["Rotation"][3];
 
-   Transform.vScale.dX     = jSrc["pTransform"]["Scale"][0];
-   Transform.vScale.dY     = jSrc["pTransform"]["Scale"][1];
-   Transform.vScale.dZ     = jSrc["pTransform"]["Scale"][2];
+   Transform.d3Scale[0]    = jSrc["pTransform"]["Scale"][0];
+   Transform.d3Scale[1]    = jSrc["pTransform"]["Scale"][1];
+   Transform.d3Scale[2]    = jSrc["pTransform"]["Scale"][2];
 
    Orbit_Spin.tmPeriod     = jSrc["pOrbit_Spin"]["tmPeriod"];
    Orbit_Spin.tmOrigin     = jSrc["pOrbit_Spin"]["tmOrigin"];
    Orbit_Spin.dA           = jSrc["pOrbit_Spin"]["dA"];
    Orbit_Spin.dB           = jSrc["pOrbit_Spin"]["dB"];
 
-   Bound.dX = jSrc["pBound"]["Max"][0];
-   Bound.dY = jSrc["pBound"]["Max"][1];
-   Bound.dZ = jSrc["pBound"]["Max"][2];
+   Bound.d3Max[0]          = jSrc["pBound"]["Max"][0];
+   Bound.d3Max[1]          = jSrc["pBound"]["Max"][1];
+   Bound.d3Max[2]          = jSrc["pBound"]["Max"][2];
 
    Properties.fMass         = jSrc["pProperties"]["fMass"];
    Properties.fGravity      = jSrc["pProperties"]["fGravity"];

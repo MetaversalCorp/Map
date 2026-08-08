@@ -35,7 +35,7 @@ public:
 };
 
 /*******************************************************************************************************************************
-**                                             CLASS (RESOURCE)                                                     **
+**                                             CLASS (RESOURCE)                                                               **
 ****************************************************************\**************************************************************/
 
 RESOURCE::RESOURCE (uint64_t qwResource, std::string sName, std::string sReference) :
@@ -74,6 +74,13 @@ RESOURCE& RESOURCE::operator=(RESOURCE&& rhs) & noexcept = default;
 RESOURCE::~RESOURCE () noexcept
 {
    delete m_pImpl;
+}
+
+void RESOURCE::GetData (MAP_DATA::MAP_OBJECT_RESOURCE& Map_Data)
+{
+   Map_Data.qwResource        = m_pImpl->qwResource;
+   RMAP::CORE::UTILS::String_to_Uint8 (m_pImpl->sName, reinterpret_cast<uint8_t*> (Map_Data.sName), sizeof (Map_Data.sName) / sizeof (uint8_t));
+   RMAP::CORE::UTILS::String_to_Uint8 (m_pImpl->sReference, reinterpret_cast<uint8_t*> (Map_Data.sReference), sizeof (Map_Data.sReference) / sizeof (uint8_t));
 }
 
 /*******************************************************************************

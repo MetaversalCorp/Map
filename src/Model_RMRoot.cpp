@@ -150,8 +150,8 @@ public:
    }
 
 public:
-   NAME                    m_Name;
-   OWNER                   m_Owner;
+   NAME                          m_Name;
+   MAP_DATA::MAP_OBJECT_OWNER    m_Owner;
 };
 
 /*******************************************************************************************************************************
@@ -171,6 +171,17 @@ RMROOT::~RMROOT ()
 RMAP::CORE::MODEL::FACTORY* RMROOT::factory ()
 {
    return new FACTORY ("RMRoot");
+}
+
+void RMROOT::GetData (MAP_DATA& Map_Data)
+{
+   Map_Data.Head.Parent.qwComposed  = OBJECTIX_COMPOSE (wClass_Parent (), twParentIx ());
+   Map_Data.Head.Self.qwComposed    = OBJECTIX_COMPOSE (wClass_Object (), twObjectIx ());
+   Map_Data.Head.qwEvent            = 0;
+
+   RMAP::CORE::UTILS::WString_to_Uint16 (m_pImpl->m_Name.wsRMRootId (), Map_Data.Name.wsName, sizeof (Map_Data.Name.wsName) / sizeof (uint16_t));
+
+   Map_Data.Owner = m_pImpl->m_Owner;
 }
 
 RMAP::CORE::CLIENT::IACTION* RMROOT::Request (std::string sAction)
@@ -197,7 +208,7 @@ RMROOT::NAME const& RMROOT::Name () const&
    return m_pImpl->m_Name;
 }
 
-OWNER const& RMROOT::Owner () const&
+MAP_DATA::MAP_OBJECT_OWNER const& RMROOT::Owner () const&
 {
    return m_pImpl->m_Owner;
 }
@@ -213,7 +224,7 @@ RMROOT& RMROOT::Name (const NAME& _Name) &
    return *this;
 }
 
-RMROOT& RMROOT::Owner (const OWNER& _Owner) &
+RMROOT& RMROOT::Owner (const MAP_DATA::MAP_OBJECT_OWNER& _Owner) &
 {
    m_pImpl->m_Owner = _Owner;
 

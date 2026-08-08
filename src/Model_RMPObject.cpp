@@ -151,13 +151,13 @@ public:
    }
 
 public:
-   NAME                    m_Name;
-   TYPE                    m_Type;
-   OWNER                   m_Owner;
-   RESOURCE                m_Resource;
-   TRANSFORM               m_Transform;
-   BOUND                   m_Bound;
-   uint32_t                m_nChildren;
+   NAME                             m_Name;
+   MAP_DATA::MAP_OBJECT_TYPE        m_Type;
+   MAP_DATA::MAP_OBJECT_OWNER       m_Owner;
+   RESOURCE                         m_Resource;
+   MAP_DATA::MAP_OBJECT_TRANSFORM   m_Transform;
+   MAP_DATA::MAP_OBJECT_BOUND       m_Bound;
+   uint32_t                         m_nChildren;
 };
 
 /*******************************************************************************************************************************
@@ -177,6 +177,23 @@ RMPOBJECT::~RMPOBJECT ()
 RMAP::CORE::MODEL::FACTORY* RMPOBJECT::factory ()
 {
    return new FACTORY ("RMPObject");
+}
+
+void RMPOBJECT::GetData (MAP_DATA& Map_Data)
+{
+   Map_Data.Head.Parent.qwComposed  = OBJECTIX_COMPOSE (wClass_Parent (), twParentIx ());
+   Map_Data.Head.Self.qwComposed    = OBJECTIX_COMPOSE (wClass_Object (), twObjectIx ());
+   Map_Data.Head.qwEvent            = 0;
+
+   RMAP::CORE::UTILS::WString_to_Uint16 (m_pImpl->m_Name.wsRMPObjectId (), Map_Data.Name.wsName, sizeof (Map_Data.Name.wsName) / sizeof (uint16_t));
+
+   Map_Data.Type  = m_pImpl->m_Type;
+   Map_Data.Owner = m_pImpl->m_Owner;
+
+   m_pImpl->m_Resource.GetData (Map_Data.Resource);
+
+   Map_Data.Transform = m_pImpl->m_Transform;
+   Map_Data.Bound = m_pImpl->m_Bound;
 }
 
 RMAP::CORE::CLIENT::IACTION* RMPOBJECT::Request (std::string sAction)
@@ -203,12 +220,12 @@ RMPOBJECT::NAME const& RMPOBJECT::Name () const&
    return m_pImpl->m_Name;
 }
 
-TYPE const& RMPOBJECT::Type () const&
+MAP_DATA::MAP_OBJECT_TYPE const& RMPOBJECT::Type () const&
 {
    return m_pImpl->m_Type;
 }
 
-OWNER const& RMPOBJECT::Owner () const&
+MAP_DATA::MAP_OBJECT_OWNER const& RMPOBJECT::Owner () const&
 {
    return m_pImpl->m_Owner;
 }
@@ -218,12 +235,12 @@ RESOURCE const& RMPOBJECT::Resource () const&
    return m_pImpl->m_Resource;
 }
 
-TRANSFORM const& RMPOBJECT::Transform () const&
+MAP_DATA::MAP_OBJECT_TRANSFORM const& RMPOBJECT::Transform () const&
 {
    return m_pImpl->m_Transform;
 }
 
-BOUND const& RMPOBJECT::Bound () const&
+MAP_DATA::MAP_OBJECT_BOUND const& RMPOBJECT::Bound () const&
 {
    return m_pImpl->m_Bound;
 }
@@ -244,14 +261,14 @@ RMPOBJECT& RMPOBJECT::Name (const NAME& _Name) &
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::Type (const TYPE& _Type) &
+RMPOBJECT& RMPOBJECT::Type (const MAP_DATA::MAP_OBJECT_TYPE& _Type) &
 {
    m_pImpl->m_Type = _Type;
 
     return *this;
  }
 
-RMPOBJECT& RMPOBJECT::Owner (const OWNER& _Owner) &
+RMPOBJECT& RMPOBJECT::Owner (const MAP_DATA::MAP_OBJECT_OWNER& _Owner) &
 {
    m_pImpl->m_Owner = _Owner;
 
@@ -265,14 +282,14 @@ RMPOBJECT& RMPOBJECT::Resource (const RESOURCE& _Resource) &
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::Transform (const TRANSFORM& _Transform) &
+RMPOBJECT& RMPOBJECT::Transform (const MAP_DATA::MAP_OBJECT_TRANSFORM& _Transform) &
 {
    m_pImpl->m_Transform = _Transform;
 
    return *this;
 }
 
-RMPOBJECT& RMPOBJECT::Bound (const BOUND& _Bound) &
+RMPOBJECT& RMPOBJECT::Bound (const MAP_DATA::MAP_OBJECT_BOUND& _Bound) &
 {
    m_pImpl->m_Bound = _Bound;
 

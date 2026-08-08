@@ -151,14 +151,14 @@ public:
    }
 
 public:
-   NAME                    m_Name;
-   TYPE                    m_Type;
-   OWNER                   m_Owner;
-   RESOURCE                m_Resource;
-   TRANSFORM               m_Transform;
-   BOUND                   m_Bound;
-   PROPERTIES              m_Properties;
-   uint32_t                m_nChildren;
+   NAME                                            m_Name;
+   MAP_DATA::MAP_OBJECT_TYPE                       m_Type;
+   MAP_DATA::MAP_OBJECT_OWNER                      m_Owner;
+   RESOURCE                                        m_Resource;
+   MAP_DATA::MAP_OBJECT_TRANSFORM                  m_Transform;
+   MAP_DATA::MAP_OBJECT_BOUND                      m_Bound;
+   MAP_DATA::MAP_OBJECT_PROPERTIES_TERRESTIAL      m_Properties;
+   uint32_t                                        m_nChildren;
 };
 
 /*******************************************************************************************************************************
@@ -178,6 +178,24 @@ RMTOBJECT::~RMTOBJECT ()
 RMAP::CORE::MODEL::FACTORY* RMTOBJECT::factory ()
 {
    return new FACTORY ("RMTObject");
+}
+
+void RMTOBJECT::GetData (MAP_DATA& Map_Data)
+{
+   Map_Data.Head.Parent.qwComposed  = OBJECTIX_COMPOSE (wClass_Parent (), twParentIx ());
+   Map_Data.Head.Self.qwComposed    = OBJECTIX_COMPOSE (wClass_Object (), twObjectIx ());
+   Map_Data.Head.qwEvent            = 0;
+
+   RMAP::CORE::UTILS::WString_to_Uint16 (m_pImpl->m_Name.wsRMTObjectId (), Map_Data.Name.wsName, sizeof (Map_Data.Name.wsName) / sizeof (uint16_t));
+
+   Map_Data.Type  = m_pImpl->m_Type;
+   Map_Data.Owner = m_pImpl->m_Owner;
+
+   m_pImpl->m_Resource.GetData (Map_Data.Resource);
+
+   Map_Data.Transform = m_pImpl->m_Transform;
+   Map_Data.Bound = m_pImpl->m_Bound;
+   Map_Data.Properties.Terrestial = m_pImpl->m_Properties;
 }
 
 RMAP::CORE::CLIENT::IACTION* RMTOBJECT::Request (std::string sAction)
@@ -204,12 +222,12 @@ RMTOBJECT::NAME const& RMTOBJECT::Name () const&
    return m_pImpl->m_Name;
 }
 
-TYPE const& RMTOBJECT::Type () const&
+MAP_DATA::MAP_OBJECT_TYPE const& RMTOBJECT::Type () const&
 {
    return m_pImpl->m_Type;
 }
 
-OWNER const& RMTOBJECT::Owner () const&
+MAP_DATA::MAP_OBJECT_OWNER const& RMTOBJECT::Owner () const&
 {
    return m_pImpl->m_Owner;
 }
@@ -219,17 +237,17 @@ RESOURCE const& RMTOBJECT::Resource () const&
    return m_pImpl->m_Resource;
 }
 
-TRANSFORM const& RMTOBJECT::Transform () const&
+MAP_DATA::MAP_OBJECT_TRANSFORM const& RMTOBJECT::Transform () const&
 {
    return m_pImpl->m_Transform;
 }
 
-BOUND const& RMTOBJECT::Bound () const&
+MAP_DATA::MAP_OBJECT_BOUND const& RMTOBJECT::Bound () const&
 {
    return m_pImpl->m_Bound;
 }
 
-RMTOBJECT::PROPERTIES const& RMTOBJECT::Properties () const&
+MAP_DATA::MAP_OBJECT_PROPERTIES_TERRESTIAL const& RMTOBJECT::Properties () const&
 {
    return m_pImpl->m_Properties;
 }
@@ -250,14 +268,14 @@ RMTOBJECT& RMTOBJECT::Name (const NAME& _Name) &
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::Type (const TYPE& _Type) &
+RMTOBJECT& RMTOBJECT::Type (const MAP_DATA::MAP_OBJECT_TYPE& _Type) &
 {
    m_pImpl->m_Type = _Type;
 
     return *this;
  }
 
-RMTOBJECT& RMTOBJECT::Owner (const OWNER& _Owner) &
+RMTOBJECT& RMTOBJECT::Owner (const MAP_DATA::MAP_OBJECT_OWNER& _Owner) &
 {
    m_pImpl->m_Owner = _Owner;
 
@@ -271,21 +289,21 @@ RMTOBJECT& RMTOBJECT::Resource (const RESOURCE& _Resource) &
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::Transform (const TRANSFORM& _Transform) &
+RMTOBJECT& RMTOBJECT::Transform (const MAP_DATA::MAP_OBJECT_TRANSFORM& _Transform) &
 {
    m_pImpl->m_Transform = _Transform;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::Bound (const BOUND& _Bound) &
+RMTOBJECT& RMTOBJECT::Bound (const MAP_DATA::MAP_OBJECT_BOUND& _Bound) &
 {
    m_pImpl->m_Bound = _Bound;
 
    return *this;
 }
 
-RMTOBJECT& RMTOBJECT::Properties (const PROPERTIES& _Properties) &
+RMTOBJECT& RMTOBJECT::Properties (const MAP_DATA::MAP_OBJECT_PROPERTIES_TERRESTIAL& _Properties) &
 {
    m_pImpl->m_Properties = _Properties;
 

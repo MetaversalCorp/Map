@@ -150,15 +150,15 @@ public:
    }
 
 public:
-   NAME                    m_Name;
-   TYPE                    m_Type;
-   OWNER                   m_Owner;
-   RESOURCE                m_Resource;
-   TRANSFORM               m_Transform;
-   ORBIT_SPIN              m_Orbit_Spin;
-   BOUND                   m_Bound;
-   PROPERTIES              m_Properties;
-   uint32_t                m_nChildren;
+   NAME                                      m_Name;
+   MAP_DATA::MAP_OBJECT_TYPE                 m_Type;
+   MAP_DATA::MAP_OBJECT_OWNER                m_Owner;
+   RESOURCE                                  m_Resource;
+   MAP_DATA::MAP_OBJECT_TRANSFORM            m_Transform;
+   MAP_DATA::MAP_OBJECT_ORBIT_CELESTIAL      m_Orbit_Spin;
+   MAP_DATA::MAP_OBJECT_BOUND                m_Bound;
+   MAP_DATA::MAP_OBJECT_PROPERTIES_CELESTIAL m_Properties;
+   uint32_t                                  m_nChildren;
 };
 
 /*******************************************************************************************************************************
@@ -179,6 +179,25 @@ RMCOBJECT::~RMCOBJECT ()
 RMAP::CORE::MODEL::FACTORY* RMCOBJECT::factory ()
 {
    return new FACTORY ("RMCObject");
+}
+
+void RMCOBJECT::GetData (MAP_DATA& Map_Data)
+{
+   Map_Data.Head.Parent.qwComposed  = OBJECTIX_COMPOSE (wClass_Parent (), twParentIx ());
+   Map_Data.Head.Self.qwComposed    = OBJECTIX_COMPOSE (wClass_Object (), twObjectIx ());
+   Map_Data.Head.qwEvent            = 0;
+
+   RMAP::CORE::UTILS::WString_to_Uint16 (m_pImpl->m_Name.wsRMCObjectId (), Map_Data.Name.wsName, sizeof (Map_Data.Name.wsName) / sizeof (uint16_t));
+
+   Map_Data.Type              = m_pImpl->m_Type;
+   Map_Data.Owner             = m_pImpl->m_Owner;
+
+   m_pImpl->m_Resource.GetData (Map_Data.Resource);
+
+   Map_Data.Transform            = m_pImpl->m_Transform;
+   Map_Data.Orbit.Celestial      = m_pImpl->m_Orbit_Spin;
+   Map_Data.Bound                = m_pImpl->m_Bound;
+   Map_Data.Properties.Celestial = m_pImpl->m_Properties;
 }
 
 RMAP::CORE::CLIENT::IACTION* RMCOBJECT::Request (std::string sAction)
@@ -205,12 +224,12 @@ RMCOBJECT::NAME const& RMCOBJECT::Name () const&
    return m_pImpl->m_Name;
 }
 
-TYPE const& RMCOBJECT::Type () const&
+MAP_DATA::MAP_OBJECT_TYPE const& RMCOBJECT::Type () const&
 {
    return m_pImpl->m_Type;
 }
 
-OWNER const& RMCOBJECT::Owner () const&
+MAP_DATA::MAP_OBJECT_OWNER const& RMCOBJECT::Owner () const&
 {
    return m_pImpl->m_Owner;
 }
@@ -220,22 +239,22 @@ RESOURCE const& RMCOBJECT::Resource () const&
    return m_pImpl->m_Resource;
 }
 
-TRANSFORM const& RMCOBJECT::Transform () const&
+MAP_DATA::MAP_OBJECT_TRANSFORM const& RMCOBJECT::Transform () const&
 {
    return m_pImpl->m_Transform;
 }
 
-ORBIT_SPIN const& RMCOBJECT::Orbit_Spin () const&
+MAP_DATA::MAP_OBJECT_ORBIT_CELESTIAL const& RMCOBJECT::Orbit_Spin () const&
 {
    return m_pImpl->m_Orbit_Spin;
 }
 
-BOUND const& RMCOBJECT::Bound () const&
+MAP_DATA::MAP_OBJECT_BOUND const& RMCOBJECT::Bound () const&
 {
    return m_pImpl->m_Bound;
 }
 
-RMCOBJECT::PROPERTIES const& RMCOBJECT::Properties () const&
+MAP_DATA::MAP_OBJECT_PROPERTIES_CELESTIAL const& RMCOBJECT::Properties () const&
 {
    return m_pImpl->m_Properties;
 }
@@ -256,14 +275,14 @@ RMCOBJECT& RMCOBJECT::Name (const NAME& _Name) &
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::Type (const TYPE& _Type) &
+RMCOBJECT& RMCOBJECT::Type (const MAP_DATA::MAP_OBJECT_TYPE& _Type) &
 {
    m_pImpl->m_Type = _Type;
 
     return *this;
  }
 
-RMCOBJECT& RMCOBJECT::Owner (const OWNER& _Owner) &
+RMCOBJECT& RMCOBJECT::Owner (const MAP_DATA::MAP_OBJECT_OWNER& _Owner) &
 {
    m_pImpl->m_Owner = _Owner;
 
@@ -277,28 +296,28 @@ RMCOBJECT& RMCOBJECT::Resource (const RESOURCE& _Resource) &
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::Transform (const TRANSFORM& _Transform) &
+RMCOBJECT& RMCOBJECT::Transform (const MAP_DATA::MAP_OBJECT_TRANSFORM& _Transform) &
 {
    m_pImpl->m_Transform = _Transform;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::Orbit_Spin (const ORBIT_SPIN& _Orbit_Spin) &
+RMCOBJECT& RMCOBJECT::Orbit_Spin (const MAP_DATA::MAP_OBJECT_ORBIT_CELESTIAL& _Orbit_Spin) &
 {
    m_pImpl->m_Orbit_Spin = _Orbit_Spin;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::Bound (const BOUND& _Bound) &
+RMCOBJECT& RMCOBJECT::Bound (const MAP_DATA::MAP_OBJECT_BOUND& _Bound) &
 {
    m_pImpl->m_Bound = _Bound;
 
    return *this;
 }
 
-RMCOBJECT& RMCOBJECT::Properties (const PROPERTIES& _Properties) &
+RMCOBJECT& RMCOBJECT::Properties (const MAP_DATA::MAP_OBJECT_PROPERTIES_CELESTIAL& _Properties) &
 {
    m_pImpl->m_Properties = _Properties;
 
