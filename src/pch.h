@@ -12,6 +12,7 @@
 #include <RMAP_Svc_Rest/RMAP_Svc_Rest.h>
 #include <RMAP_Svc_SocketIO/RMAP_Svc_SocketIO.h>
 #include <Map/Map.h>
+#include <mutex>
 
 #define OBJECTIX_COMPOSE(eClass, twObjectIx)      ((static_cast<uint64_t> (eClass) << 48)  |  (static_cast<uint64_t> (twObjectIx) & 0x0000FFFFFFFFFFFFull))
 

@@ -16,14 +16,57 @@ namespace RMAP
    namespace MAP
    {
       /*******************************************************************************************************************************
-      **                                                 Object: MAP_DATA                                                           **
+      **                                                 Object: MAP_OBJECT                                                         **
       *******************************************************************************************************************************/
+
+      constexpr double PI = 3.14159265358979323846;
+      constexpr double TWO_PI = 2.0 * PI;
+      constexpr double DEG_TO_RAD = PI / 180.0;
 
       class MAP_OBJECT
       {
       public:
+         class VEC3
+         {
+         public:
+            double dX;
+            double dY;
+            double dZ;
+
+            double Length ()                    const;
+            VEC3   operator* (double dScale)    const;
+            VEC3   operator+ (const VEC3& vRhs) const;
+         };
+
+         struct QUAT
+         {
+            double dX;
+            double dY;
+            double dZ;
+            double dW;
+         };
+
+      public:
          MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
          virtual ~MAP_OBJECT ();
+
+         static const char* ClassName (MAP_OBJECT_CLASS eType);
+
+         void        Scale            (double& dX, double& dY, double& dZ)   const;
+         void        Scale            (VEC3& vScale)                         const;
+         double      Radius           ()                                     const;
+         uint32_t    ColorToU32       ()                                     const;
+         uint32_t    ColorDimToU32    ()                                     const;
+         uint32_t    ColorBrightToU32 ()                                     const;
+
+         bool GetTexture (const uint8_t*& pTex, int& nTexW, int& nTexH); // WRONG, shouldn't return pointer to pTex
+         void SetTexture (const uint8_t* pTex, int nTexW, int nTexH);
+
+         virtual void Position (int64_t tmNow, double& dX, double& dY, double& dZ)                 const;
+         virtual void Rotation (int64_t tmNow, double& dQx, double& dQy, double& dQz, double& dQw) const;
+
+         void         Position (int64_t tmNow, VEC3& vPosition)                                    const;
+         void         Rotation (int64_t tmNow, QUAT& qRotation)                                    const;
 
          // Accessors
          void     GetPOD   (MAP_OBJECT_POD& Pod)                                                   const &;
@@ -41,6 +84,14 @@ namespace RMAP
       protected:
          MAP_OBJECT_POD    m_POD;
          uint32_t          m_nChildren;
+
+         VEC3   RotateByQuat (double qx, double qy, double qz, double qw, double vx, double vy, double vz) const;
+         QUAT   QuatMultiply (const QUAT& q1, const QUAT& q2) const;
+         double SolveKepler (double dM_rad, double dEcc) const;
+
+      private:
+         class Impl;
+         Impl* m_pImpl;
       };
 
       /*******************************************************************************************************************************
@@ -125,24 +176,34 @@ namespace RMAP
       public:
          enum eTYPE
          {
-            _NULL         =  0,
-            UNIVERSE      =  1,
-            SUPERCLUSTER  =  2,
-            GALAXYCLUSTER =  3,
-            GALAXY        =  4,
-            SECTOR        =  5,
-            NEBULA        =  6,
-            STARCLUSTER   =  7,
-            BLACKHOLE     =  8,
-            STARSYSTEM    =  9,
-            STAR          = 10,
-            PLANETSYSTEM  = 11,
-            PLANET        = 12,
-            MOON          = 13,
-            DEBRIS        = 14,
-            SATELLITE     = 15,
-            TRANSPORT     = 16,
-            SURFACE       = 17,
+            MAP_OBJECT_TYPE_CELESTIAL_NONE           = 0,
+            MAP_OBJECT_TYPE_CELESTIAL_UNIVERSE       = 1,
+            MAP_OBJECT_TYPE_CELESTIAL_SUPERCLUSTER   = 2,
+            MAP_OBJECT_TYPE_CELESTIAL_GALAXYCLUSTER  = 3,
+            MAP_OBJECT_TYPE_CELESTIAL_GALAXY         = 4,
+            MAP_OBJECT_TYPE_CELESTIAL_SECTOR         = 5,
+            MAP_OBJECT_TYPE_CELESTIAL_NEBULA         = 6,
+            MAP_OBJECT_TYPE_CELESTIAL_STARCLUSTER    = 7,
+            MAP_OBJECT_TYPE_CELESTIAL_BLACKHOLE      = 8,
+            MAP_OBJECT_TYPE_CELESTIAL_STARSYSTEM     = 9,
+            MAP_OBJECT_TYPE_CELESTIAL_STAR           = 10,
+            MAP_OBJECT_TYPE_CELESTIAL_PLANETSYSTEM   = 11,
+            MAP_OBJECT_TYPE_CELESTIAL_PLANET         = 12,
+            MAP_OBJECT_TYPE_CELESTIAL_MOONSYSTEM     = 125,
+            MAP_OBJECT_TYPE_CELESTIAL_MOON           = 13,
+            MAP_OBJECT_TYPE_CELESTIAL_DEBRISSYSTEM   = 135,
+            MAP_OBJECT_TYPE_CELESTIAL_DEBRIS         = 14,
+            MAP_OBJECT_TYPE_CELESTIAL_SATELLITE      = 15,
+            MAP_OBJECT_TYPE_CELESTIAL_TRANSPORT      = 16,
+            MAP_OBJECT_TYPE_CELESTIAL_SURFACE        = 17,
+         };
+
+         struct ORBIT_POSITION
+         {
+            double dX;
+            double dY;
+            double dZ;
+            double dE;
          };
 
       public:
@@ -174,6 +235,16 @@ namespace RMAP
          virtual ~RMCOBJECT ();
 
          // ===== Public Methods =====================================================================================================
+
+         static const char* GetTypeName (eTYPE eType);
+
+         bool HasOrbit () const;
+
+         void Position (int64_t tmNow, double& dX, double& dY, double& dZ)                 const override;
+         void Rotation (int64_t tmNow, double& dQx, double& dQy, double& dQz, double& dQw) const override;
+
+         bool PositionAtTick (int64_t tmNow, ORBIT_POSITION& out) const;
+         VEC3 OrbitTrailPoint (double dE, int64_t tmElapsed)      const;
 
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
 
