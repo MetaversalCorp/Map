@@ -29,6 +29,10 @@ set(Map_FILES
    src/Library.cpp
    src/Library.h
    src/Map_Object.cpp
+   src/Map_Object_Celestial.cpp
+   src/Map_Object_Physical.cpp
+   src/Map_Object_Root.cpp
+   src/Map_Object_Terrestrial.cpp
    src/Model_RMCObject.cpp
    src/Model_RMPObject.cpp
    src/Model_RMRoot.cpp
@@ -75,8 +79,27 @@ endif()
 
 target_precompile_headers(Map PRIVATE src/pch.h)
 
-# Visual Studio filters mirroring the on-disk folder layout (src, include).
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${Map_FILES})
+# Visual Studio filters. The src/ .cpp files are sub-grouped by name prefix into
+# src\Map_Object, src\Model, and src\Source (pattern-based, so future matching
+# files land automatically); everything else mirrors the on-disk layout (src,
+# include\Map). The three prefix groups are peeled out of the TREE set so there
+# is no TREE-vs-explicit grouping conflict.
+set(Map_GROUP_MAP_OBJECT ${Map_FILES})
+list(FILTER Map_GROUP_MAP_OBJECT INCLUDE REGEX "/Map_Object.*\\.cpp$")
+
+set(Map_GROUP_MODEL ${Map_FILES})
+list(FILTER Map_GROUP_MODEL INCLUDE REGEX "/Model_.*\\.cpp$")
+
+set(Map_GROUP_SOURCE ${Map_FILES})
+list(FILTER Map_GROUP_SOURCE INCLUDE REGEX "/Source_.*\\.cpp$")
+
+set(Map_GROUP_REST ${Map_FILES})
+list(FILTER Map_GROUP_REST EXCLUDE REGEX "/(Map_Object.*|Model_.*|Source_.*)\\.cpp$")
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${Map_GROUP_REST})
+source_group("src\\Map_Object" FILES ${Map_GROUP_MAP_OBJECT})
+source_group("src\\Model"      FILES ${Map_GROUP_MODEL})
+source_group("src\\Source"     FILES ${Map_GROUP_SOURCE})
 
 # ---------------------------------------------------------------------------
 # RMAP (COMPILED - not header-only). Map's primary dependency: RMAP now provides

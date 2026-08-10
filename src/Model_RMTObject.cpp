@@ -54,7 +54,7 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMTOBJECT::FACT
 
 RMTOBJECT::RMTOBJECT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   MAP_OBJECT (wClass_Parent (), twParentIx (), wClass_Object (), twObjectIx ())
+   MAP_OBJECT_TERRESTRIAL (wClass_Parent (), twParentIx (), wClass_Object (), twObjectIx ())
 {
 }
 
@@ -80,15 +80,6 @@ RMAP::CORE::CLIENT::IACTION* RMTOBJECT::Request (std::string sAction)
    }
 
    return pIAction;
-}
-
-/*******************************************************************************
-**  Modifiers
-*******************************************************************************/
-
-void RMTOBJECT::Properties (const MAP_OBJECT_PROPERTIES_TERRESTIAL& _Properties) &
-{
-   m_POD.Properties.Terrestial = _Properties;
 }
 
 /******************************************************************************************************************************/

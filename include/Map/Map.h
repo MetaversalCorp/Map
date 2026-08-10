@@ -92,41 +92,8 @@ namespace RMAP
          Impl* m_pImpl;
       };
 
-      class RMCOBJECT : public RMAP::CORE::MODEL_OBJECT, public MAP_OBJECT
+      class RMCOBJECT : public RMAP::CORE::MODEL_OBJECT, public MAP_OBJECT_CELESTIAL
       {
-      public:
-         enum eTYPE
-         {
-            MAP_OBJECT_TYPE_CELESTIAL_NONE           = 0,
-            MAP_OBJECT_TYPE_CELESTIAL_UNIVERSE       = 1,
-            MAP_OBJECT_TYPE_CELESTIAL_SUPERCLUSTER   = 2,
-            MAP_OBJECT_TYPE_CELESTIAL_GALAXYCLUSTER  = 3,
-            MAP_OBJECT_TYPE_CELESTIAL_GALAXY         = 4,
-            MAP_OBJECT_TYPE_CELESTIAL_SECTOR         = 5,
-            MAP_OBJECT_TYPE_CELESTIAL_NEBULA         = 6,
-            MAP_OBJECT_TYPE_CELESTIAL_STARCLUSTER    = 7,
-            MAP_OBJECT_TYPE_CELESTIAL_BLACKHOLE      = 8,
-            MAP_OBJECT_TYPE_CELESTIAL_STARSYSTEM     = 9,
-            MAP_OBJECT_TYPE_CELESTIAL_STAR           = 10,
-            MAP_OBJECT_TYPE_CELESTIAL_PLANETSYSTEM   = 11,
-            MAP_OBJECT_TYPE_CELESTIAL_PLANET         = 12,
-            MAP_OBJECT_TYPE_CELESTIAL_MOONSYSTEM     = 125,
-            MAP_OBJECT_TYPE_CELESTIAL_MOON           = 13,
-            MAP_OBJECT_TYPE_CELESTIAL_DEBRISSYSTEM   = 135,
-            MAP_OBJECT_TYPE_CELESTIAL_DEBRIS         = 14,
-            MAP_OBJECT_TYPE_CELESTIAL_SATELLITE      = 15,
-            MAP_OBJECT_TYPE_CELESTIAL_TRANSPORT      = 16,
-            MAP_OBJECT_TYPE_CELESTIAL_SURFACE        = 17,
-         };
-
-         struct ORBIT_POSITION
-         {
-            double dX;
-            double dY;
-            double dZ;
-            double dE;
-         };
-
       public:
          class FACTORY : public RMAP::CORE::MODEL_OBJECT::FACTORY
          {
@@ -157,21 +124,7 @@ namespace RMAP
 
          // ===== Public Methods =====================================================================================================
 
-         static const char* GetTypeName (eTYPE eType);
-
-         bool HasOrbit () const;
-
-         void Position (int64_t tmNow, double& dX, double& dY, double& dZ)                 const override;
-         void Rotation (int64_t tmNow, double& dQx, double& dQy, double& dQz, double& dQw) const override;
-
-         bool PositionAtTick (int64_t tmNow, ORBIT_POSITION& out) const;
-         VEC3 OrbitTrailPoint (double dE, int64_t tmElapsed)      const;
-
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
-
-         // Modifiers                                              
-         void Orbit_Spin  (const MAP_OBJECT_ORBIT_CELESTIAL& _Orbit_Spin)          &;
-         void Properties  (const MAP_OBJECT_PROPERTIES_CELESTIAL& _Properties)     &;
       };
 
       /*******************************************************************************************************************************
@@ -427,25 +380,8 @@ namespace RMAP
          Impl* m_pImpl;
       };
 
-      class RMTOBJECT : public RMAP::CORE::MODEL_OBJECT, public MAP_OBJECT
+      class RMTOBJECT : public RMAP::CORE::MODEL_OBJECT, public MAP_OBJECT_TERRESTRIAL
       {
-      public:
-         enum eTYPE
-         {
-            _NULL          =  0,
-            ROOT           =  1,
-            WATER          =  2,
-            LAND           =  3,
-            COUNTRY        =  4,
-            TERRITORY      =  5,
-            STATE          =  6,
-            COUNTY         =  7,
-            CITY           =  8,
-            COMMUNITY      =  9,
-            SECTOR         = 10,
-            PARCEL         = 11
-         };
-
       public:
          class FACTORY : public RMAP::CORE::MODEL_OBJECT::FACTORY
          {
@@ -477,9 +413,6 @@ namespace RMAP
          // ===== Public Methods =====================================================================================================
 
          RMAP::CORE::CLIENT::IACTION* Request (std::string sAction) override;
-
-         // Modifiers                                              
-         void Properties  (const MAP_OBJECT_PROPERTIES_TERRESTIAL& _Properties)    &;
       };
 
       void Install ();
