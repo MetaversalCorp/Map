@@ -150,6 +150,86 @@ namespace RMAP
          MAP_OBJECT_BOUND              Bound;
          MAP_OBJECT_PROPERTIES         Properties;
       };
+
+      /*******************************************************************************************************************************
+      **                                                 Object: MAP_OBJECT                                                         **
+      *******************************************************************************************************************************/
+
+      constexpr double PI = 3.14159265358979323846;
+      constexpr double TWO_PI = 2.0 * PI;
+      constexpr double DEG_TO_RAD = PI / 180.0;
+
+      class MAP_OBJECT
+      {
+      public:
+         class VEC3
+         {
+         public:
+            double dX;
+            double dY;
+            double dZ;
+
+            double Length ()                    const;
+            VEC3   operator* (double dScale)    const;
+            VEC3   operator+ (const VEC3& vRhs) const;
+         };
+
+         struct QUAT
+         {
+            double dX;
+            double dY;
+            double dZ;
+            double dW;
+         };
+
+      public:
+         MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
+         virtual ~MAP_OBJECT ();
+
+         static const char* ClassName (MAP_OBJECT_CLASS eType);
+
+         void        Scale            (double& dX, double& dY, double& dZ)   const;
+         void        Scale            (VEC3& vScale)                         const;
+         double      Radius           ()                                     const;
+         uint32_t    ColorToU32       ()                                     const;
+         uint32_t    ColorDimToU32    ()                                     const;
+         uint32_t    ColorBrightToU32 ()                                     const;
+
+         bool GetTexture (const uint8_t*& pTex, int& nTexW, int& nTexH); // WRONG, shouldn't return pointer to pTex
+         void SetTexture (const uint8_t* pTex, int nTexW, int nTexH);
+
+         virtual void Position (int64_t tmNow, double& dX, double& dY, double& dZ)                 const;
+         virtual void Rotation (int64_t tmNow, double& dQx, double& dQy, double& dQz, double& dQw) const;
+
+         void         Position (int64_t tmNow, VEC3& vPosition)                                    const;
+         void         Rotation (int64_t tmNow, QUAT& qRotation)                                    const;
+
+         // Accessors
+         void     GetPOD   (MAP_OBJECT_POD& Pod)                                                   const &;
+         uint32_t Children ()                                                                      const &;
+
+         // Modifiers                                              
+         void Head      (const OBJECT_HEAD& Head)                                                        &;
+         void Name      (const std::wstring& sName)                                                      &;
+         void Type      (const MAP_OBJECT_TYPE& Type)                                                    &;
+         void Owner     (const MAP_OBJECT_OWNER& Owner)                                                  &;
+         void Resource  (uint64_t qwResource, const std::string& sName, const std::string& sReference)   &;
+         void Transform (const MAP_OBJECT_TRANSFORM& Transform)                                          &;
+         void Bound     (const MAP_OBJECT_BOUND& Bound)                                                  &;
+         void Children  (uint32_t nChildren)                                                             &;
+
+      protected:
+         MAP_OBJECT_POD    m_POD;
+         uint32_t          m_nChildren;
+
+         VEC3   RotateByQuat (double qx, double qy, double qz, double qw, double vx, double vy, double vz) const;
+         QUAT   QuatMultiply (const QUAT& q1, const QUAT& q2) const;
+         double SolveKepler (double dM_rad, double dEcc) const;
+
+      private:
+         class Impl;
+         Impl* m_pImpl;
+      };
    }
 }
 
