@@ -120,6 +120,11 @@ uint32_t MAP_OBJECT::Children () const &
 }
 
 // Modifiers                                              
+void MAP_OBJECT::Head (const OBJECT_HEAD& Head) &
+{
+   m_POD.Head = Head;
+}
+
 void MAP_OBJECT::Name (const std::wstring& sName) &
 {
    RMAP::CORE::UTILS::WString_to_Uint16 (sName, m_POD.Name.wsName, sizeof (m_POD.Name.wsName) / sizeof (uint16_t));

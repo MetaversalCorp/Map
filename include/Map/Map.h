@@ -73,6 +73,7 @@ namespace RMAP
          uint32_t Children ()                                                                      const &;
 
          // Modifiers                                              
+         void Head      (const OBJECT_HEAD& Head)                                                        &;
          void Name      (const std::wstring& sName)                                                      &;
          void Type      (const MAP_OBJECT_TYPE& Type)                                                    &;
          void Owner     (const MAP_OBJECT_OWNER& Owner)                                                  &;

@@ -14,8 +14,6 @@
 #include <Map/Map.h>
 #include <mutex>
 
-#define OBJECTIX_COMPOSE(eClass, twObjectIx)      ((static_cast<uint64_t> (eClass) << 48)  |  (static_cast<uint64_t> (twObjectIx) & 0x0000FFFFFFFFFFFFull))
-
 #include "Library.h"
 #include "Package_SB.h"
 #include "Package_IO.h"

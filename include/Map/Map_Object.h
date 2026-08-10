@@ -9,6 +9,8 @@
 #ifndef RMAP_MAP_OBJECT_H
 #define RMAP_MAP_OBJECT_H
 
+#define OBJECTIX_COMPOSE(eClass, twObjectIx)      ((static_cast<uint64_t> (eClass) << 48)  |  (static_cast<uint64_t> (twObjectIx) & 0x0000FFFFFFFFFFFFull))
+
 namespace RMAP
 {
    namespace MAP
