@@ -333,11 +333,11 @@ namespace RMAP
          // 3/4 remain accepted because existing fabrics authored point/spot there.
          enum MAP_OBJECT_TYPE_TYPE_LIGHT
          {
-            MAP_OBJECT_TYPE_TYPE_LIGHT_NONE = 0,
-            MAP_OBJECT_TYPE_TYPE_LIGHT_POINT = 1,
-            MAP_OBJECT_TYPE_TYPE_LIGHT_SPOT = 2,
-            MAP_OBJECT_TYPE_TYPE_LIGHT_POINT__DEPRECATED = 3,
-            MAP_OBJECT_TYPE_TYPE_LIGHT_SPOT__DEPRECATED = 4,
+            MAP_OBJECT_TYPE_LIGHT_NONE = 0,
+            MAP_OBJECT_TYPE_LIGHT_POINT = 1,
+            MAP_OBJECT_TYPE_LIGHT_SPOT = 2,
+            MAP_OBJECT_TYPE_LIGHT_POINT__DEPRECATED = 3,
+            MAP_OBJECT_TYPE_LIGHT_SPOT__DEPRECATED = 4,
          };
 
       public:
