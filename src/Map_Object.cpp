@@ -95,6 +95,23 @@ private:
 **                                                     CLASS (MAP_OBJECT)                                                     **
 *******************************************************************************************************************************/
 
+MAP_OBJECT* MAP_OBJECT::Create (MAP_OBJECT_POD& Pod)
+{
+   MAP_OBJECT* pMap_Object = NULL;
+
+   switch (Pod.Head.Self.Class ())
+   {
+   case MAP_OBJECT_CLASS_ROOT:         pMap_Object = new MAP_OBJECT (Pod);             break;
+   case MAP_OBJECT_CLASS_CELESTIAL:    pMap_Object = new MAP_OBJECT_CELESTIAL (Pod);   break;
+   case MAP_OBJECT_CLASS_TERRESTRIAL:  pMap_Object = new MAP_OBJECT_TERRESTRIAL (Pod); break;
+   case MAP_OBJECT_CLASS_PHYSICAL:     pMap_Object = new MAP_OBJECT (Pod);             break;
+   case MAP_OBJECT_CLASS_PANEL:        pMap_Object = new MAP_OBJECT (Pod);             break;
+   case MAP_OBJECT_CLASS_LIGHT:        pMap_Object = new MAP_OBJECT (Pod);             break;
+   }
+
+   return pMap_Object;
+}
+
 MAP_OBJECT::MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx) :
    m_POD ({}),
    m_nChildren (0),
@@ -102,6 +119,13 @@ MAP_OBJECT::MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wC
 {
    m_POD.Head.Parent.qwComposed  = OBJECTIX_COMPOSE (wClass_Parent, twParentIx);
    m_POD.Head.Self.qwComposed    = OBJECTIX_COMPOSE (wClass_Object, twObjectIx);
+}
+
+MAP_OBJECT::MAP_OBJECT (MAP_OBJECT_POD& Pod) :
+   m_POD (Pod),
+   m_nChildren (0),
+   m_pImpl (new Impl ())
+{
 }
 
 MAP_OBJECT::~MAP_OBJECT ()
