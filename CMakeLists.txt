@@ -30,6 +30,8 @@ set(Map_FILES
    src/Library.h
    src/Map_Object.cpp
    src/Map_Object_Celestial.cpp
+   src/Map_Object_Light.cpp
+   src/Map_Object_Panel.cpp
    src/Map_Object_Physical.cpp
    src/Map_Object_Root.cpp
    src/Map_Object_Terrestrial.cpp

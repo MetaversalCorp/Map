@@ -317,6 +317,66 @@ namespace RMAP
          // Modifiers                                              
          void Properties (const MAP_OBJECT_PROPERTIES_TERRESTIAL& _Properties)&;
       };
+
+      // A scene light. Its world placement comes from the node's TRS like any other
+      // map object; the light reads Properties.Light -- colour from fColor (0xRRGGBB),
+      // intensity from fBrightness. A spot light additionally aims down the node's
+      // local +X axis (identity forward in the Z-up world, rotated by its TRS) and reads
+      // its cone from fOpeningAngle / fFalloffAngle (degrees). The subtype selects the
+      // ANARI light kind.
+      class MAP_OBJECT_LIGHT : public MAP_OBJECT
+      {
+      public:
+         // A light node is a placed light only -- point or spot. Ambient and
+         // directional lighting are scene-global properties (set via the primary
+         // fabric), never nodes. Values mirror LIGHT_DATA::eTYPE: the deprecated
+         // 3/4 remain accepted because existing fabrics authored point/spot there.
+         enum MAP_OBJECT_TYPE_TYPE_LIGHT
+         {
+            MAP_OBJECT_TYPE_TYPE_LIGHT_NONE = 0,
+            MAP_OBJECT_TYPE_TYPE_LIGHT_POINT = 1,
+            MAP_OBJECT_TYPE_TYPE_LIGHT_SPOT = 2,
+            MAP_OBJECT_TYPE_TYPE_LIGHT_POINT__DEPRECATED = 3,
+            MAP_OBJECT_TYPE_TYPE_LIGHT_SPOT__DEPRECATED = 4,
+         };
+
+      public:
+         MAP_OBJECT_LIGHT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
+         MAP_OBJECT_LIGHT (const MAP_OBJECT_POD& Pod);
+         virtual ~MAP_OBJECT_LIGHT ();
+
+         // Modifiers                                              
+         void Properties (const MAP_OBJECT_PROPERTIES_LIGHT& _Properties) &;
+      };
+#if 0
+      // An in-scene UI panel (RmlUi RML+CSS rasterized to a textured quad). Owns
+      // its own UI surface; the panel's world size comes from Bound.d3Max[0,1] and
+      // its placement from the node's TRS, so it flows through the compositor and
+      // per-scene render scale exactly like any other node.
+      class MAP_OBJECT_PANEL : public MAP_OBJECT
+      {
+      public:
+         MAP_OBJECT_PANEL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
+         MAP_OBJECT_PANEL (const MAP_OBJECT_POD& Pod);
+         virtual ~MAP_OBJECT_PANEL ();
+
+         // Set the panel's RML+CSS document source. Marks the UI dirty so the next
+         // Render rasterizes it. If never set, the panel's built-in default
+         // document is used.
+         void Source (const std::string& sSource);
+
+         // Rasterize the panel's UI into its canvas (call on the render thread).
+         // Cheap when unchanged. Returns true if Pixels() is valid.
+         bool Render (ENGINE* pEngine, int nWidth, int nHeight);
+
+         const uint8_t* Pixels () const;
+         int            Width () const;
+         int            Height () const;
+
+      private:
+         DEP::UI_PANEL* m_pPanel;
+      };
+#endif
    }
 }
 

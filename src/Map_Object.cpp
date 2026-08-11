@@ -106,7 +106,7 @@ MAP_OBJECT* MAP_OBJECT::Create (const MAP_OBJECT_POD& Pod)
    case MAP_OBJECT_CLASS_TERRESTRIAL:  pMap_Object = new MAP_OBJECT_TERRESTRIAL (Pod); break;
    case MAP_OBJECT_CLASS_PHYSICAL:     pMap_Object = new MAP_OBJECT (Pod);             break;
    case MAP_OBJECT_CLASS_PANEL:        pMap_Object = new MAP_OBJECT (Pod);             break;
-   case MAP_OBJECT_CLASS_LIGHT:        pMap_Object = new MAP_OBJECT (Pod);             break;
+   case MAP_OBJECT_CLASS_LIGHT:        pMap_Object = new MAP_OBJECT_LIGHT (Pod);       break;
    }
 
    return pMap_Object;
