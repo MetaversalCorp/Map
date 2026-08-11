@@ -220,8 +220,10 @@ namespace RMAP
          void Bound     (const MAP_OBJECT_BOUND& Bound)                                                  &;
          void Children  (uint32_t nChildren)                                                             &;
 
+      public:
+         MAP_OBJECT_POD    m_POD;   // Available only for MAP_OBJECT USAGE
+
       protected:
-         MAP_OBJECT_POD    m_POD;
          uint32_t          m_nChildren;
 
          VEC3   RotateByQuat (double qx, double qy, double qz, double qw, double vx, double vy, double vz) const;
