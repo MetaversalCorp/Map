@@ -184,10 +184,10 @@ namespace RMAP
 
       public:
          MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT (MAP_OBJECT_POD& Pod);
+         MAP_OBJECT (const MAP_OBJECT_POD& Pod);
          virtual ~MAP_OBJECT ();
 
-         static MAP_OBJECT* Create (MAP_OBJECT_POD& Pod);
+         static MAP_OBJECT* Create (const MAP_OBJECT_POD& Pod);
          static const char* ClassName (MAP_OBJECT_CLASS eType);
 
          void        Scale            (double& dX, double& dY, double& dZ)   const;
@@ -270,7 +270,7 @@ namespace RMAP
 
       public:
          MAP_OBJECT_CELESTIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT_CELESTIAL (MAP_OBJECT_POD& Pod);
+         MAP_OBJECT_CELESTIAL (const MAP_OBJECT_POD& Pod);
          virtual ~MAP_OBJECT_CELESTIAL ();
 
          bool HasOrbit () const;
@@ -309,7 +309,7 @@ namespace RMAP
 
       public:
          MAP_OBJECT_TERRESTRIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT_TERRESTRIAL (MAP_OBJECT_POD& Pod);
+         MAP_OBJECT_TERRESTRIAL (const MAP_OBJECT_POD& Pod);
          virtual ~MAP_OBJECT_TERRESTRIAL ();
 
          // Modifiers                                              

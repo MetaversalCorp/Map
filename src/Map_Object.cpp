@@ -95,7 +95,7 @@ private:
 **                                                     CLASS (MAP_OBJECT)                                                     **
 *******************************************************************************************************************************/
 
-MAP_OBJECT* MAP_OBJECT::Create (MAP_OBJECT_POD& Pod)
+MAP_OBJECT* MAP_OBJECT::Create (const MAP_OBJECT_POD& Pod)
 {
    MAP_OBJECT* pMap_Object = NULL;
 
@@ -121,7 +121,7 @@ MAP_OBJECT::MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wC
    m_POD.Head.Self.qwComposed    = OBJECTIX_COMPOSE (wClass_Object, twObjectIx);
 }
 
-MAP_OBJECT::MAP_OBJECT (MAP_OBJECT_POD& Pod) :
+MAP_OBJECT::MAP_OBJECT (const MAP_OBJECT_POD& Pod) :
    m_POD (Pod),
    m_nChildren (0),
    m_pImpl (new Impl ())
