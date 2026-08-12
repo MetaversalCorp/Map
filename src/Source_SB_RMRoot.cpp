@@ -155,13 +155,17 @@ SB_RMROOT::FACTORY* SB_RMROOT::factory ()
 
 void SB_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
-   RMROOT* pModelIO = dynamic_cast<RMROOT*> (pModel);
+   RMROOT* pModelSB = dynamic_cast<RMROOT*> (pModel);
    MAP_OBJECT_OWNER Owner;
+   RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
+
+   pModelSB->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->twObjectIx, pHead->twParentIx);
+   pModelSB->m_POD.Head.Self.qwComposed   = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
 
    Owner.twOwner = jSrc["pOwner"]["twRPersonaIx"];
 
-   pModelIO->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMRootId"].get<std::string> ().c_str ()));
-   pModelIO->Owner (Owner);
+   pModelSB->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMRootId"].get<std::string> ().c_str ()));
+   pModelSB->Owner (Owner);
 }
 
 /******************************************************************************************************************************/

@@ -241,6 +241,10 @@ void SB_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    MAP_OBJECT_OWNER Owner;
    MAP_OBJECT_TRANSFORM Transform;
    MAP_OBJECT_BOUND Bound;
+   RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
+
+   pModelSB->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->twObjectIx, pHead->twParentIx);
+   pModelSB->m_POD.Head.Self.qwComposed = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];

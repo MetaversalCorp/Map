@@ -375,6 +375,10 @@ void IO_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
    RMROOT* pModelIO = dynamic_cast<RMROOT*> (pModel);
    MAP_OBJECT_OWNER Owner;
+   RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
+
+   pModelIO->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->twObjectIx, pHead->twParentIx);
+   pModelIO->m_POD.Head.Self.qwComposed = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
 
    Owner.twOwner = jSrc["pOwner"]["twRPersonaIx"];
 

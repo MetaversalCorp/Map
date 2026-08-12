@@ -490,6 +490,10 @@ void IO_RMCOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    MAP_OBJECT_BOUND Bound;
    MAP_OBJECT_PROPERTIES_CELESTIAL Properties;
    uint32_t nChildren;
+   RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
+
+   pModelIO->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->twObjectIx, pHead->twParentIx);
+   pModelIO->m_POD.Head.Self.qwComposed   = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
