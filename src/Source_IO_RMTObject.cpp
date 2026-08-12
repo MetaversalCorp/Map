@@ -455,8 +455,8 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    uint32_t nChildren;
    RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
 
-   pModelIO->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->twObjectIx, pHead->twParentIx);
-   pModelIO->m_POD.Head.Self.qwComposed = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
+   pModelIO->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->wClass_Parent, pHead->twParentIx);
+   pModelIO->m_POD.Head.Self.qwComposed   = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
