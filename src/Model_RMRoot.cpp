@@ -54,7 +54,7 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMROOT::FACTORY
 
 RMROOT::RMROOT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   MAP_OBJECT (wClass_Parent (), twParentIx (), wClass_Object (), twObjectIx ())
+   MAP_OBJECT (wClass_Object (), twObjectIx ())
 {
 }
 

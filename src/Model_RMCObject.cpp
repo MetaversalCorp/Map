@@ -54,7 +54,7 @@ RMAP::CORE::IREFERENCE<RMAP::CORE::MODEL*, RMAP::CORE::SOURCE*>* RMCOBJECT::FACT
 
 RMCOBJECT::RMCOBJECT (IREFERENCE* pReference, RMAP::CORE::MEM::SOURCE* pSource) :
    RMAP::CORE::MODEL_OBJECT (pReference, pSource),
-   MAP_OBJECT_CELESTIAL (wClass_Parent (), twParentIx (), wClass_Object (), twObjectIx ())
+   MAP_OBJECT_CELESTIAL (wClass_Object (), twObjectIx ())
 {
 }
 

@@ -165,10 +165,10 @@ namespace RMAP
          };
 
       public:
-         MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
+         MAP_OBJECT (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT ();
 
-         static MAP_OBJECT* Create (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod);
+         static MAP_OBJECT* Create (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod);
          static const char* ClassName (MAP_OBJECT_CLASS eType);
 
          void        Scale            (double& dX, double& dY, double& dZ)   const;
@@ -203,6 +203,9 @@ namespace RMAP
 
       public:
          MAP_OBJECT_POD    m_POD;   // Available only for MAP_OBJECT USAGE
+
+         uint16_t          m_wClass;
+         uint64_t          m_twObjectIx;
 
       protected:
          uint32_t          m_nChildren;
@@ -252,7 +255,7 @@ namespace RMAP
          };
 
       public:
-         MAP_OBJECT_CELESTIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
+         MAP_OBJECT_CELESTIAL (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT_CELESTIAL ();
 
          bool HasOrbit () const;
@@ -290,7 +293,7 @@ namespace RMAP
          };
 
       public:
-         MAP_OBJECT_TERRESTRIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
+         MAP_OBJECT_TERRESTRIAL (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT_TERRESTRIAL ();
 
          // Modifiers                                              
@@ -312,15 +315,15 @@ namespace RMAP
          // 3/4 remain accepted because existing fabrics authored point/spot there.
          enum MAP_OBJECT_TYPE_TYPE_LIGHT
          {
-            MAP_OBJECT_TYPE_LIGHT_NONE = 0,
-            MAP_OBJECT_TYPE_LIGHT_POINT = 1,
-            MAP_OBJECT_TYPE_LIGHT_SPOT = 2,
-            MAP_OBJECT_TYPE_LIGHT_POINT__DEPRECATED = 3,
-            MAP_OBJECT_TYPE_LIGHT_SPOT__DEPRECATED = 4,
+            MAP_OBJECT_TYPE_LIGHT_NONE                = 0,
+            MAP_OBJECT_TYPE_LIGHT_POINT               = 1,
+            MAP_OBJECT_TYPE_LIGHT_SPOT                = 2,
+            MAP_OBJECT_TYPE_LIGHT_POINT__DEPRECATED   = 3,
+            MAP_OBJECT_TYPE_LIGHT_SPOT__DEPRECATED    = 4
          };
 
       public:
-         MAP_OBJECT_LIGHT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
+         MAP_OBJECT_LIGHT (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT_LIGHT ();
 
          // Modifiers                                              

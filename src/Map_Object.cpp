@@ -36,24 +36,16 @@ MAP_OBJECT::VEC3 MAP_OBJECT::VEC3::operator+ (const VEC3& vRhs) const
 class MAP_OBJECT::Impl
 {
 public:
-   Impl (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx) :
+   Impl () :
       m_nTextureWidth (0),
       m_nTextureHeight (0),
       m_nTextureChannels (0),
       m_bTextureReady (false)
    {
-      m_ObjectHead.Parent.qwComposed = OBJECTIX_COMPOSE (wClass_Parent, twParentIx);
-      m_ObjectHead.Self  .qwComposed = OBJECTIX_COMPOSE (wClass_Object, twObjectIx);
    }
 
    ~Impl ()
    {
-   }
-
-   void Head (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx)
-   {
-      m_ObjectHead.Parent.qwComposed = OBJECTIX_COMPOSE (wClass_Parent, twParentIx);
-      m_ObjectHead.Self  .qwComposed = OBJECTIX_COMPOSE (wClass_Object, twObjectIx);
    }
 
    bool GetTexture (const uint8_t*& pTex, int& nTexW, int& nTexH)
@@ -97,34 +89,35 @@ private:
    int                           m_nTextureHeight;
    int                           m_nTextureChannels;
    std::atomic<bool>             m_bTextureReady;
-   RMAP::CORE::MEM::OBJECTHEAD   m_ObjectHead;
 };
 
 /*******************************************************************************************************************************
 **                                                     CLASS (MAP_OBJECT)                                                     **
 *******************************************************************************************************************************/
 
-MAP_OBJECT* MAP_OBJECT::Create (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod)
+MAP_OBJECT* MAP_OBJECT::Create (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod)
 {
    MAP_OBJECT* pMap_Object = NULL;
 
-   switch (wClass_Object)
+   switch (wClass)
    {
-   case MAP_OBJECT_CLASS_ROOT:         pMap_Object = new MAP_OBJECT (wClass_Parent, twParentIx, wClass_Object, twObjectIx, Pod);             break;
-   case MAP_OBJECT_CLASS_CELESTIAL:    pMap_Object = new MAP_OBJECT_CELESTIAL (wClass_Parent, twParentIx, wClass_Object, twObjectIx, Pod);   break;
-   case MAP_OBJECT_CLASS_TERRESTRIAL:  pMap_Object = new MAP_OBJECT_TERRESTRIAL (wClass_Parent, twParentIx, wClass_Object, twObjectIx, Pod); break;
-   case MAP_OBJECT_CLASS_PHYSICAL:     pMap_Object = new MAP_OBJECT (wClass_Parent, twParentIx, wClass_Object, twObjectIx, Pod);             break;
-   case MAP_OBJECT_CLASS_PANEL:        pMap_Object = new MAP_OBJECT (wClass_Parent, twParentIx, wClass_Object, twObjectIx, Pod);             break;
-   case MAP_OBJECT_CLASS_LIGHT:        pMap_Object = new MAP_OBJECT_LIGHT (wClass_Parent, twParentIx, wClass_Object, twObjectIx, Pod);       break;
+   case MAP_OBJECT_CLASS_ROOT:         pMap_Object = new MAP_OBJECT              (wClass, twObjectIx, Pod);    break;
+   case MAP_OBJECT_CLASS_CELESTIAL:    pMap_Object = new MAP_OBJECT_CELESTIAL    (wClass, twObjectIx, Pod);    break;
+   case MAP_OBJECT_CLASS_TERRESTRIAL:  pMap_Object = new MAP_OBJECT_TERRESTRIAL  (wClass, twObjectIx, Pod);    break;
+   case MAP_OBJECT_CLASS_PHYSICAL:     pMap_Object = new MAP_OBJECT              (wClass, twObjectIx, Pod);    break;
+   case MAP_OBJECT_CLASS_PANEL:        pMap_Object = new MAP_OBJECT              (wClass, twObjectIx, Pod);    break;
+   case MAP_OBJECT_CLASS_LIGHT:        pMap_Object = new MAP_OBJECT_LIGHT        (wClass, twObjectIx, Pod);    break;
    }
 
    return pMap_Object;
 }
 
-MAP_OBJECT::MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod) :
+MAP_OBJECT::MAP_OBJECT (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod) :
    m_POD (Pod),
    m_nChildren (0),
-   m_pImpl (new Impl (wClass_Parent, twParentIx, wClass_Object, twObjectIx))
+   m_wClass (wClass),
+   m_twObjectIx (twObjectIx),
+   m_pImpl (new Impl ())
 {
 }
 
@@ -144,11 +137,6 @@ uint32_t MAP_OBJECT::Children () const &
 }
 
 // Modifiers                                              
-void MAP_OBJECT::Head (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx) &
-{
-   m_pImpl->Head (wClass_Parent, twParentIx, wClass_Object, twObjectIx);
-}
-
 void MAP_OBJECT::Name (const std::wstring& sName) &
 {
    RMAP::CORE::UTILS::WString_to_Uint16 (sName, m_POD.Name.wsName, sizeof (m_POD.Name.wsName) / sizeof (uint16_t));
