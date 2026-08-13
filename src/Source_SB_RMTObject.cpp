@@ -296,7 +296,6 @@ void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    MAP_OBJECT_BOUND Bound;
    MAP_OBJECT_PROPERTIES_TERRESTIAL Properties;
    //   uint32_t nChildren;
-   RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
@@ -328,7 +327,6 @@ void SB_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
 //   Pod.nChildren = jSrc["nChildren"];
 
-   pModelSB->Head (pHead->Parent.Class (), pHead->Parent.ObjectIx (), pHead->Self.Class (), pHead->Self.ObjectIx ());
    pModelSB->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMTObjectId"].get<std::string> ().c_str ()));
    pModelSB->Type (Type);
    pModelSB->Owner (Owner);

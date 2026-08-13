@@ -192,7 +192,6 @@ namespace RMAP
          uint32_t Children ()                                                                      const &;
 
          // Modifiers                                              
-         void Head      (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx)   &;
          void Name      (const std::wstring& sName)                                                                  &;
          void Type      (const MAP_OBJECT_TYPE& Type)                                                                &;
          void Owner     (const MAP_OBJECT_OWNER& Owner)                                                              &;

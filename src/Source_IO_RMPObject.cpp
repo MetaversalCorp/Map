@@ -328,7 +328,6 @@ void IO_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    MAP_OBJECT_TRANSFORM Transform;
    MAP_OBJECT_BOUND Bound;
    uint32_t nChildren;
-   RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
@@ -355,7 +354,6 @@ void IO_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    nChildren = jSrc["nChildren"];
 
-   pModelIO->Head (pHead->Parent.Class (), pHead->Parent.ObjectIx (), pHead->Self.Class (), pHead->Self.ObjectIx ());
    pModelIO->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMPObjectId"].template get<std::string> ().c_str ()));
    pModelIO->Type (Type);
    pModelIO->Owner (Owner);
