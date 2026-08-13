@@ -243,9 +243,6 @@ void SB_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    MAP_OBJECT_BOUND Bound;
    RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
 
-   pModelSB->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->wClass_Parent, pHead->twParentIx);
-   pModelSB->m_POD.Head.Self.qwComposed   = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
-
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
    Type.bFiction  = jSrc["pType"]["bFiction"];
@@ -271,6 +268,7 @@ void SB_RMPOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
 //   Pod.nChildren = jSrc["nChildren"];
 
+   pModelSB->Head (pHead->Parent.Class (), pHead->Parent.ObjectIx (), pHead->Self.Class (), pHead->Self.ObjectIx ());
    pModelSB->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMCObjectId"].get<std::string> ().c_str ()));
    pModelSB->Type (Type);
    pModelSB->Owner (Owner);

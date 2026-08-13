@@ -159,11 +159,9 @@ void SB_RMROOT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    MAP_OBJECT_OWNER Owner;
    RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
 
-   pModelSB->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->wClass_Parent, pHead->twParentIx);
-   pModelSB->m_POD.Head.Self.qwComposed   = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
-
    Owner.twOwner = jSrc["pOwner"]["twRPersonaIx"];
 
+   pModelSB->Head (pHead->Parent.Class (), pHead->Parent.ObjectIx (), pHead->Self.Class (), pHead->Self.ObjectIx ());
    pModelSB->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMRootId"].get<std::string> ().c_str ()));
    pModelSB->Owner (Owner);
 }

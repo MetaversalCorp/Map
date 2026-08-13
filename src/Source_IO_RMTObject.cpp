@@ -455,9 +455,6 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    uint32_t nChildren;
    RMAP::CORE::MEM::OBJECTHEAD* pHead = pObjectHead ();
 
-   pModelIO->m_POD.Head.Parent.qwComposed = OBJECTIX_COMPOSE (pHead->wClass_Parent, pHead->twParentIx);
-   pModelIO->m_POD.Head.Self.qwComposed   = OBJECTIX_COMPOSE (pHead->wClass_Object, pHead->twObjectIx);
-
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
    Type.bFiction  = jSrc["pType"]["bFiction"];
@@ -488,6 +485,7 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    nChildren = jSrc["nChildren"];
 
+   pModelIO->Head (pHead->Parent.Class (), pHead->Parent.ObjectIx (), pHead->Self.Class (), pHead->Self.ObjectIx ());
    pModelIO->Name (RMAP::CORE::UTILS::UTF8_to_Wchar (jSrc["pName"]["wsRMTObjectId"].template get<std::string> ().c_str ()));
    pModelIO->Type (Type);
    pModelIO->Owner (Owner);

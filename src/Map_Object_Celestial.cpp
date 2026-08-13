@@ -14,13 +14,8 @@ using namespace RMAP::MAP;
 **                                                     CLASS (MAP_OBJECT_CELESTIAL)                                           **
 *******************************************************************************************************************************/
 
-MAP_OBJECT_CELESTIAL::MAP_OBJECT_CELESTIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx) :
-   MAP_OBJECT (wClass_Parent, twParentIx, wClass_Object, twObjectIx)
-{
-}
-
-MAP_OBJECT_CELESTIAL::MAP_OBJECT_CELESTIAL (const MAP_OBJECT_POD& Pod) :
-   MAP_OBJECT (Pod)
+MAP_OBJECT_CELESTIAL::MAP_OBJECT_CELESTIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod) :
+   MAP_OBJECT (wClass_Parent, twParentIx, wClass_Object, twObjectIx, Pod)
 {
 }
 

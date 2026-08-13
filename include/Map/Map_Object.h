@@ -9,8 +9,6 @@
 #ifndef RMAP_MAP_OBJECT_H
 #define RMAP_MAP_OBJECT_H
 
-#define OBJECTIX_COMPOSE(eClass, twObjectIx)      ((static_cast<uint64_t> (eClass) << 48)  |  (static_cast<uint64_t> (twObjectIx) & 0x0000FFFFFFFFFFFFull))
-
 namespace RMAP
 {
    namespace MAP
@@ -23,21 +21,6 @@ namespace RMAP
          MAP_OBJECT_CLASS_PHYSICAL        = 73,
          MAP_OBJECT_CLASS_PANEL           = 74,
          MAP_OBJECT_CLASS_LIGHT           = 75,
-      };
-
-      struct OBJECTIX
-      {
-         uint64_t              qwComposed;
-
-         uint64_t              ObjectIx () const { return qwComposed & 0x0000FFFFFFFFFFFFull; }
-         MAP_OBJECT_CLASS      Class ()    const { return static_cast<MAP_OBJECT_CLASS> (qwComposed >> 48); }
-      };
-
-      struct OBJECT_HEAD
-      {
-         OBJECTIX              Parent;
-         OBJECTIX              Self;
-         uint64_t              qwEvent;
       };
 
       struct MAP_OBJECT_NAME
@@ -140,7 +123,6 @@ namespace RMAP
 
       struct MAP_OBJECT_POD
       {
-         OBJECT_HEAD                   Head;
          MAP_OBJECT_NAME               Name;
          MAP_OBJECT_TYPE               Type;
          MAP_OBJECT_OWNER              Owner;
@@ -183,11 +165,10 @@ namespace RMAP
          };
 
       public:
-         MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT (const MAP_OBJECT_POD& Pod);
+         MAP_OBJECT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT ();
 
-         static MAP_OBJECT* Create (const MAP_OBJECT_POD& Pod);
+         static MAP_OBJECT* Create (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod);
          static const char* ClassName (MAP_OBJECT_CLASS eType);
 
          void        Scale            (double& dX, double& dY, double& dZ)   const;
@@ -211,14 +192,14 @@ namespace RMAP
          uint32_t Children ()                                                                      const &;
 
          // Modifiers                                              
-         void Head      (const OBJECT_HEAD& Head)                                                        &;
-         void Name      (const std::wstring& sName)                                                      &;
-         void Type      (const MAP_OBJECT_TYPE& Type)                                                    &;
-         void Owner     (const MAP_OBJECT_OWNER& Owner)                                                  &;
-         void Resource  (uint64_t qwResource, const std::string& sName, const std::string& sReference)   &;
-         void Transform (const MAP_OBJECT_TRANSFORM& Transform)                                          &;
-         void Bound     (const MAP_OBJECT_BOUND& Bound)                                                  &;
-         void Children  (uint32_t nChildren)                                                             &;
+         void Head      (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx)   &;
+         void Name      (const std::wstring& sName)                                                                  &;
+         void Type      (const MAP_OBJECT_TYPE& Type)                                                                &;
+         void Owner     (const MAP_OBJECT_OWNER& Owner)                                                              &;
+         void Resource  (uint64_t qwResource, const std::string& sName, const std::string& sReference)               &;
+         void Transform (const MAP_OBJECT_TRANSFORM& Transform)                                                      &;
+         void Bound     (const MAP_OBJECT_BOUND& Bound)                                                              &;
+         void Children  (uint32_t nChildren)                                                                         &;
 
       public:
          MAP_OBJECT_POD    m_POD;   // Available only for MAP_OBJECT USAGE
@@ -271,8 +252,7 @@ namespace RMAP
          };
 
       public:
-         MAP_OBJECT_CELESTIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT_CELESTIAL (const MAP_OBJECT_POD& Pod);
+         MAP_OBJECT_CELESTIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT_CELESTIAL ();
 
          bool HasOrbit () const;
@@ -310,8 +290,7 @@ namespace RMAP
          };
 
       public:
-         MAP_OBJECT_TERRESTRIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT_TERRESTRIAL (const MAP_OBJECT_POD& Pod);
+         MAP_OBJECT_TERRESTRIAL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT_TERRESTRIAL ();
 
          // Modifiers                                              
@@ -341,42 +320,12 @@ namespace RMAP
          };
 
       public:
-         MAP_OBJECT_LIGHT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT_LIGHT (const MAP_OBJECT_POD& Pod);
+         MAP_OBJECT_LIGHT (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod = {});
          virtual ~MAP_OBJECT_LIGHT ();
 
          // Modifiers                                              
          void Properties (const MAP_OBJECT_PROPERTIES_LIGHT& _Properties) &;
       };
-#if 0
-      // An in-scene UI panel (RmlUi RML+CSS rasterized to a textured quad). Owns
-      // its own UI surface; the panel's world size comes from Bound.d3Max[0,1] and
-      // its placement from the node's TRS, so it flows through the compositor and
-      // per-scene render scale exactly like any other node.
-      class MAP_OBJECT_PANEL : public MAP_OBJECT
-      {
-      public:
-         MAP_OBJECT_PANEL (uint16_t wClass_Parent, uint64_t twParentIx, uint16_t wClass_Object, uint64_t twObjectIx);
-         MAP_OBJECT_PANEL (const MAP_OBJECT_POD& Pod);
-         virtual ~MAP_OBJECT_PANEL ();
-
-         // Set the panel's RML+CSS document source. Marks the UI dirty so the next
-         // Render rasterizes it. If never set, the panel's built-in default
-         // document is used.
-         void Source (const std::string& sSource);
-
-         // Rasterize the panel's UI into its canvas (call on the render thread).
-         // Cheap when unchanged. Returns true if Pixels() is valid.
-         bool Render (ENGINE* pEngine, int nWidth, int nHeight);
-
-         const uint8_t* Pixels () const;
-         int            Width () const;
-         int            Height () const;
-
-      private:
-         DEP::UI_PANEL* m_pPanel;
-      };
-#endif
    }
 }
 
