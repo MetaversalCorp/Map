@@ -444,7 +444,7 @@ IO_RMTOBJECT::FACTORY* IO_RMTOBJECT::factory ()
    return new FACTORY ("Socket.IO", "RMTObject", MAP_OBJECT_CLASS_TERRESTRIAL, aAction, true);
 }
 
-#define USE_MAP_ZUP
+//#define USE_MAP_ZUP
 
 void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
@@ -476,10 +476,16 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    Transform.d3Position[1] = 0 - jSrc["pTransform"]["Position"][2];
    Transform.d3Position[2] =     jSrc["pTransform"]["Position"][1];
 
-   Transform.d4Rotation[0] =     jSrc["pTransform"]["Rotation"][0];
-   Transform.d4Rotation[1] = 0 - jSrc["pTransform"]["Rotation"][2];
-   Transform.d4Rotation[2] =     jSrc["pTransform"]["Rotation"][1];
-   Transform.d4Rotation[3] =     jSrc["pTransform"]["Rotation"][3];
+   double s = sqrt (2) / 2;
+   double d[4];
+
+   for (int n=0; n < 4; n++)
+      d[n] = jSrc["pTransform"]["Rotation"][n];
+
+   Transform.d4Rotation[0] =  s * (d[0] - d[2]);
+   Transform.d4Rotation[1] = -s * (d[0] + d[2]);
+   Transform.d4Rotation[2] =  s * (d[3] + d[1]);
+   Transform.d4Rotation[3] =  s * (d[3] - d[1]);
 #endif
 
    Transform.d3Scale[0]    = jSrc["pTransform"]["Scale"][0];
