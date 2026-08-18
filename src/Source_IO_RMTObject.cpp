@@ -444,7 +444,7 @@ IO_RMTOBJECT::FACTORY* IO_RMTOBJECT::factory ()
    return new FACTORY ("Socket.IO", "RMTObject", MAP_OBJECT_CLASS_TERRESTRIAL, aAction, true);
 }
 
-//#define USE_MAP_ZUP
+#define USE_MAP_ZUP
 
 void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 {
