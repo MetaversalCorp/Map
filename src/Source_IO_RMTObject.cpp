@@ -482,10 +482,10 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    for (int n=0; n < 4; n++)
       d[n] = jSrc["pTransform"]["Rotation"][n];
 
-   Transform.d4Rotation[0] =  s * (d[0] - d[2]);
-   Transform.d4Rotation[1] = -s * (d[0] + d[2]);
-   Transform.d4Rotation[2] =  s * (d[3] + d[1]);
-   Transform.d4Rotation[3] =  s * (d[3] - d[1]);
+   Transform.d4Rotation[0] =  s * (d[0] + d[2]);
+   Transform.d4Rotation[1] =  s * (d[0] - d[2]);
+   Transform.d4Rotation[2] =  s * (d[1] - d[3]);
+   Transform.d4Rotation[3] =  s * (d[1] + d[3]);
 #endif
 
    Transform.d3Scale[0]    = jSrc["pTransform"]["Scale"][0];
