@@ -474,7 +474,7 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    Transform.d3Position[1] = 0 - jSrc["pTransform"]["Position"][2];
    Transform.d3Position[2] =     jSrc["pTransform"]["Position"][1];
 
-   Transform.d4Rotation[0] = 0 - jSrc["pTransform"]["Rotation"][0];
+   Transform.d4Rotation[0] =     jSrc["pTransform"]["Rotation"][0];
    Transform.d4Rotation[1] = 0 - jSrc["pTransform"]["Rotation"][2];
    Transform.d4Rotation[2] =     jSrc["pTransform"]["Rotation"][1];
    Transform.d4Rotation[3] =     jSrc["pTransform"]["Rotation"][3];
