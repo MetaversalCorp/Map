@@ -455,7 +455,6 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    MAP_OBJECT_BOUND Bound;
    MAP_OBJECT_PROPERTIES_TERRESTIAL Properties;
    uint32_t nChildren;
-   int n;
 
    Type.bType     = jSrc["pType"]["bType"];
    Type.bSubtype  = jSrc["pType"]["bSubtype"];
@@ -464,6 +463,8 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
    Owner.twOwner  = jSrc["pOwner"]["twRPersonaIx"];
 
 #ifdef USE_MAP_ZUP               // Temporarily disabled until Map Data is converted
+   int n;
+
    for (n=0; n < 3; n++)
       Transform.d3Position[n] = jSrc["pTransform"]["Position"][n];
 
