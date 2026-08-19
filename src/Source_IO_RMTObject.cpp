@@ -476,46 +476,26 @@ void IO_RMTOBJECT::Read (ordered_json& jSrc, RMAP::CORE::MODEL* pModel)
 
    for (n = 0; n < 3; n++)
       Bound.d3Max[n]          = jSrc["pBound"]["Max"][n];
-#elif USE_MAP_ALT1
-   Transform.d3Position[0] =     jSrc["pTransform"]["Position"][0];
-   Transform.d3Position[1] = 0 - jSrc["pTransform"]["Position"][2];
-   Transform.d3Position[2] =     jSrc["pTransform"]["Position"][1];
-
-   double s = sqrt (2) / 2;
-   double d[4];
-
-   for (int n=0; n < 4; n++)
-      d[n] = jSrc["pTransform"]["Rotation"][n];
-
-   Transform.d4Rotation[0] =  s * (d[0] + d[2]);
-   Transform.d4Rotation[1] =  s * (d[0] - d[2]);
-   Transform.d4Rotation[2] =  s * (d[1] - d[3]);
-   Transform.d4Rotation[3] =  s * (d[1] + d[3]);
-
-   Transform.d3Scale[0]    = jSrc["pTransform"]["Scale"][0];
-   Transform.d3Scale[1]    = jSrc["pTransform"]["Scale"][2];
-   Transform.d3Scale[2]    = jSrc["pTransform"]["Scale"][1];
-
-   Bound.d3Max[0]          = jSrc["pBound"]["Max"][0];
-   Bound.d3Max[1]          = jSrc["pBound"]["Max"][2];
-   Bound.d3Max[2]          = jSrc["pBound"]["Max"][1];
 #else
-   Transform.d3Position[0] =     jSrc["pTransform"]["Position"][0];
-   Transform.d3Position[1] = 0 - jSrc["pTransform"]["Position"][2];
-   Transform.d3Position[2] =     jSrc["pTransform"]["Position"][1];
+double dP = jSrc["pTransform"]["Position"][2];
+double dR = jSrc["pTransform"]["Rotation"][2];
 
-   Transform.d4Rotation[0] =     jSrc["pTransform"]["Rotation"][0];
-   Transform.d4Rotation[1] = 0 - jSrc["pTransform"]["Rotation"][2];
-   Transform.d4Rotation[2] =     jSrc["pTransform"]["Rotation"][1];
-   Transform.d4Rotation[3] =     jSrc["pTransform"]["Rotation"][3];
+   Transform.d3Position[0] =       jSrc["pTransform"]["Position"][0];
+   Transform.d3Position[1] = 0.0 - dP;
+   Transform.d3Position[2] =       jSrc["pTransform"]["Position"][1];
 
-   Transform.d3Scale[0]    = jSrc["pTransform"]["Scale"][0];
-   Transform.d3Scale[1]    = jSrc["pTransform"]["Scale"][2];
-   Transform.d3Scale[2]    = jSrc["pTransform"]["Scale"][1];
+   Transform.d4Rotation[0] =       jSrc["pTransform"]["Rotation"][0];
+   Transform.d4Rotation[1] = 0.0 - dR;
+   Transform.d4Rotation[2] =       jSrc["pTransform"]["Rotation"][1];
+   Transform.d4Rotation[3] =       jSrc["pTransform"]["Rotation"][3];
 
-   Bound.d3Max[0]          = jSrc["pBound"]["Max"][0];
-   Bound.d3Max[1]          = jSrc["pBound"]["Max"][2];
-   Bound.d3Max[2]          = jSrc["pBound"]["Max"][1];
+   Transform.d3Scale[0]    =       jSrc["pTransform"]["Scale"][0];
+   Transform.d3Scale[1]    =       jSrc["pTransform"]["Scale"][2];
+   Transform.d3Scale[2]    =       jSrc["pTransform"]["Scale"][1];
+
+   Bound.d3Max[0]          =       jSrc["pBound"]["Max"][0];
+   Bound.d3Max[1]          =       jSrc["pBound"]["Max"][2];
+   Bound.d3Max[2]          =       jSrc["pBound"]["Max"][1];
 #endif
 
    Properties.bLockToGround   = jSrc["pProperties"]["bLockToGround"];
