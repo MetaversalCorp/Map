@@ -27,7 +27,7 @@ bool LibraryMap::Install (RMAP::CORE::PLUGIN* pPlugin)
    bool bResult = true;
    RMAP::CORE::APP* pCore = RMAP::CORE::APP::GetInstance ();
 
-   if (m_pRequire = pCore->Require ("Socket.IO,Statabase", "", ""))
+   if ((m_pRequire = pCore->Require ("Socket.IO,Statabase", "", "")) != nullptr)
    {
       m_apFactory_Model.push_back (RMAP::MAP::RMROOT::factory ());
       m_apFactory_Model.push_back (RMAP::MAP::RMCOBJECT::factory ());
