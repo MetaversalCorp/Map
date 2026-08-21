@@ -15,7 +15,7 @@ using namespace RMAP::MAP;
 *******************************************************************************************************************************/
 
 MAP_OBJECT_TERRESTRIAL::MAP_OBJECT_TERRESTRIAL (uint16_t wClass, uint64_t twObjectIx, const MAP_OBJECT_POD& Pod) :
-   MAP_OBJECT (wClass, twObjectIx)
+   MAP_OBJECT (wClass, twObjectIx, Pod)
 {
 }
 
